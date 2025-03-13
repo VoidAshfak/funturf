@@ -1,0 +1,19 @@
+{
+  "name": "funturf",
+  "version": "1.0.0",
+  "description": "A turf booking and game organizing platform",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node index.js"
+  },
+  "keywords": [
+    "turf",
+    "football",
+    "play",
+    "game",
+    "fun",
+    "booking"
+  ],
+  "author": "Asfaqul Asif",
+  "license": "ISC"
+}
