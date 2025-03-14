@@ -10,22 +10,24 @@ app.use(cors({
     origin: process.env.CORS_ORIGIN,
     credentials: true,
 }))
-
 // json data setup
 app.use(express.json({
     limit: "16kb"
 }));
-
 // url encoded data setup
 app.use(express.urlencoded({
     extended: true,
     limit: "16kb"
 }));
+app.use(express.static("public")); // assets setup
+app.use(cookieParser()); // cookie parser setup
 
-// assets setup
-app.use(express.static("public"));
 
-// cookie parser setup
-app.use(cookieParser());
+// routes import
+import userRoute from "./routes/user.route.js";
+
+
+// routes declare
+app.use("/api/v1/users", userRoute);
 
 export {app};
