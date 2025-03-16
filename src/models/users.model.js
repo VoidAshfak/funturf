@@ -38,9 +38,16 @@ const userSchema = new Schema(
             state: String,
             country: String,
             coordinates: {
-                type: [Number],
-                index: "2dsphere",
-            },
+                type: {
+                    type: String,
+                    enum: ["Point"],
+                    default: "Point"
+                },
+                coordinates: {
+                    type: [Number], // Longitude, Latitude
+                    index: "2dsphere"
+                }
+            }
         },
 
         bio: {
