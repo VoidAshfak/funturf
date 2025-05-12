@@ -1,0 +1,125 @@
+generator client {
+    provider = "prisma-client-js"
+    output   = "../src/generated/prisma"
+}
+
+datasource db {
+    provider = "mongodb"
+    url      = env("DATABASE_URL")
+}
+
+enum Role {
+    ADMIN
+    PLAYER
+}
+
+enum Sports {
+    FOOTBALL
+    BADMINTON
+    CRICKET
+}
+
+enum FriendStatus {
+    REQ_UID1
+    REQ_UID2
+    FRIEND
+}
+
+enum EventStatus {
+    PENDING
+    ENDED
+}
+
+enum PaymentStatus {
+    PAID
+    UNPAID
+    REFUND
+}
+
+model User {
+    id                String   @id @default(auto()) @map("_id") @db.ObjectId
+    email             String   @unique
+    password          String
+    name              String
+    address           String?
+    bio               String?
+    phone             String
+    profilePicture    String?
+    sportsPreferences Sports?  @default(FOOTBALL)
+    eventsJoined      String[]
+    role              Role     @default(PLAYER)
+    rating            Float    @default(0.0)
+    refreshToken      String?
+
+    // relations
+    sentRequests     Turfmate[] @relation("Sender")
+    receivedRequests Turfmate[] @relation("Receiver")
+    eventsOrganized  Event[]    @relation("UserToEvents")
+    bookings         Booking[]  @relation("userBooked")
+}
+
+model Turfmate {
+    id String @id @default(auto()) @map("_id") @db.ObjectId
+
+    uid1      String       @db.ObjectId // Requester
+    uid2      String       @db.ObjectId // Target
+    status    FriendStatus
+    createdAt DateTime     @default(now())
+
+    // relations
+    player1 User @relation("Sender", fields: [uid1], references: [id])
+    player2 User @relation("Receiver", fields: [uid2], references: [id])
+
+    @@unique([uid1, uid2])
+}
+
+model Event {
+    id              String      @id @default(auto()) @map("_id") @db.ObjectId
+    title           String
+    description     String?
+    organizerId     String      @db.ObjectId
+    sport           Sports
+    date            DateTime
+    playersRequired Int
+    playersJoined   Int         @default(0)
+    status          EventStatus
+    venueId         String      @db.ObjectId
+
+    // relations
+    organizer User      @relation(fields: [organizerId], references: [id], "UserToEvents")
+    venue     Venue     @relation("EventToVenue", fields: [venueId], references: [id])
+    bookings  Booking[] @relation("eventBooked")
+}
+
+model Venue {
+    id              String   @id @default(auto()) @map("_id") @db.ObjectId
+    name            String
+    address         String
+    lat             String?
+    lng             String?
+    sportsAvailable Sports
+    pricePerSlot    Int?
+    contactInfo     String?
+    rating          Float    @default(0)
+    availability    String
+    about           String?
+    facilities      String[]
+
+    // relations
+    eventsOrganized Event[]   @relation("EventToVenue")
+    bookings        Booking[] @relation("venueBooked")
+}
+
+model Booking {
+    id      String        @id @default(auto()) @map("_id") @db.ObjectId
+    userId  String        @db.ObjectId
+    eventId String        @db.ObjectId
+    venueId String        @db.ObjectId
+    date    DateTime
+    status  PaymentStatus
+
+    // relations
+    user  User  @relation("userBooked", fields: [userId], references: [id])
+    event Event @relation("eventBooked", fields: [eventId], references: [id])
+    venue Venue @relation("venueBooked", fields: [venueId], references: [id])
+}

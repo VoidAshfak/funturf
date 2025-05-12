@@ -19,10 +19,16 @@
   "license": "ISC",
   "devDependencies": {
     "nodemon": "^3.1.9",
-    "prettier": "^3.5.3"
+    "prettier": "^3.5.3",
+    "prisma": "^6.7.0"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   },
   "dependencies": {
+    "@prisma/client": "^6.7.0",
     "bcrypt": "^5.1.1",
+    "bson": "^6.10.3",
     "cloudinary": "^2.6.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
