@@ -1,7 +1,6 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
-import { User } from "../models/users.model.js";
 import { uploadMedia } from "../utils/mediaUpload.js"
 import jwt from "jsonwebtoken"
 import prisma from "../prisma.js"
@@ -104,8 +103,8 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new ApiError(409, "User already exists");
     }
 
-    // const profilePictureLocalPath = req.files?.profilePicture[0].path;
-    // const profilePictureUrl = await uploadMedia(profilePictureLocalPath);
+    const profilePictureLocalPath = req.files?.profilePicture[0].path;
+    const profilePictureUrl = await uploadMedia(profilePictureLocalPath);
 
     // if (!profilePictureUrl) {
     //     throw new ApiError(400, "Profile picture upload failed");
@@ -219,22 +218,16 @@ const loginUser = asyncHandler(async (req, res) => {
         )
 })
 
-
-
-
 const logoutUser = asyncHandler(async (req, res) => {
 
-    const modifyedUser = await User.findByIdAndUpdate(
-        req.user._id,
-        {
-            $set: {
-                refreshToken: null
-            }
+    const modifyedUser = await prisma.user.update({
+        where: {
+            id: req.user.id
         },
-        {
-            new: true
+        data: {
+            refreshToken: null
         }
-    )
+    })
 
     console.log("MODIFYED USER: ", modifyedUser);
 
@@ -270,7 +263,15 @@ const tokenRefresh = asyncHandler(async (req, res) => {
             process.env.REFRESH_TOKEN_SECRET
         )
 
-        const user = await User.findById(decodedToken._id)
+        const user = await prisma.user.findUnique({
+            where: {
+                id: decodedToken.id
+            },
+            select: {
+                id: true,
+                refreshToken: true
+            }
+        })
 
         if (!user) {
             throw new ApiError(401, "Invalid refresh token")
@@ -280,7 +281,7 @@ const tokenRefresh = asyncHandler(async (req, res) => {
             throw new ApiError(401, "Refresh token is expired or invalid")
         }
 
-        const { newAccessToken, newRefreshToken } = await generateAccessAndRefreshTokens(user._id)
+        const { newAccessToken, newRefreshToken } = await generateAccessAndRefreshTokens(user.id)
 
         const options = {
             httpOnly: true,
