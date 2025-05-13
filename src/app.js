@@ -12,7 +12,7 @@ app.use(cors({
 }))
 // json data setup
 app.use(express.json({
-    limit: "16kb"
+    limit: "56kb"
 }));
 // url encoded data setup
 app.use(express.urlencoded({

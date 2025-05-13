@@ -1,95 +1,150 @@
-import {asyncHandler} from "../utils/asyncHandler.js";
-import {ApiError} from "../utils/apiError.js";
-import {ApiResponse} from "../utils/apiResponse.js";
-import {User} from "../models/users.model.js";
-import {uploadMedia} from "../utils/mediaUpload.js"
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { ApiError } from "../utils/apiError.js";
+import { ApiResponse } from "../utils/apiResponse.js";
+import { uploadMedia } from "../utils/mediaUpload.js"
 import jwt from "jsonwebtoken"
+import prisma from "../prisma.js"
+import bcrypt from "bcrypt"
 
 
 
+const generateAccessToken = (user) => {
+    return jwt.sign(
+        {
+            id: user.id,
+            email: user.email,
+            name: user.name
+        },
+        process.env.ACCESS_TOKEN_SECRET,
+        {
+            expiresIn: process.env.ACCESS_TOKEN_EXPIRY
+        }
+    )
+}
+
+const generateRefreshToken = (user) => {
+    return jwt.sign(
+        {
+            id: user.id,
+        },
+        process.env.REFRESH_TOKEN_SECRET,
+        {
+            expiresIn: process.env.REFRESH_TOKEN_EXPIRY
+        }
+    )
+}
+
+const isPasswordCorrect = async (password, hashedPassword) => {
+    return await bcrypt.compare(password, hashedPassword);
+}
 
 
-const generateAccessAndRefreshTokens = async (userId, ) => {
+const generateAccessAndRefreshTokens = async (userId) => {
     try {
-        const user = await User.findById(userId)
-        const accessToken = user.generateAccessToken()
-        const refreshToken = user.generateRefreshToken()
+        const user = await prisma.user.findUnique({
+            where: {
+                id: userId
+            },
+            select: {
+                id: true,
+                email: true,
+                name: true
+            }
+        })
+        const accessToken = generateAccessToken(user)
+        const refreshToken = generateRefreshToken(user)
 
-        user.refreshToken = refreshToken
-        await user.save({validateBeforeSave: false})
+        await prisma.user.update({
+            where: {
+                id: userId
+            },
+            data: {
+                refreshToken: refreshToken
+            }
+        })
 
-        return {accessToken, refreshToken}
+        return { accessToken, refreshToken }
 
     } catch (error) {
         throw new ApiError(500, "Something went wrong while generating refresh and access token")
     }
 }
 
-
-    // get user details from frontend
-    // validate user details
-    // check if user already exists
-    // check for image and upload them to cloudinary
-    // create user object
-    // create entry in database
-    // send response without password and refresh token
-    // check for user creation
-    // return response
 const registerUser = asyncHandler(async (req, res) => {
     const {
-        name,  //required
-        email, //required + unique
-        password, //required 
-        phoneNumber, //required + unique
-        location, 
-        bio, 
-        sportsPreferences, //required
-        skillLevel,
-        teamsJoined,
+        name,
+        email,
+        password,
+        phone,
+        address,
+        bio,
+        sportsPreferences,
         eventsJoined,
-        role, //required
+        role,
         rating,
     } = req.body;
 
 
-    if(!name || !email || !password || !phoneNumber || !role || !sportsPreferences) {
+    if (!name || !email || !password || !phone) {
         throw new ApiError(400, "All fields are required");
     }
 
-    const existingUser = await User.findOne({
-        $or: [{email: email}, {phoneNumber: phoneNumber}]
+    console.log("Request Body: " ,req.body);
+
+
+
+    const existingUser = await prisma.user.findUnique({
+        where: {
+            email: email
+        }
     })
 
-    if(existingUser) {
+    if (existingUser) {
         throw new ApiError(409, "User already exists");
     }
 
     const profilePictureLocalPath = req.files?.profilePicture[0].path;
     const profilePictureUrl = await uploadMedia(profilePictureLocalPath);
 
-    if(!profilePictureUrl) {
-        throw new ApiError(400, "Profile picture upload failed");
-    }
+    // if (!profilePictureUrl) {
+    //     throw new ApiError(400, "Profile picture upload failed");
+    // }
 
-    const user = await User.create({
-        name,
-        email,
-        password,
-        profilePicture: profilePictureUrl.url,
-        phoneNumber,
-        location: location || null,
-        bio: bio || "",
-        sportsPreferences,
-        skillLevel: skillLevel || "BEGINNER",
-        teamsJoined: teamsJoined || [],
-        eventsJoined: eventsJoined || [],
-        role,
-        rating: rating || 0,
+    const user = await prisma.user.create({
+        data: {
+            name,
+            email,
+            password,
+            phone,
+            address,
+            bio,
+            sportsPreferences,
+            eventsJoined,
+            role,
+            rating,
+        }
     })
 
-    const newlyCreatedUser = await User.findById(user._id).select("-password -refreshToken");
+    const newlyCreatedUser = await prisma.user.findUnique({
+        where: {
+            id: user.id
+        },
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            phone: true,
+            address: true,
+            bio: true,
+            sportsPreferences: true,
+            eventsJoined: true,
+            role: true,
+            rating: true,
+            profilePicture: true
+        }
+    })
 
-    if(!newlyCreatedUser) {
+    if (!newlyCreatedUser) {
         throw new ApiError(400, "User creation failed");
     }
 
@@ -97,35 +152,51 @@ const registerUser = asyncHandler(async (req, res) => {
 
 })
 
-
 const loginUser = asyncHandler(async (req, res) => {
-    const {email, password} = req.body;
+    const { email, password } = req.body;
 
     // console.log("REQUEST: ",req);
-    
-    if(!email || !password) {    
+
+    if (!email || !password) {
         throw new ApiError(400, "All fields are required");
     }
 
-    const user = await User.findOne({
-        email
+    const user = await prisma.user.findUnique({
+        where: {
+            email: email
+        }
     })
 
-    if(!user) {
+    if (!user) {
         throw new ApiError(404, "User doesn't exist")
     }
-    
-    const isPassValid = await user.isPasswordCorrect(password)
 
-    if(!isPassValid) {
+    const isPassValid = await isPasswordCorrect(password, user.password)
+
+    if (!isPassValid) {
         throw new ApiError(401, "Invalid user credentials")
     }
 
-    const {accessToken, refreshToken} = await generateAccessAndRefreshTokens(user._id)
+    const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(user.id)
 
-    const loggedInUser = await User.findById(user._id).select(
-        "-password -refreshToken"
-    )
+    const loggedInUser = await prisma.user.findUnique({
+        where: {
+            id: user.id
+        },
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            phone: true,
+            address: true,
+            bio: true,
+            sportsPreferences: true,
+            eventsJoined: true,
+            role: true,
+            rating: true,
+            profilePicture: true
+        }
+    })
 
     const options = {
         httpOnly: true,
@@ -133,59 +204,56 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 
     return res
-    .status(200)
-    .cookie("accessToken", accessToken, options)
-    .cookie("refreshToken", refreshToken, options)
-    .json(
-        new ApiResponse(
-            200,
-            {
-                user: loggedInUser,
-            },
-            "User Logged In Successfully."
+        .status(200)
+        .cookie("accessToken", accessToken, options)
+        .cookie("refreshToken", refreshToken, options)
+        .json(
+            new ApiResponse(
+                200,
+                {
+                    user: loggedInUser,
+                },
+                "User Logged In Successfully."
+            )
         )
-    )
 })
 
 const logoutUser = asyncHandler(async (req, res) => {
-    
-    const modifyedUser = await User.findByIdAndUpdate(
-        req.user._id,
-        {
-            $set: {
-                refreshToken: null
-            }
+
+    const modifyedUser = await prisma.user.update({
+        where: {
+            id: req.user.id
         },
-        {
-            new: true
+        data: {
+            refreshToken: null
         }
-    )
+    })
 
     console.log("MODIFYED USER: ", modifyedUser);
-    
-    
+
+
     const options = {
         httpOnly: true,
         secure: true
     }
 
     return res
-    .status(200)
-    .clearCookie("accessToken", options)
-    .clearCookie("refreshToken", options)
-    .json(
-        new ApiResponse(
-            200,
-            {},
-            "User Logged Out Successfully."
+        .status(200)
+        .clearCookie("accessToken", options)
+        .clearCookie("refreshToken", options)
+        .json(
+            new ApiResponse(
+                200,
+                {},
+                "User Logged Out Successfully."
+            )
         )
-    )
 })
 
 const tokenRefresh = asyncHandler(async (req, res) => {
     const browserRefreshToken = req.cookies.refreshToken || req.body.refreshToken
 
-    if(!browserRefreshToken) {
+    if (!browserRefreshToken) {
         throw new ApiError(401, "Unauthorized request")
     }
 
@@ -194,35 +262,43 @@ const tokenRefresh = asyncHandler(async (req, res) => {
             browserRefreshToken,
             process.env.REFRESH_TOKEN_SECRET
         )
-    
-        const user = await User.findById(decodedToken._id)
-    
-        if(!user) {
+
+        const user = await prisma.user.findUnique({
+            where: {
+                id: decodedToken.id
+            },
+            select: {
+                id: true,
+                refreshToken: true
+            }
+        })
+
+        if (!user) {
             throw new ApiError(401, "Invalid refresh token")
         }
-    
-        if(browserRefreshToken !== user.refreshToken) {
+
+        if (browserRefreshToken !== user.refreshToken) {
             throw new ApiError(401, "Refresh token is expired or invalid")
         }
-    
-        const {newAccessToken, newRefreshToken} = await generateAccessAndRefreshTokens(user._id)
-    
+
+        const { newAccessToken, newRefreshToken } = await generateAccessAndRefreshTokens(user.id)
+
         const options = {
             httpOnly: true,
             secure: true
         }
-    
+
         return res
-        .status(200)
-        .cookie("accessToken", newAccessToken, options)
-        .cookie("refreshToken", newRefreshToken, options)
-        .json(
-            new ApiResponse(
-                200,
-                {},
-                "Token Refreshed Successfully."
+            .status(200)
+            .cookie("accessToken", newAccessToken, options)
+            .cookie("refreshToken", newRefreshToken, options)
+            .json(
+                new ApiResponse(
+                    200,
+                    {},
+                    "Token Refreshed Successfully."
+                )
             )
-        )   
     } catch (error) {
         throw new ApiError(401, "Token refresh failed")
     }
