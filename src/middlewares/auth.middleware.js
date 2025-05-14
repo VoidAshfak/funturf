@@ -3,6 +3,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken"
 import prisma from "../prisma.js";
 import bcrypt from "bcrypt";
+import userCache from "../utils/cache.js";
 
 
 export const verifyJWT = asyncHandler(async (req, _, next) => {
@@ -46,6 +47,31 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
     }
 
 })
+
+// export const hitCache = asyncHandler(async (req, _, next) => {
+//     const accessToken = req.cookies?.accessToken || req.header("Authorization").replace("Bearer ", "")
+
+//     if(!accessToken) {
+//         throw new ApiError(401, "Unauthorized request")
+//     }
+
+//     try {
+//         const decodedToken = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
+//         const userId = decodedToken.id
+
+//         let user = await userCache.get(userId)
+
+//         if(!user) {
+
+//             next()
+//         } else {
+
+//         }
+        
+//     } catch (error) {
+        
+//     }
+// })
 
 export const encryptPassword = asyncHandler(async (req, _, next) => {
     req.body.password = await bcrypt.hash(req.body.password, 10);
