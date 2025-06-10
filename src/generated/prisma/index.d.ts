@@ -61,8 +61,7 @@ export type Sports = (typeof Sports)[keyof typeof Sports]
 
 
 export const FriendStatus: {
-  REQ_UID1: 'REQ_UID1',
-  REQ_UID2: 'REQ_UID2',
+  PENDING: 'PENDING',
   FRIEND: 'FRIEND'
 };
 
@@ -2602,24 +2601,24 @@ export namespace Prisma {
 
   export type TurfmateMinAggregateOutputType = {
     id: string | null
-    uid1: string | null
-    uid2: string | null
+    sender: string | null
+    receiver: string | null
     status: $Enums.FriendStatus | null
     createdAt: Date | null
   }
 
   export type TurfmateMaxAggregateOutputType = {
     id: string | null
-    uid1: string | null
-    uid2: string | null
+    sender: string | null
+    receiver: string | null
     status: $Enums.FriendStatus | null
     createdAt: Date | null
   }
 
   export type TurfmateCountAggregateOutputType = {
     id: number
-    uid1: number
-    uid2: number
+    sender: number
+    receiver: number
     status: number
     createdAt: number
     _all: number
@@ -2628,24 +2627,24 @@ export namespace Prisma {
 
   export type TurfmateMinAggregateInputType = {
     id?: true
-    uid1?: true
-    uid2?: true
+    sender?: true
+    receiver?: true
     status?: true
     createdAt?: true
   }
 
   export type TurfmateMaxAggregateInputType = {
     id?: true
-    uid1?: true
-    uid2?: true
+    sender?: true
+    receiver?: true
     status?: true
     createdAt?: true
   }
 
   export type TurfmateCountAggregateInputType = {
     id?: true
-    uid1?: true
-    uid2?: true
+    sender?: true
+    receiver?: true
     status?: true
     createdAt?: true
     _all?: true
@@ -2725,8 +2724,8 @@ export namespace Prisma {
 
   export type TurfmateGroupByOutputType = {
     id: string
-    uid1: string
-    uid2: string
+    sender: string
+    receiver: string
     status: $Enums.FriendStatus
     createdAt: Date
     _count: TurfmateCountAggregateOutputType | null
@@ -2750,8 +2749,8 @@ export namespace Prisma {
 
   export type TurfmateSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    uid1?: boolean
-    uid2?: boolean
+    sender?: boolean
+    receiver?: boolean
     status?: boolean
     createdAt?: boolean
     player1?: boolean | UserDefaultArgs<ExtArgs>
@@ -2762,13 +2761,13 @@ export namespace Prisma {
 
   export type TurfmateSelectScalar = {
     id?: boolean
-    uid1?: boolean
-    uid2?: boolean
+    sender?: boolean
+    receiver?: boolean
     status?: boolean
     createdAt?: boolean
   }
 
-  export type TurfmateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "uid1" | "uid2" | "status" | "createdAt", ExtArgs["result"]["turfmate"]>
+  export type TurfmateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sender" | "receiver" | "status" | "createdAt", ExtArgs["result"]["turfmate"]>
   export type TurfmateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     player1?: boolean | UserDefaultArgs<ExtArgs>
     player2?: boolean | UserDefaultArgs<ExtArgs>
@@ -2782,8 +2781,8 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      uid1: string
-      uid2: string
+      sender: string
+      receiver: string
       status: $Enums.FriendStatus
       createdAt: Date
     }, ExtArgs["result"]["turfmate"]>
@@ -3181,8 +3180,8 @@ export namespace Prisma {
    */
   interface TurfmateFieldRefs {
     readonly id: FieldRef<"Turfmate", 'String'>
-    readonly uid1: FieldRef<"Turfmate", 'String'>
-    readonly uid2: FieldRef<"Turfmate", 'String'>
+    readonly sender: FieldRef<"Turfmate", 'String'>
+    readonly receiver: FieldRef<"Turfmate", 'String'>
     readonly status: FieldRef<"Turfmate", 'FriendStatus'>
     readonly createdAt: FieldRef<"Turfmate", 'DateTime'>
   }
@@ -6846,8 +6845,8 @@ export namespace Prisma {
 
   export const TurfmateScalarFieldEnum: {
     id: 'id',
-    uid1: 'uid1',
-    uid2: 'uid2',
+    sender: 'sender',
+    receiver: 'receiver',
     status: 'status',
     createdAt: 'createdAt'
   };
@@ -7162,8 +7161,8 @@ export namespace Prisma {
     OR?: TurfmateWhereInput[]
     NOT?: TurfmateWhereInput | TurfmateWhereInput[]
     id?: StringFilter<"Turfmate"> | string
-    uid1?: StringFilter<"Turfmate"> | string
-    uid2?: StringFilter<"Turfmate"> | string
+    sender?: StringFilter<"Turfmate"> | string
+    receiver?: StringFilter<"Turfmate"> | string
     status?: EnumFriendStatusFilter<"Turfmate"> | $Enums.FriendStatus
     createdAt?: DateTimeFilter<"Turfmate"> | Date | string
     player1?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -7172,8 +7171,8 @@ export namespace Prisma {
 
   export type TurfmateOrderByWithRelationInput = {
     id?: SortOrder
-    uid1?: SortOrder
-    uid2?: SortOrder
+    sender?: SortOrder
+    receiver?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     player1?: UserOrderByWithRelationInput
@@ -7182,22 +7181,22 @@ export namespace Prisma {
 
   export type TurfmateWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    uid1_uid2?: TurfmateUid1Uid2CompoundUniqueInput
+    sender_receiver?: TurfmateSenderReceiverCompoundUniqueInput
     AND?: TurfmateWhereInput | TurfmateWhereInput[]
     OR?: TurfmateWhereInput[]
     NOT?: TurfmateWhereInput | TurfmateWhereInput[]
-    uid1?: StringFilter<"Turfmate"> | string
-    uid2?: StringFilter<"Turfmate"> | string
+    sender?: StringFilter<"Turfmate"> | string
+    receiver?: StringFilter<"Turfmate"> | string
     status?: EnumFriendStatusFilter<"Turfmate"> | $Enums.FriendStatus
     createdAt?: DateTimeFilter<"Turfmate"> | Date | string
     player1?: XOR<UserScalarRelationFilter, UserWhereInput>
     player2?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id" | "uid1_uid2">
+  }, "id" | "sender_receiver">
 
   export type TurfmateOrderByWithAggregationInput = {
     id?: SortOrder
-    uid1?: SortOrder
-    uid2?: SortOrder
+    sender?: SortOrder
+    receiver?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     _count?: TurfmateCountOrderByAggregateInput
@@ -7210,8 +7209,8 @@ export namespace Prisma {
     OR?: TurfmateScalarWhereWithAggregatesInput[]
     NOT?: TurfmateScalarWhereWithAggregatesInput | TurfmateScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Turfmate"> | string
-    uid1?: StringWithAggregatesFilter<"Turfmate"> | string
-    uid2?: StringWithAggregatesFilter<"Turfmate"> | string
+    sender?: StringWithAggregatesFilter<"Turfmate"> | string
+    receiver?: StringWithAggregatesFilter<"Turfmate"> | string
     status?: EnumFriendStatusWithAggregatesFilter<"Turfmate"> | $Enums.FriendStatus
     createdAt?: DateTimeWithAggregatesFilter<"Turfmate"> | Date | string
   }
@@ -7599,8 +7598,8 @@ export namespace Prisma {
 
   export type TurfmateUncheckedCreateInput = {
     id?: string
-    uid1: string
-    uid2: string
+    sender: string
+    receiver: string
     status: $Enums.FriendStatus
     createdAt?: Date | string
   }
@@ -7613,16 +7612,16 @@ export namespace Prisma {
   }
 
   export type TurfmateUncheckedUpdateInput = {
-    uid1?: StringFieldUpdateOperationsInput | string
-    uid2?: StringFieldUpdateOperationsInput | string
+    sender?: StringFieldUpdateOperationsInput | string
+    receiver?: StringFieldUpdateOperationsInput | string
     status?: EnumFriendStatusFieldUpdateOperationsInput | $Enums.FriendStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TurfmateCreateManyInput = {
     id?: string
-    uid1: string
-    uid2: string
+    sender: string
+    receiver: string
     status: $Enums.FriendStatus
     createdAt?: Date | string
   }
@@ -7633,8 +7632,8 @@ export namespace Prisma {
   }
 
   export type TurfmateUncheckedUpdateManyInput = {
-    uid1?: StringFieldUpdateOperationsInput | string
-    uid2?: StringFieldUpdateOperationsInput | string
+    sender?: StringFieldUpdateOperationsInput | string
+    receiver?: StringFieldUpdateOperationsInput | string
     status?: EnumFriendStatusFieldUpdateOperationsInput | $Enums.FriendStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -8139,31 +8138,31 @@ export namespace Prisma {
     isNot?: UserWhereInput
   }
 
-  export type TurfmateUid1Uid2CompoundUniqueInput = {
-    uid1: string
-    uid2: string
+  export type TurfmateSenderReceiverCompoundUniqueInput = {
+    sender: string
+    receiver: string
   }
 
   export type TurfmateCountOrderByAggregateInput = {
     id?: SortOrder
-    uid1?: SortOrder
-    uid2?: SortOrder
+    sender?: SortOrder
+    receiver?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
   }
 
   export type TurfmateMaxOrderByAggregateInput = {
     id?: SortOrder
-    uid1?: SortOrder
-    uid2?: SortOrder
+    sender?: SortOrder
+    receiver?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
   }
 
   export type TurfmateMinOrderByAggregateInput = {
     id?: SortOrder
-    uid1?: SortOrder
-    uid2?: SortOrder
+    sender?: SortOrder
+    receiver?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
   }
@@ -9208,7 +9207,7 @@ export namespace Prisma {
 
   export type TurfmateUncheckedCreateWithoutPlayer1Input = {
     id?: string
-    uid2: string
+    receiver: string
     status: $Enums.FriendStatus
     createdAt?: Date | string
   }
@@ -9231,7 +9230,7 @@ export namespace Prisma {
 
   export type TurfmateUncheckedCreateWithoutPlayer2Input = {
     id?: string
-    uid1: string
+    sender: string
     status: $Enums.FriendStatus
     createdAt?: Date | string
   }
@@ -9326,8 +9325,8 @@ export namespace Prisma {
     OR?: TurfmateScalarWhereInput[]
     NOT?: TurfmateScalarWhereInput | TurfmateScalarWhereInput[]
     id?: StringFilter<"Turfmate"> | string
-    uid1?: StringFilter<"Turfmate"> | string
-    uid2?: StringFilter<"Turfmate"> | string
+    sender?: StringFilter<"Turfmate"> | string
+    receiver?: StringFilter<"Turfmate"> | string
     status?: EnumFriendStatusFilter<"Turfmate"> | $Enums.FriendStatus
     createdAt?: DateTimeFilter<"Turfmate"> | Date | string
   }
@@ -10125,14 +10124,14 @@ export namespace Prisma {
 
   export type TurfmateCreateManyPlayer1Input = {
     id?: string
-    uid2: string
+    receiver: string
     status: $Enums.FriendStatus
     createdAt?: Date | string
   }
 
   export type TurfmateCreateManyPlayer2Input = {
     id?: string
-    uid1: string
+    sender: string
     status: $Enums.FriendStatus
     createdAt?: Date | string
   }
@@ -10164,13 +10163,13 @@ export namespace Prisma {
   }
 
   export type TurfmateUncheckedUpdateWithoutPlayer1Input = {
-    uid2?: StringFieldUpdateOperationsInput | string
+    receiver?: StringFieldUpdateOperationsInput | string
     status?: EnumFriendStatusFieldUpdateOperationsInput | $Enums.FriendStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TurfmateUncheckedUpdateManyWithoutPlayer1Input = {
-    uid2?: StringFieldUpdateOperationsInput | string
+    receiver?: StringFieldUpdateOperationsInput | string
     status?: EnumFriendStatusFieldUpdateOperationsInput | $Enums.FriendStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10182,13 +10181,13 @@ export namespace Prisma {
   }
 
   export type TurfmateUncheckedUpdateWithoutPlayer2Input = {
-    uid1?: StringFieldUpdateOperationsInput | string
+    sender?: StringFieldUpdateOperationsInput | string
     status?: EnumFriendStatusFieldUpdateOperationsInput | $Enums.FriendStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TurfmateUncheckedUpdateManyWithoutPlayer2Input = {
-    uid1?: StringFieldUpdateOperationsInput | string
+    sender?: StringFieldUpdateOperationsInput | string
     status?: EnumFriendStatusFieldUpdateOperationsInput | $Enums.FriendStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

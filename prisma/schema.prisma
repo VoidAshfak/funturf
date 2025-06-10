@@ -20,8 +20,7 @@ enum Sports {
 }
 
 enum FriendStatus {
-    REQ_UID1
-    REQ_UID2
+    PENDING
     FRIEND
 }
 
@@ -61,16 +60,16 @@ model User {
 model Turfmate {
     id String @id @default(auto()) @map("_id") @db.ObjectId
 
-    uid1      String       @db.ObjectId // Requester
-    uid2      String       @db.ObjectId // Target
+    sender    String       @db.ObjectId // Requester
+    receiver  String       @db.ObjectId // Target
     status    FriendStatus
     createdAt DateTime     @default(now())
 
     // relations
-    player1 User @relation("Sender", fields: [uid1], references: [id])
-    player2 User @relation("Receiver", fields: [uid2], references: [id])
+    player1 User @relation("Sender", fields: [sender], references: [id])
+    player2 User @relation("Receiver", fields: [receiver], references: [id])
 
-    @@unique([uid1, uid2])
+    @@unique([sender, receiver])
 }
 
 model Event {

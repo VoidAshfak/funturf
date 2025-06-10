@@ -25,9 +25,11 @@ app.use(cookieParser()); // cookie parser setup
 
 // routes import
 import userRoute from "./routes/user.route.js";
+import turfmateRoute from "./routes/turfmate.route.js";
 
 
 // routes declare
 app.use("/api/v1/users", userRoute);
+app.use("/api/v1/turfmates", turfmateRoute);
 
 export {app};

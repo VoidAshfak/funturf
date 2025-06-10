@@ -131,8 +131,8 @@ exports.Prisma.UserScalarFieldEnum = {
 
 exports.Prisma.TurfmateScalarFieldEnum = {
   id: 'id',
-  uid1: 'uid1',
-  uid2: 'uid2',
+  sender: 'sender',
+  receiver: 'receiver',
   status: 'status',
   createdAt: 'createdAt'
 };
@@ -195,8 +195,7 @@ exports.Role = exports.$Enums.Role = {
 };
 
 exports.FriendStatus = exports.$Enums.FriendStatus = {
-  REQ_UID1: 'REQ_UID1',
-  REQ_UID2: 'REQ_UID2',
+  PENDING: 'PENDING',
   FRIEND: 'FRIEND'
 };
 
