@@ -1,8 +1,8 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
-import jwt from "jsonwebtoken"
 import prisma from "../prisma.js"
+// import { Prisma } from "@prisma/client";
 
 const sendTurfmateRequest = asyncHandler(async (req, res) => {
     const { receiverId } = req.body
@@ -26,114 +26,202 @@ const sendTurfmateRequest = asyncHandler(async (req, res) => {
         }
 
         // Check if turfmate request already exists
-        const turfmateRequest = await prisma.turfmate.findFirst({
+        const turfmateRequest = await prisma.turfmateRequests.findFirst({
             where: {
                 sender: req.user.id,
                 receiver: receiverId
             }
         })
+        if (turfmateRequest) {
+            switch (turfmateRequest.status) {
+                case "PENDING":
+                    return res.status(204).json(new ApiResponse(401, "Request has already been sent and is in pending state.", turfmateRequest));
 
-        console.log(turfmateRequest);
+                case "ACCEPTED":
+                    return res.status(200).json(new ApiResponse(401, "Already a turfmate.", turfmateRequest));
+
+                case "REJECTED":
+                    return res.status(200).json(new ApiResponse(401, "Receiver already rejected", turfmateRequest));
+
+                default:
+                    throw new ApiError(400, "Bad state")
+            }
+        }
 
         // Check if the receiver has already sent a turfmate request
-        const turfmateReverseRequest = await prisma.turfmate.findFirst({
+        const turfmateReverseRequest = await prisma.turfmateRequests.findFirst({
             where: {
                 sender: receiverId,
                 receiver: req.user.id
             }
         })
 
-        console.log(turfmateReverseRequest);
+        if (turfmateReverseRequest) {
+            switch (turfmateReverseRequest.status) {
+                case "PENDING":
+                    return res.status(200).json(new ApiResponse(400, "There is already a pending request from the receiver."));
 
-        // If turfmate request already exists, check status
-        if ((turfmateReverseRequest && turfmateReverseRequest.status === "FRIEND") || (turfmateRequest && turfmateRequest.status === "FRIEND")) {
-            return res.status(201).json(new ApiResponse(201, "You are already friends", turfmateRequest || turfmateReverseRequest))
+                case "ACCEPTED":
+                    return res.status(200).json(new ApiResponse(401, "Already a turfmate.", turfmateReverseRequest));
+
+                case "REJECTED":
+                    return res.status(200).json(new ApiResponse(401, "You already rejected", turfmateReverseRequest));
+
+                default:
+                    throw new ApiError(400, "Bad state")
+            }
         }
 
-        // If receiver has already sent a turfmate request, check status
-        if (turfmateReverseRequest && turfmateReverseRequest.status === "PENDING") {
-            const acceptRequest = await prisma.turfmate.update({
-                where: {
-                    id: turfmateReverseRequest.id
-                },
-                data: {
-                    status: "FRIEND"
-                }
-            })
-            return res.status(200).json(new ApiResponse(200, "Friend request accepted", acceptRequest))
-        }
 
-        // If turfmate request exists, check status. Else create new turfmate request
-        if (turfmateRequest && turfmateRequest.status === "PENDING") {
-            throw new ApiError(400, "You have already sent a friend request")
-        } else {
-            const turfmateRequest = await prisma.turfmate.create({
-                data: {
-                    sender: req.user.id,
-                    receiver: receiverId,
-                    status: "PENDING"
-                }
-            })
-            return res.status(200).json(new ApiResponse(200, "Friend request sent", turfmateRequest))
-        }
+        const createdTurfmateRequest = await prisma.turfmateRequests.create({
+            data: {
+                sender: req.user.id,
+                receiver: receiverId,
+                status: "PENDING"
+            }
+        })
+        return res.status(200).json(new ApiResponse(200, "Friend request sent", createdTurfmateRequest))
     } catch (error) {
         console.log("Something went wrong while sending turfmate request", error);
     }
 
-})
+});
 
-const getPendingRequests = asyncHandler(async(req, res) => {
-    
+
+// const sendTurfmateRequest = asyncHandler( async (req, res) => {
+//   const senderId   = req.user.id;
+//   const { receiverId } = req.body;
+
+//   if (!receiverId) throw new ApiError(400, "receiverId is required");
+//   if (senderId === receiverId) throw new ApiError(400, "Cannot send request to yourself");
+
+//   // Verify receiver exists
+//   const receiver = await prisma.user.findUnique({ where: { id: receiverId }, select: { id: true }});
+//   if (!receiver) throw new ApiError(404, "Receiver not found");
+
+//   // Atomic block: handle duplicates & create request
+//   try {
+//     const result = await prisma.$transaction(async (tx) => {
+
+//       // Check reverse-pending
+//       const reverse = await tx.turfmateRequest.findFirst({
+//         where: {
+//           senderId: receiverId,
+//           receiverId: senderId,
+//           status: 'PENDING'
+//         }
+//       });
+//       if (reverse) {
+//         // Accept it atomically
+//         await tx.turfmateRequest.update({
+//           where: { id: reverse.id },
+//           data: { status: 'ACCEPTED' }
+//         });
+//         await tx.turfmate.createMany({
+//           data: [
+//             { userId: senderId,   turfmateId: receiverId },
+//             { userId: receiverId, turfmateId: senderId }
+//           ],
+//           skipDuplicates: true
+//         });
+//         return { accepted: true };
+//       }
+
+//       // Otherwise insert new request; unique constraint will raise error if duplicate
+//       await tx.turfmateRequest.create({
+//         data: {
+//           senderId,
+//           receiverId,
+//           status: 'PENDING'
+//         }
+//       });
+//       return { accepted: false };
+//     });
+
+//     if (result.accepted) {
+//       return res.status(200).json({ message: "Request mutually accepted" });
+//     }
+//     return res.status(201).json({ message: "Request sent" });  // 201 Created
+
+//   } catch (err) {
+//     if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
+//       // unique(senderId,receiverId) violated
+//       throw new ApiError(409, "Request already exists");
+//     }
+//     throw err; // bubble up to global error handler
+//   }
+// });
+
+
+const getPendingRequests = asyncHandler(async (req, res) => {
+
     try {
-        const pendingRequests = await prisma.turfmate.findMany({
+        const pendingRequests = await prisma.turfmateRequests.findMany({
             where: {
                 receiver: req.user.id,
                 status: "PENDING"
             }
-        })    
-    
+        })
+
         return res.status(200).json(new ApiResponse(200, "Pending turfmate requests", pendingRequests))
     } catch (error) {
         throw new ApiError(400, 'Something went wrong while getting pending turfmate requests', error);
     }
 })
 
-const acceptTurfmateRequest = asyncHandler(async(req, res) => {
-    const {requestId} = req.body;
+const acceptTurfmateRequest = asyncHandler(async (req, res) => {
+    const { requestId } = req.body;
     const receiver = req.user.id;
     try {
-        const acceptRequest = await prisma.turfmate.update({
+        const state = await prisma.turfmateRequests.findFirst({
             where: {
                 id: requestId,
                 receiver: receiver
-            },
-            data: {
-                status: "FRIEND"
             }
         })
-        return res.status(200).json({
-            success: true,
-            message: "Friend request accepted",
-            data: acceptRequest
-        })
+        
+        if (state && state.status === 'PENDING') {
+            const acceptRequest = await prisma.turfmateRequests.update({
+                where: {
+                    id: requestId,
+                    receiver: receiver
+                },
+                data: {
+                    status: 'ACCEPTED'
+                }
+            })
+            if (acceptRequest) {
+                await prisma.turfmates.create({
+                    data: {
+                        userId: receiver,
+                        turfmateId: acceptRequest.sender
+                    }
+                })
+
+                return res.status(200).json({
+                    success: true,
+                    message: "Friend request accepted",
+                    data: acceptRequest
+                })
+            }
+        } else {
+            return res.status(400).json({
+                success: false,
+                message: "Bad state"
+            })
+        }
     } catch (error) {
         throw new ApiError(400, 'Something went wrong while accepting turfmate request', error);
     }
 })
 
-const getTurfmates = asyncHandler(async(req, res) => {
+const getTurfmates = asyncHandler(async (req, res) => {
     try {
-        const turfmates = await prisma.turfmate.findMany({
+        const turfmates = await prisma.turfmates.findMany({
             where: {
                 OR: [
-                    {
-                        sender: req.user.id,
-                        status: "FRIEND"
-                    },
-                    {
-                        receiver: req.user.id,
-                        status: "FRIEND"
-                    }
+                    { userId: req.user.id },
+                    { turfmateId: req.user.id }
                 ]
             }
         })
@@ -143,9 +231,9 @@ const getTurfmates = asyncHandler(async(req, res) => {
     }
 })
 
-const getMutualTurfmates = asyncHandler(async(req, res) => {
+const getMutualTurfmates = asyncHandler(async (req, res) => {
 
-    const {userTwo} = req.body
+    const { userTwo } = req.body
     try {
         const userOneFriend = await prisma.turfmate.findMany({
             where: {
@@ -160,7 +248,7 @@ const getMutualTurfmates = asyncHandler(async(req, res) => {
                 ]
             }
         })
-    
+
         const userTwoFriend = await prisma.turfmate.findMany({
             where: {
                 status: "FRIEND",
@@ -174,22 +262,22 @@ const getMutualTurfmates = asyncHandler(async(req, res) => {
                 ]
             }
         })
-    
+
         const turfmatesOfUserOne = userOneFriend.map((friend) => (
             friend.sender === req.user.id ? friend.receiver : friend.sender
         ))
-    
+
         const turfmatesOfUserTwo = userTwoFriend.map((friend) => (
             friend.sender === userTwo ? friend.receiver : friend.sender
         ))
-    
+
         const mutualFriendIds = turfmatesOfUserOne.filter(id =>
             turfmatesOfUserTwo.includes(id)
         );
-    
+
         return res.status(200).json(new ApiResponse(200, "Mutual turfmates", mutualFriendIds))
     } catch (error) {
-        throw new ApiError(400, 'Something went wrong while getting mutual turfmates', error);   
+        throw new ApiError(400, 'Something went wrong while getting mutual turfmates', error);
     }
 
 })
