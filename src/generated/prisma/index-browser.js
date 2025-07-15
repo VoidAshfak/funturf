@@ -129,11 +129,18 @@ exports.Prisma.UserScalarFieldEnum = {
   refreshToken: 'refreshToken'
 };
 
-exports.Prisma.TurfmateScalarFieldEnum = {
+exports.Prisma.TurfmateRequestsScalarFieldEnum = {
   id: 'id',
-  uid1: 'uid1',
-  uid2: 'uid2',
+  sender: 'sender',
+  receiver: 'receiver',
   status: 'status',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.TurfmatesScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  turfmateId: 'turfmateId',
   createdAt: 'createdAt'
 };
 
@@ -195,9 +202,9 @@ exports.Role = exports.$Enums.Role = {
 };
 
 exports.FriendStatus = exports.$Enums.FriendStatus = {
-  REQ_UID1: 'REQ_UID1',
-  REQ_UID2: 'REQ_UID2',
-  FRIEND: 'FRIEND'
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED'
 };
 
 exports.EventStatus = exports.$Enums.EventStatus = {
@@ -213,7 +220,8 @@ exports.PaymentStatus = exports.$Enums.PaymentStatus = {
 
 exports.Prisma.ModelName = {
   User: 'User',
-  Turfmate: 'Turfmate',
+  TurfmateRequests: 'TurfmateRequests',
+  Turfmates: 'Turfmates',
   Event: 'Event',
   Venue: 'Venue',
   Booking: 'Booking'

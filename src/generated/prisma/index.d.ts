@@ -19,10 +19,15 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
- * Model Turfmate
+ * Model TurfmateRequests
  * 
  */
-export type Turfmate = $Result.DefaultSelection<Prisma.$TurfmatePayload>
+export type TurfmateRequests = $Result.DefaultSelection<Prisma.$TurfmateRequestsPayload>
+/**
+ * Model Turfmates
+ * 
+ */
+export type Turfmates = $Result.DefaultSelection<Prisma.$TurfmatesPayload>
 /**
  * Model Event
  * 
@@ -61,9 +66,9 @@ export type Sports = (typeof Sports)[keyof typeof Sports]
 
 
 export const FriendStatus: {
-  REQ_UID1: 'REQ_UID1',
-  REQ_UID2: 'REQ_UID2',
-  FRIEND: 'FRIEND'
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED'
 };
 
 export type FriendStatus = (typeof FriendStatus)[keyof typeof FriendStatus]
@@ -210,14 +215,24 @@ export class PrismaClient<
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.turfmate`: Exposes CRUD operations for the **Turfmate** model.
+   * `prisma.turfmateRequests`: Exposes CRUD operations for the **TurfmateRequests** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TurfmateRequests
+    * const turfmateRequests = await prisma.turfmateRequests.findMany()
+    * ```
+    */
+  get turfmateRequests(): Prisma.TurfmateRequestsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.turfmates`: Exposes CRUD operations for the **Turfmates** model.
     * Example usage:
     * ```ts
     * // Fetch zero or more Turfmates
-    * const turfmates = await prisma.turfmate.findMany()
+    * const turfmates = await prisma.turfmates.findMany()
     * ```
     */
-  get turfmate(): Prisma.TurfmateDelegate<ExtArgs, ClientOptions>;
+  get turfmates(): Prisma.TurfmatesDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.event`: Exposes CRUD operations for the **Event** model.
@@ -689,7 +704,8 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
-    Turfmate: 'Turfmate',
+    TurfmateRequests: 'TurfmateRequests',
+    Turfmates: 'Turfmates',
     Event: 'Event',
     Venue: 'Venue',
     Booking: 'Booking'
@@ -711,7 +727,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "turfmate" | "event" | "venue" | "booking"
+      modelProps: "user" | "turfmateRequests" | "turfmates" | "event" | "venue" | "booking"
       txIsolationLevel: never
     }
     model: {
@@ -789,77 +805,151 @@ export namespace Prisma {
           }
         }
       }
-      Turfmate: {
-        payload: Prisma.$TurfmatePayload<ExtArgs>
-        fields: Prisma.TurfmateFieldRefs
+      TurfmateRequests: {
+        payload: Prisma.$TurfmateRequestsPayload<ExtArgs>
+        fields: Prisma.TurfmateRequestsFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.TurfmateFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TurfmatePayload> | null
+            args: Prisma.TurfmateRequestsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TurfmateRequestsPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.TurfmateFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TurfmatePayload>
+            args: Prisma.TurfmateRequestsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TurfmateRequestsPayload>
           }
           findFirst: {
-            args: Prisma.TurfmateFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TurfmatePayload> | null
+            args: Prisma.TurfmateRequestsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TurfmateRequestsPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.TurfmateFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TurfmatePayload>
+            args: Prisma.TurfmateRequestsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TurfmateRequestsPayload>
           }
           findMany: {
-            args: Prisma.TurfmateFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TurfmatePayload>[]
+            args: Prisma.TurfmateRequestsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TurfmateRequestsPayload>[]
           }
           create: {
-            args: Prisma.TurfmateCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TurfmatePayload>
+            args: Prisma.TurfmateRequestsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TurfmateRequestsPayload>
           }
           createMany: {
-            args: Prisma.TurfmateCreateManyArgs<ExtArgs>
+            args: Prisma.TurfmateRequestsCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           delete: {
-            args: Prisma.TurfmateDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TurfmatePayload>
+            args: Prisma.TurfmateRequestsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TurfmateRequestsPayload>
           }
           update: {
-            args: Prisma.TurfmateUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TurfmatePayload>
+            args: Prisma.TurfmateRequestsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TurfmateRequestsPayload>
           }
           deleteMany: {
-            args: Prisma.TurfmateDeleteManyArgs<ExtArgs>
+            args: Prisma.TurfmateRequestsDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.TurfmateUpdateManyArgs<ExtArgs>
+            args: Prisma.TurfmateRequestsUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           upsert: {
-            args: Prisma.TurfmateUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TurfmatePayload>
+            args: Prisma.TurfmateRequestsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TurfmateRequestsPayload>
           }
           aggregate: {
-            args: Prisma.TurfmateAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateTurfmate>
+            args: Prisma.TurfmateRequestsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTurfmateRequests>
           }
           groupBy: {
-            args: Prisma.TurfmateGroupByArgs<ExtArgs>
-            result: $Utils.Optional<TurfmateGroupByOutputType>[]
+            args: Prisma.TurfmateRequestsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TurfmateRequestsGroupByOutputType>[]
           }
           findRaw: {
-            args: Prisma.TurfmateFindRawArgs<ExtArgs>
+            args: Prisma.TurfmateRequestsFindRawArgs<ExtArgs>
             result: JsonObject
           }
           aggregateRaw: {
-            args: Prisma.TurfmateAggregateRawArgs<ExtArgs>
+            args: Prisma.TurfmateRequestsAggregateRawArgs<ExtArgs>
             result: JsonObject
           }
           count: {
-            args: Prisma.TurfmateCountArgs<ExtArgs>
-            result: $Utils.Optional<TurfmateCountAggregateOutputType> | number
+            args: Prisma.TurfmateRequestsCountArgs<ExtArgs>
+            result: $Utils.Optional<TurfmateRequestsCountAggregateOutputType> | number
+          }
+        }
+      }
+      Turfmates: {
+        payload: Prisma.$TurfmatesPayload<ExtArgs>
+        fields: Prisma.TurfmatesFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TurfmatesFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TurfmatesPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TurfmatesFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TurfmatesPayload>
+          }
+          findFirst: {
+            args: Prisma.TurfmatesFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TurfmatesPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TurfmatesFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TurfmatesPayload>
+          }
+          findMany: {
+            args: Prisma.TurfmatesFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TurfmatesPayload>[]
+          }
+          create: {
+            args: Prisma.TurfmatesCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TurfmatesPayload>
+          }
+          createMany: {
+            args: Prisma.TurfmatesCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.TurfmatesDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TurfmatesPayload>
+          }
+          update: {
+            args: Prisma.TurfmatesUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TurfmatesPayload>
+          }
+          deleteMany: {
+            args: Prisma.TurfmatesDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TurfmatesUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.TurfmatesUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TurfmatesPayload>
+          }
+          aggregate: {
+            args: Prisma.TurfmatesAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTurfmates>
+          }
+          groupBy: {
+            args: Prisma.TurfmatesGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TurfmatesGroupByOutputType>[]
+          }
+          findRaw: {
+            args: Prisma.TurfmatesFindRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          aggregateRaw: {
+            args: Prisma.TurfmatesAggregateRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          count: {
+            args: Prisma.TurfmatesCountArgs<ExtArgs>
+            result: $Utils.Optional<TurfmatesCountAggregateOutputType> | number
           }
         }
       }
@@ -1157,7 +1247,8 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     user?: UserOmit
-    turfmate?: TurfmateOmit
+    turfmateRequests?: TurfmateRequestsOmit
+    turfmates?: TurfmatesOmit
     event?: EventOmit
     venue?: VenueOmit
     booking?: BookingOmit
@@ -1259,6 +1350,8 @@ export namespace Prisma {
     receivedRequests: number
     eventsOrganized: number
     bookings: number
+    turfmates: number
+    turfmateOf: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1266,6 +1359,8 @@ export namespace Prisma {
     receivedRequests?: boolean | UserCountOutputTypeCountReceivedRequestsArgs
     eventsOrganized?: boolean | UserCountOutputTypeCountEventsOrganizedArgs
     bookings?: boolean | UserCountOutputTypeCountBookingsArgs
+    turfmates?: boolean | UserCountOutputTypeCountTurfmatesArgs
+    turfmateOf?: boolean | UserCountOutputTypeCountTurfmateOfArgs
   }
 
   // Custom InputTypes
@@ -1283,14 +1378,14 @@ export namespace Prisma {
    * UserCountOutputType without action
    */
   export type UserCountOutputTypeCountSentRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: TurfmateWhereInput
+    where?: TurfmateRequestsWhereInput
   }
 
   /**
    * UserCountOutputType without action
    */
   export type UserCountOutputTypeCountReceivedRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: TurfmateWhereInput
+    where?: TurfmateRequestsWhereInput
   }
 
   /**
@@ -1305,6 +1400,20 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountBookingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BookingWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTurfmatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TurfmatesWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTurfmateOfArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TurfmatesWhereInput
   }
 
 
@@ -1645,6 +1754,8 @@ export namespace Prisma {
     receivedRequests?: boolean | User$receivedRequestsArgs<ExtArgs>
     eventsOrganized?: boolean | User$eventsOrganizedArgs<ExtArgs>
     bookings?: boolean | User$bookingsArgs<ExtArgs>
+    turfmates?: boolean | User$turfmatesArgs<ExtArgs>
+    turfmateOf?: boolean | User$turfmateOfArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1672,16 +1783,20 @@ export namespace Prisma {
     receivedRequests?: boolean | User$receivedRequestsArgs<ExtArgs>
     eventsOrganized?: boolean | User$eventsOrganizedArgs<ExtArgs>
     bookings?: boolean | User$bookingsArgs<ExtArgs>
+    turfmates?: boolean | User$turfmatesArgs<ExtArgs>
+    turfmateOf?: boolean | User$turfmateOfArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      sentRequests: Prisma.$TurfmatePayload<ExtArgs>[]
-      receivedRequests: Prisma.$TurfmatePayload<ExtArgs>[]
+      sentRequests: Prisma.$TurfmateRequestsPayload<ExtArgs>[]
+      receivedRequests: Prisma.$TurfmateRequestsPayload<ExtArgs>[]
       eventsOrganized: Prisma.$EventPayload<ExtArgs>[]
       bookings: Prisma.$BookingPayload<ExtArgs>[]
+      turfmates: Prisma.$TurfmatesPayload<ExtArgs>[]
+      turfmateOf: Prisma.$TurfmatesPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2060,10 +2175,12 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    sentRequests<T extends User$sentRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$sentRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TurfmatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    receivedRequests<T extends User$receivedRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$receivedRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TurfmatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sentRequests<T extends User$sentRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$sentRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TurfmateRequestsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    receivedRequests<T extends User$receivedRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$receivedRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TurfmateRequestsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     eventsOrganized<T extends User$eventsOrganizedArgs<ExtArgs> = {}>(args?: Subset<T, User$eventsOrganizedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     bookings<T extends User$bookingsArgs<ExtArgs> = {}>(args?: Subset<T, User$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    turfmates<T extends User$turfmatesArgs<ExtArgs> = {}>(args?: Subset<T, User$turfmatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TurfmatesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    turfmateOf<T extends User$turfmateOfArgs<ExtArgs> = {}>(args?: Subset<T, User$turfmateOfArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TurfmatesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2480,23 +2597,23 @@ export namespace Prisma {
    */
   export type User$sentRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Turfmate
+     * Select specific fields to fetch from the TurfmateRequests
      */
-    select?: TurfmateSelect<ExtArgs> | null
+    select?: TurfmateRequestsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Turfmate
+     * Omit specific fields from the TurfmateRequests
      */
-    omit?: TurfmateOmit<ExtArgs> | null
+    omit?: TurfmateRequestsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TurfmateInclude<ExtArgs> | null
-    where?: TurfmateWhereInput
-    orderBy?: TurfmateOrderByWithRelationInput | TurfmateOrderByWithRelationInput[]
-    cursor?: TurfmateWhereUniqueInput
+    include?: TurfmateRequestsInclude<ExtArgs> | null
+    where?: TurfmateRequestsWhereInput
+    orderBy?: TurfmateRequestsOrderByWithRelationInput | TurfmateRequestsOrderByWithRelationInput[]
+    cursor?: TurfmateRequestsWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: TurfmateScalarFieldEnum | TurfmateScalarFieldEnum[]
+    distinct?: TurfmateRequestsScalarFieldEnum | TurfmateRequestsScalarFieldEnum[]
   }
 
   /**
@@ -2504,23 +2621,23 @@ export namespace Prisma {
    */
   export type User$receivedRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Turfmate
+     * Select specific fields to fetch from the TurfmateRequests
      */
-    select?: TurfmateSelect<ExtArgs> | null
+    select?: TurfmateRequestsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Turfmate
+     * Omit specific fields from the TurfmateRequests
      */
-    omit?: TurfmateOmit<ExtArgs> | null
+    omit?: TurfmateRequestsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TurfmateInclude<ExtArgs> | null
-    where?: TurfmateWhereInput
-    orderBy?: TurfmateOrderByWithRelationInput | TurfmateOrderByWithRelationInput[]
-    cursor?: TurfmateWhereUniqueInput
+    include?: TurfmateRequestsInclude<ExtArgs> | null
+    where?: TurfmateRequestsWhereInput
+    orderBy?: TurfmateRequestsOrderByWithRelationInput | TurfmateRequestsOrderByWithRelationInput[]
+    cursor?: TurfmateRequestsWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: TurfmateScalarFieldEnum | TurfmateScalarFieldEnum[]
+    distinct?: TurfmateRequestsScalarFieldEnum | TurfmateRequestsScalarFieldEnum[]
   }
 
   /**
@@ -2572,6 +2689,54 @@ export namespace Prisma {
   }
 
   /**
+   * User.turfmates
+   */
+  export type User$turfmatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Turfmates
+     */
+    select?: TurfmatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Turfmates
+     */
+    omit?: TurfmatesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TurfmatesInclude<ExtArgs> | null
+    where?: TurfmatesWhereInput
+    orderBy?: TurfmatesOrderByWithRelationInput | TurfmatesOrderByWithRelationInput[]
+    cursor?: TurfmatesWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TurfmatesScalarFieldEnum | TurfmatesScalarFieldEnum[]
+  }
+
+  /**
+   * User.turfmateOf
+   */
+  export type User$turfmateOfArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Turfmates
+     */
+    select?: TurfmatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Turfmates
+     */
+    omit?: TurfmatesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TurfmatesInclude<ExtArgs> | null
+    where?: TurfmatesWhereInput
+    orderBy?: TurfmatesOrderByWithRelationInput | TurfmatesOrderByWithRelationInput[]
+    cursor?: TurfmatesWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TurfmatesScalarFieldEnum | TurfmatesScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2591,338 +2756,338 @@ export namespace Prisma {
 
 
   /**
-   * Model Turfmate
+   * Model TurfmateRequests
    */
 
-  export type AggregateTurfmate = {
-    _count: TurfmateCountAggregateOutputType | null
-    _min: TurfmateMinAggregateOutputType | null
-    _max: TurfmateMaxAggregateOutputType | null
+  export type AggregateTurfmateRequests = {
+    _count: TurfmateRequestsCountAggregateOutputType | null
+    _min: TurfmateRequestsMinAggregateOutputType | null
+    _max: TurfmateRequestsMaxAggregateOutputType | null
   }
 
-  export type TurfmateMinAggregateOutputType = {
+  export type TurfmateRequestsMinAggregateOutputType = {
     id: string | null
-    uid1: string | null
-    uid2: string | null
+    sender: string | null
+    receiver: string | null
     status: $Enums.FriendStatus | null
     createdAt: Date | null
   }
 
-  export type TurfmateMaxAggregateOutputType = {
+  export type TurfmateRequestsMaxAggregateOutputType = {
     id: string | null
-    uid1: string | null
-    uid2: string | null
+    sender: string | null
+    receiver: string | null
     status: $Enums.FriendStatus | null
     createdAt: Date | null
   }
 
-  export type TurfmateCountAggregateOutputType = {
+  export type TurfmateRequestsCountAggregateOutputType = {
     id: number
-    uid1: number
-    uid2: number
+    sender: number
+    receiver: number
     status: number
     createdAt: number
     _all: number
   }
 
 
-  export type TurfmateMinAggregateInputType = {
+  export type TurfmateRequestsMinAggregateInputType = {
     id?: true
-    uid1?: true
-    uid2?: true
+    sender?: true
+    receiver?: true
     status?: true
     createdAt?: true
   }
 
-  export type TurfmateMaxAggregateInputType = {
+  export type TurfmateRequestsMaxAggregateInputType = {
     id?: true
-    uid1?: true
-    uid2?: true
+    sender?: true
+    receiver?: true
     status?: true
     createdAt?: true
   }
 
-  export type TurfmateCountAggregateInputType = {
+  export type TurfmateRequestsCountAggregateInputType = {
     id?: true
-    uid1?: true
-    uid2?: true
+    sender?: true
+    receiver?: true
     status?: true
     createdAt?: true
     _all?: true
   }
 
-  export type TurfmateAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurfmateRequestsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Turfmate to aggregate.
+     * Filter which TurfmateRequests to aggregate.
      */
-    where?: TurfmateWhereInput
+    where?: TurfmateRequestsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Turfmates to fetch.
+     * Determine the order of TurfmateRequests to fetch.
      */
-    orderBy?: TurfmateOrderByWithRelationInput | TurfmateOrderByWithRelationInput[]
+    orderBy?: TurfmateRequestsOrderByWithRelationInput | TurfmateRequestsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: TurfmateWhereUniqueInput
+    cursor?: TurfmateRequestsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Turfmates from the position of the cursor.
+     * Take `±n` TurfmateRequests from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Turfmates.
+     * Skip the first `n` TurfmateRequests.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned Turfmates
+     * Count returned TurfmateRequests
     **/
-    _count?: true | TurfmateCountAggregateInputType
+    _count?: true | TurfmateRequestsCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: TurfmateMinAggregateInputType
+    _min?: TurfmateRequestsMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: TurfmateMaxAggregateInputType
+    _max?: TurfmateRequestsMaxAggregateInputType
   }
 
-  export type GetTurfmateAggregateType<T extends TurfmateAggregateArgs> = {
-        [P in keyof T & keyof AggregateTurfmate]: P extends '_count' | 'count'
+  export type GetTurfmateRequestsAggregateType<T extends TurfmateRequestsAggregateArgs> = {
+        [P in keyof T & keyof AggregateTurfmateRequests]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateTurfmate[P]>
-      : GetScalarType<T[P], AggregateTurfmate[P]>
+        : GetScalarType<T[P], AggregateTurfmateRequests[P]>
+      : GetScalarType<T[P], AggregateTurfmateRequests[P]>
   }
 
 
 
 
-  export type TurfmateGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: TurfmateWhereInput
-    orderBy?: TurfmateOrderByWithAggregationInput | TurfmateOrderByWithAggregationInput[]
-    by: TurfmateScalarFieldEnum[] | TurfmateScalarFieldEnum
-    having?: TurfmateScalarWhereWithAggregatesInput
+  export type TurfmateRequestsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TurfmateRequestsWhereInput
+    orderBy?: TurfmateRequestsOrderByWithAggregationInput | TurfmateRequestsOrderByWithAggregationInput[]
+    by: TurfmateRequestsScalarFieldEnum[] | TurfmateRequestsScalarFieldEnum
+    having?: TurfmateRequestsScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: TurfmateCountAggregateInputType | true
-    _min?: TurfmateMinAggregateInputType
-    _max?: TurfmateMaxAggregateInputType
+    _count?: TurfmateRequestsCountAggregateInputType | true
+    _min?: TurfmateRequestsMinAggregateInputType
+    _max?: TurfmateRequestsMaxAggregateInputType
   }
 
-  export type TurfmateGroupByOutputType = {
+  export type TurfmateRequestsGroupByOutputType = {
     id: string
-    uid1: string
-    uid2: string
+    sender: string
+    receiver: string
     status: $Enums.FriendStatus
     createdAt: Date
-    _count: TurfmateCountAggregateOutputType | null
-    _min: TurfmateMinAggregateOutputType | null
-    _max: TurfmateMaxAggregateOutputType | null
+    _count: TurfmateRequestsCountAggregateOutputType | null
+    _min: TurfmateRequestsMinAggregateOutputType | null
+    _max: TurfmateRequestsMaxAggregateOutputType | null
   }
 
-  type GetTurfmateGroupByPayload<T extends TurfmateGroupByArgs> = Prisma.PrismaPromise<
+  type GetTurfmateRequestsGroupByPayload<T extends TurfmateRequestsGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<TurfmateGroupByOutputType, T['by']> &
+      PickEnumerable<TurfmateRequestsGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof TurfmateGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof TurfmateRequestsGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], TurfmateGroupByOutputType[P]>
-            : GetScalarType<T[P], TurfmateGroupByOutputType[P]>
+              : GetScalarType<T[P], TurfmateRequestsGroupByOutputType[P]>
+            : GetScalarType<T[P], TurfmateRequestsGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type TurfmateSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type TurfmateRequestsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    uid1?: boolean
-    uid2?: boolean
+    sender?: boolean
+    receiver?: boolean
     status?: boolean
     createdAt?: boolean
     player1?: boolean | UserDefaultArgs<ExtArgs>
     player2?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["turfmate"]>
+  }, ExtArgs["result"]["turfmateRequests"]>
 
 
 
-  export type TurfmateSelectScalar = {
+  export type TurfmateRequestsSelectScalar = {
     id?: boolean
-    uid1?: boolean
-    uid2?: boolean
+    sender?: boolean
+    receiver?: boolean
     status?: boolean
     createdAt?: boolean
   }
 
-  export type TurfmateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "uid1" | "uid2" | "status" | "createdAt", ExtArgs["result"]["turfmate"]>
-  export type TurfmateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurfmateRequestsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sender" | "receiver" | "status" | "createdAt", ExtArgs["result"]["turfmateRequests"]>
+  export type TurfmateRequestsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     player1?: boolean | UserDefaultArgs<ExtArgs>
     player2?: boolean | UserDefaultArgs<ExtArgs>
   }
 
-  export type $TurfmatePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Turfmate"
+  export type $TurfmateRequestsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TurfmateRequests"
     objects: {
       player1: Prisma.$UserPayload<ExtArgs>
       player2: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      uid1: string
-      uid2: string
+      sender: string
+      receiver: string
       status: $Enums.FriendStatus
       createdAt: Date
-    }, ExtArgs["result"]["turfmate"]>
+    }, ExtArgs["result"]["turfmateRequests"]>
     composites: {}
   }
 
-  type TurfmateGetPayload<S extends boolean | null | undefined | TurfmateDefaultArgs> = $Result.GetResult<Prisma.$TurfmatePayload, S>
+  type TurfmateRequestsGetPayload<S extends boolean | null | undefined | TurfmateRequestsDefaultArgs> = $Result.GetResult<Prisma.$TurfmateRequestsPayload, S>
 
-  type TurfmateCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<TurfmateFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: TurfmateCountAggregateInputType | true
+  type TurfmateRequestsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TurfmateRequestsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TurfmateRequestsCountAggregateInputType | true
     }
 
-  export interface TurfmateDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Turfmate'], meta: { name: 'Turfmate' } }
+  export interface TurfmateRequestsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TurfmateRequests'], meta: { name: 'TurfmateRequests' } }
     /**
-     * Find zero or one Turfmate that matches the filter.
-     * @param {TurfmateFindUniqueArgs} args - Arguments to find a Turfmate
+     * Find zero or one TurfmateRequests that matches the filter.
+     * @param {TurfmateRequestsFindUniqueArgs} args - Arguments to find a TurfmateRequests
      * @example
-     * // Get one Turfmate
-     * const turfmate = await prisma.turfmate.findUnique({
+     * // Get one TurfmateRequests
+     * const turfmateRequests = await prisma.turfmateRequests.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends TurfmateFindUniqueArgs>(args: SelectSubset<T, TurfmateFindUniqueArgs<ExtArgs>>): Prisma__TurfmateClient<$Result.GetResult<Prisma.$TurfmatePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends TurfmateRequestsFindUniqueArgs>(args: SelectSubset<T, TurfmateRequestsFindUniqueArgs<ExtArgs>>): Prisma__TurfmateRequestsClient<$Result.GetResult<Prisma.$TurfmateRequestsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one Turfmate that matches the filter or throw an error with `error.code='P2025'`
+     * Find one TurfmateRequests that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {TurfmateFindUniqueOrThrowArgs} args - Arguments to find a Turfmate
+     * @param {TurfmateRequestsFindUniqueOrThrowArgs} args - Arguments to find a TurfmateRequests
      * @example
-     * // Get one Turfmate
-     * const turfmate = await prisma.turfmate.findUniqueOrThrow({
+     * // Get one TurfmateRequests
+     * const turfmateRequests = await prisma.turfmateRequests.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends TurfmateFindUniqueOrThrowArgs>(args: SelectSubset<T, TurfmateFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TurfmateClient<$Result.GetResult<Prisma.$TurfmatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends TurfmateRequestsFindUniqueOrThrowArgs>(args: SelectSubset<T, TurfmateRequestsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TurfmateRequestsClient<$Result.GetResult<Prisma.$TurfmateRequestsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Turfmate that matches the filter.
+     * Find the first TurfmateRequests that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {TurfmateFindFirstArgs} args - Arguments to find a Turfmate
+     * @param {TurfmateRequestsFindFirstArgs} args - Arguments to find a TurfmateRequests
      * @example
-     * // Get one Turfmate
-     * const turfmate = await prisma.turfmate.findFirst({
+     * // Get one TurfmateRequests
+     * const turfmateRequests = await prisma.turfmateRequests.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends TurfmateFindFirstArgs>(args?: SelectSubset<T, TurfmateFindFirstArgs<ExtArgs>>): Prisma__TurfmateClient<$Result.GetResult<Prisma.$TurfmatePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends TurfmateRequestsFindFirstArgs>(args?: SelectSubset<T, TurfmateRequestsFindFirstArgs<ExtArgs>>): Prisma__TurfmateRequestsClient<$Result.GetResult<Prisma.$TurfmateRequestsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Turfmate that matches the filter or
+     * Find the first TurfmateRequests that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {TurfmateFindFirstOrThrowArgs} args - Arguments to find a Turfmate
+     * @param {TurfmateRequestsFindFirstOrThrowArgs} args - Arguments to find a TurfmateRequests
      * @example
-     * // Get one Turfmate
-     * const turfmate = await prisma.turfmate.findFirstOrThrow({
+     * // Get one TurfmateRequests
+     * const turfmateRequests = await prisma.turfmateRequests.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends TurfmateFindFirstOrThrowArgs>(args?: SelectSubset<T, TurfmateFindFirstOrThrowArgs<ExtArgs>>): Prisma__TurfmateClient<$Result.GetResult<Prisma.$TurfmatePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends TurfmateRequestsFindFirstOrThrowArgs>(args?: SelectSubset<T, TurfmateRequestsFindFirstOrThrowArgs<ExtArgs>>): Prisma__TurfmateRequestsClient<$Result.GetResult<Prisma.$TurfmateRequestsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more Turfmates that matches the filter.
+     * Find zero or more TurfmateRequests that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {TurfmateFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {TurfmateRequestsFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all Turfmates
-     * const turfmates = await prisma.turfmate.findMany()
+     * // Get all TurfmateRequests
+     * const turfmateRequests = await prisma.turfmateRequests.findMany()
      * 
-     * // Get first 10 Turfmates
-     * const turfmates = await prisma.turfmate.findMany({ take: 10 })
+     * // Get first 10 TurfmateRequests
+     * const turfmateRequests = await prisma.turfmateRequests.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const turfmateWithIdOnly = await prisma.turfmate.findMany({ select: { id: true } })
+     * const turfmateRequestsWithIdOnly = await prisma.turfmateRequests.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends TurfmateFindManyArgs>(args?: SelectSubset<T, TurfmateFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TurfmatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends TurfmateRequestsFindManyArgs>(args?: SelectSubset<T, TurfmateRequestsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TurfmateRequestsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a Turfmate.
-     * @param {TurfmateCreateArgs} args - Arguments to create a Turfmate.
+     * Create a TurfmateRequests.
+     * @param {TurfmateRequestsCreateArgs} args - Arguments to create a TurfmateRequests.
      * @example
-     * // Create one Turfmate
-     * const Turfmate = await prisma.turfmate.create({
+     * // Create one TurfmateRequests
+     * const TurfmateRequests = await prisma.turfmateRequests.create({
      *   data: {
-     *     // ... data to create a Turfmate
+     *     // ... data to create a TurfmateRequests
      *   }
      * })
      * 
      */
-    create<T extends TurfmateCreateArgs>(args: SelectSubset<T, TurfmateCreateArgs<ExtArgs>>): Prisma__TurfmateClient<$Result.GetResult<Prisma.$TurfmatePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends TurfmateRequestsCreateArgs>(args: SelectSubset<T, TurfmateRequestsCreateArgs<ExtArgs>>): Prisma__TurfmateRequestsClient<$Result.GetResult<Prisma.$TurfmateRequestsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many Turfmates.
-     * @param {TurfmateCreateManyArgs} args - Arguments to create many Turfmates.
+     * Create many TurfmateRequests.
+     * @param {TurfmateRequestsCreateManyArgs} args - Arguments to create many TurfmateRequests.
      * @example
-     * // Create many Turfmates
-     * const turfmate = await prisma.turfmate.createMany({
+     * // Create many TurfmateRequests
+     * const turfmateRequests = await prisma.turfmateRequests.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends TurfmateCreateManyArgs>(args?: SelectSubset<T, TurfmateCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends TurfmateRequestsCreateManyArgs>(args?: SelectSubset<T, TurfmateRequestsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Delete a Turfmate.
-     * @param {TurfmateDeleteArgs} args - Arguments to delete one Turfmate.
+     * Delete a TurfmateRequests.
+     * @param {TurfmateRequestsDeleteArgs} args - Arguments to delete one TurfmateRequests.
      * @example
-     * // Delete one Turfmate
-     * const Turfmate = await prisma.turfmate.delete({
+     * // Delete one TurfmateRequests
+     * const TurfmateRequests = await prisma.turfmateRequests.delete({
      *   where: {
-     *     // ... filter to delete one Turfmate
+     *     // ... filter to delete one TurfmateRequests
      *   }
      * })
      * 
      */
-    delete<T extends TurfmateDeleteArgs>(args: SelectSubset<T, TurfmateDeleteArgs<ExtArgs>>): Prisma__TurfmateClient<$Result.GetResult<Prisma.$TurfmatePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends TurfmateRequestsDeleteArgs>(args: SelectSubset<T, TurfmateRequestsDeleteArgs<ExtArgs>>): Prisma__TurfmateRequestsClient<$Result.GetResult<Prisma.$TurfmateRequestsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one Turfmate.
-     * @param {TurfmateUpdateArgs} args - Arguments to update one Turfmate.
+     * Update one TurfmateRequests.
+     * @param {TurfmateRequestsUpdateArgs} args - Arguments to update one TurfmateRequests.
      * @example
-     * // Update one Turfmate
-     * const turfmate = await prisma.turfmate.update({
+     * // Update one TurfmateRequests
+     * const turfmateRequests = await prisma.turfmateRequests.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -2932,30 +3097,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends TurfmateUpdateArgs>(args: SelectSubset<T, TurfmateUpdateArgs<ExtArgs>>): Prisma__TurfmateClient<$Result.GetResult<Prisma.$TurfmatePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends TurfmateRequestsUpdateArgs>(args: SelectSubset<T, TurfmateRequestsUpdateArgs<ExtArgs>>): Prisma__TurfmateRequestsClient<$Result.GetResult<Prisma.$TurfmateRequestsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more Turfmates.
-     * @param {TurfmateDeleteManyArgs} args - Arguments to filter Turfmates to delete.
+     * Delete zero or more TurfmateRequests.
+     * @param {TurfmateRequestsDeleteManyArgs} args - Arguments to filter TurfmateRequests to delete.
      * @example
-     * // Delete a few Turfmates
-     * const { count } = await prisma.turfmate.deleteMany({
+     * // Delete a few TurfmateRequests
+     * const { count } = await prisma.turfmateRequests.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends TurfmateDeleteManyArgs>(args?: SelectSubset<T, TurfmateDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends TurfmateRequestsDeleteManyArgs>(args?: SelectSubset<T, TurfmateRequestsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Turfmates.
+     * Update zero or more TurfmateRequests.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {TurfmateUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {TurfmateRequestsUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many Turfmates
-     * const turfmate = await prisma.turfmate.updateMany({
+     * // Update many TurfmateRequests
+     * const turfmateRequests = await prisma.turfmateRequests.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -2965,79 +3130,79 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends TurfmateUpdateManyArgs>(args: SelectSubset<T, TurfmateUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends TurfmateRequestsUpdateManyArgs>(args: SelectSubset<T, TurfmateRequestsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create or update one Turfmate.
-     * @param {TurfmateUpsertArgs} args - Arguments to update or create a Turfmate.
+     * Create or update one TurfmateRequests.
+     * @param {TurfmateRequestsUpsertArgs} args - Arguments to update or create a TurfmateRequests.
      * @example
-     * // Update or create a Turfmate
-     * const turfmate = await prisma.turfmate.upsert({
+     * // Update or create a TurfmateRequests
+     * const turfmateRequests = await prisma.turfmateRequests.upsert({
      *   create: {
-     *     // ... data to create a Turfmate
+     *     // ... data to create a TurfmateRequests
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the Turfmate we want to update
+     *     // ... the filter for the TurfmateRequests we want to update
      *   }
      * })
      */
-    upsert<T extends TurfmateUpsertArgs>(args: SelectSubset<T, TurfmateUpsertArgs<ExtArgs>>): Prisma__TurfmateClient<$Result.GetResult<Prisma.$TurfmatePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends TurfmateRequestsUpsertArgs>(args: SelectSubset<T, TurfmateRequestsUpsertArgs<ExtArgs>>): Prisma__TurfmateRequestsClient<$Result.GetResult<Prisma.$TurfmateRequestsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more Turfmates that matches the filter.
-     * @param {TurfmateFindRawArgs} args - Select which filters you would like to apply.
+     * Find zero or more TurfmateRequests that matches the filter.
+     * @param {TurfmateRequestsFindRawArgs} args - Select which filters you would like to apply.
      * @example
-     * const turfmate = await prisma.turfmate.findRaw({
+     * const turfmateRequests = await prisma.turfmateRequests.findRaw({
      *   filter: { age: { $gt: 25 } }
      * })
      */
-    findRaw(args?: TurfmateFindRawArgs): Prisma.PrismaPromise<JsonObject>
+    findRaw(args?: TurfmateRequestsFindRawArgs): Prisma.PrismaPromise<JsonObject>
 
     /**
-     * Perform aggregation operations on a Turfmate.
-     * @param {TurfmateAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * Perform aggregation operations on a TurfmateRequests.
+     * @param {TurfmateRequestsAggregateRawArgs} args - Select which aggregations you would like to apply.
      * @example
-     * const turfmate = await prisma.turfmate.aggregateRaw({
+     * const turfmateRequests = await prisma.turfmateRequests.aggregateRaw({
      *   pipeline: [
      *     { $match: { status: "registered" } },
      *     { $group: { _id: "$country", total: { $sum: 1 } } }
      *   ]
      * })
      */
-    aggregateRaw(args?: TurfmateAggregateRawArgs): Prisma.PrismaPromise<JsonObject>
+    aggregateRaw(args?: TurfmateRequestsAggregateRawArgs): Prisma.PrismaPromise<JsonObject>
 
 
     /**
-     * Count the number of Turfmates.
+     * Count the number of TurfmateRequests.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {TurfmateCountArgs} args - Arguments to filter Turfmates to count.
+     * @param {TurfmateRequestsCountArgs} args - Arguments to filter TurfmateRequests to count.
      * @example
-     * // Count the number of Turfmates
-     * const count = await prisma.turfmate.count({
+     * // Count the number of TurfmateRequests
+     * const count = await prisma.turfmateRequests.count({
      *   where: {
-     *     // ... the filter for the Turfmates we want to count
+     *     // ... the filter for the TurfmateRequests we want to count
      *   }
      * })
     **/
-    count<T extends TurfmateCountArgs>(
-      args?: Subset<T, TurfmateCountArgs>,
+    count<T extends TurfmateRequestsCountArgs>(
+      args?: Subset<T, TurfmateRequestsCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], TurfmateCountAggregateOutputType>
+          : GetScalarType<T['select'], TurfmateRequestsCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a Turfmate.
+     * Allows you to perform aggregations operations on a TurfmateRequests.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {TurfmateAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {TurfmateRequestsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -3057,13 +3222,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends TurfmateAggregateArgs>(args: Subset<T, TurfmateAggregateArgs>): Prisma.PrismaPromise<GetTurfmateAggregateType<T>>
+    aggregate<T extends TurfmateRequestsAggregateArgs>(args: Subset<T, TurfmateRequestsAggregateArgs>): Prisma.PrismaPromise<GetTurfmateRequestsAggregateType<T>>
 
     /**
-     * Group by Turfmate.
+     * Group by TurfmateRequests.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {TurfmateGroupByArgs} args - Group by arguments.
+     * @param {TurfmateRequestsGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -3078,14 +3243,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends TurfmateGroupByArgs,
+      T extends TurfmateRequestsGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: TurfmateGroupByArgs['orderBy'] }
-        : { orderBy?: TurfmateGroupByArgs['orderBy'] },
+        ? { orderBy: TurfmateRequestsGroupByArgs['orderBy'] }
+        : { orderBy?: TurfmateRequestsGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -3134,20 +3299,20 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, TurfmateGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTurfmateGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, TurfmateRequestsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTurfmateRequestsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the Turfmate model
+   * Fields of the TurfmateRequests model
    */
-  readonly fields: TurfmateFieldRefs;
+  readonly fields: TurfmateRequestsFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for Turfmate.
+   * The delegate class that acts as a "Promise-like" for TurfmateRequests.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__TurfmateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__TurfmateRequestsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     player1<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     player2<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
@@ -3177,359 +3342,359 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the Turfmate model
+   * Fields of the TurfmateRequests model
    */
-  interface TurfmateFieldRefs {
-    readonly id: FieldRef<"Turfmate", 'String'>
-    readonly uid1: FieldRef<"Turfmate", 'String'>
-    readonly uid2: FieldRef<"Turfmate", 'String'>
-    readonly status: FieldRef<"Turfmate", 'FriendStatus'>
-    readonly createdAt: FieldRef<"Turfmate", 'DateTime'>
+  interface TurfmateRequestsFieldRefs {
+    readonly id: FieldRef<"TurfmateRequests", 'String'>
+    readonly sender: FieldRef<"TurfmateRequests", 'String'>
+    readonly receiver: FieldRef<"TurfmateRequests", 'String'>
+    readonly status: FieldRef<"TurfmateRequests", 'FriendStatus'>
+    readonly createdAt: FieldRef<"TurfmateRequests", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * Turfmate findUnique
+   * TurfmateRequests findUnique
    */
-  export type TurfmateFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurfmateRequestsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Turfmate
+     * Select specific fields to fetch from the TurfmateRequests
      */
-    select?: TurfmateSelect<ExtArgs> | null
+    select?: TurfmateRequestsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Turfmate
+     * Omit specific fields from the TurfmateRequests
      */
-    omit?: TurfmateOmit<ExtArgs> | null
+    omit?: TurfmateRequestsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TurfmateInclude<ExtArgs> | null
+    include?: TurfmateRequestsInclude<ExtArgs> | null
     /**
-     * Filter, which Turfmate to fetch.
+     * Filter, which TurfmateRequests to fetch.
      */
-    where: TurfmateWhereUniqueInput
+    where: TurfmateRequestsWhereUniqueInput
   }
 
   /**
-   * Turfmate findUniqueOrThrow
+   * TurfmateRequests findUniqueOrThrow
    */
-  export type TurfmateFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurfmateRequestsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Turfmate
+     * Select specific fields to fetch from the TurfmateRequests
      */
-    select?: TurfmateSelect<ExtArgs> | null
+    select?: TurfmateRequestsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Turfmate
+     * Omit specific fields from the TurfmateRequests
      */
-    omit?: TurfmateOmit<ExtArgs> | null
+    omit?: TurfmateRequestsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TurfmateInclude<ExtArgs> | null
+    include?: TurfmateRequestsInclude<ExtArgs> | null
     /**
-     * Filter, which Turfmate to fetch.
+     * Filter, which TurfmateRequests to fetch.
      */
-    where: TurfmateWhereUniqueInput
+    where: TurfmateRequestsWhereUniqueInput
   }
 
   /**
-   * Turfmate findFirst
+   * TurfmateRequests findFirst
    */
-  export type TurfmateFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurfmateRequestsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Turfmate
+     * Select specific fields to fetch from the TurfmateRequests
      */
-    select?: TurfmateSelect<ExtArgs> | null
+    select?: TurfmateRequestsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Turfmate
+     * Omit specific fields from the TurfmateRequests
      */
-    omit?: TurfmateOmit<ExtArgs> | null
+    omit?: TurfmateRequestsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TurfmateInclude<ExtArgs> | null
+    include?: TurfmateRequestsInclude<ExtArgs> | null
     /**
-     * Filter, which Turfmate to fetch.
+     * Filter, which TurfmateRequests to fetch.
      */
-    where?: TurfmateWhereInput
+    where?: TurfmateRequestsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Turfmates to fetch.
+     * Determine the order of TurfmateRequests to fetch.
      */
-    orderBy?: TurfmateOrderByWithRelationInput | TurfmateOrderByWithRelationInput[]
+    orderBy?: TurfmateRequestsOrderByWithRelationInput | TurfmateRequestsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Turfmates.
+     * Sets the position for searching for TurfmateRequests.
      */
-    cursor?: TurfmateWhereUniqueInput
+    cursor?: TurfmateRequestsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Turfmates from the position of the cursor.
+     * Take `±n` TurfmateRequests from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Turfmates.
+     * Skip the first `n` TurfmateRequests.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Turfmates.
+     * Filter by unique combinations of TurfmateRequests.
      */
-    distinct?: TurfmateScalarFieldEnum | TurfmateScalarFieldEnum[]
+    distinct?: TurfmateRequestsScalarFieldEnum | TurfmateRequestsScalarFieldEnum[]
   }
 
   /**
-   * Turfmate findFirstOrThrow
+   * TurfmateRequests findFirstOrThrow
    */
-  export type TurfmateFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurfmateRequestsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Turfmate
+     * Select specific fields to fetch from the TurfmateRequests
      */
-    select?: TurfmateSelect<ExtArgs> | null
+    select?: TurfmateRequestsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Turfmate
+     * Omit specific fields from the TurfmateRequests
      */
-    omit?: TurfmateOmit<ExtArgs> | null
+    omit?: TurfmateRequestsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TurfmateInclude<ExtArgs> | null
+    include?: TurfmateRequestsInclude<ExtArgs> | null
     /**
-     * Filter, which Turfmate to fetch.
+     * Filter, which TurfmateRequests to fetch.
      */
-    where?: TurfmateWhereInput
+    where?: TurfmateRequestsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Turfmates to fetch.
+     * Determine the order of TurfmateRequests to fetch.
      */
-    orderBy?: TurfmateOrderByWithRelationInput | TurfmateOrderByWithRelationInput[]
+    orderBy?: TurfmateRequestsOrderByWithRelationInput | TurfmateRequestsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Turfmates.
+     * Sets the position for searching for TurfmateRequests.
      */
-    cursor?: TurfmateWhereUniqueInput
+    cursor?: TurfmateRequestsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Turfmates from the position of the cursor.
+     * Take `±n` TurfmateRequests from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Turfmates.
+     * Skip the first `n` TurfmateRequests.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Turfmates.
+     * Filter by unique combinations of TurfmateRequests.
      */
-    distinct?: TurfmateScalarFieldEnum | TurfmateScalarFieldEnum[]
+    distinct?: TurfmateRequestsScalarFieldEnum | TurfmateRequestsScalarFieldEnum[]
   }
 
   /**
-   * Turfmate findMany
+   * TurfmateRequests findMany
    */
-  export type TurfmateFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurfmateRequestsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Turfmate
+     * Select specific fields to fetch from the TurfmateRequests
      */
-    select?: TurfmateSelect<ExtArgs> | null
+    select?: TurfmateRequestsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Turfmate
+     * Omit specific fields from the TurfmateRequests
      */
-    omit?: TurfmateOmit<ExtArgs> | null
+    omit?: TurfmateRequestsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TurfmateInclude<ExtArgs> | null
+    include?: TurfmateRequestsInclude<ExtArgs> | null
     /**
-     * Filter, which Turfmates to fetch.
+     * Filter, which TurfmateRequests to fetch.
      */
-    where?: TurfmateWhereInput
+    where?: TurfmateRequestsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Turfmates to fetch.
+     * Determine the order of TurfmateRequests to fetch.
      */
-    orderBy?: TurfmateOrderByWithRelationInput | TurfmateOrderByWithRelationInput[]
+    orderBy?: TurfmateRequestsOrderByWithRelationInput | TurfmateRequestsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing Turfmates.
+     * Sets the position for listing TurfmateRequests.
      */
-    cursor?: TurfmateWhereUniqueInput
+    cursor?: TurfmateRequestsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Turfmates from the position of the cursor.
+     * Take `±n` TurfmateRequests from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Turfmates.
+     * Skip the first `n` TurfmateRequests.
      */
     skip?: number
-    distinct?: TurfmateScalarFieldEnum | TurfmateScalarFieldEnum[]
+    distinct?: TurfmateRequestsScalarFieldEnum | TurfmateRequestsScalarFieldEnum[]
   }
 
   /**
-   * Turfmate create
+   * TurfmateRequests create
    */
-  export type TurfmateCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurfmateRequestsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Turfmate
+     * Select specific fields to fetch from the TurfmateRequests
      */
-    select?: TurfmateSelect<ExtArgs> | null
+    select?: TurfmateRequestsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Turfmate
+     * Omit specific fields from the TurfmateRequests
      */
-    omit?: TurfmateOmit<ExtArgs> | null
+    omit?: TurfmateRequestsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TurfmateInclude<ExtArgs> | null
+    include?: TurfmateRequestsInclude<ExtArgs> | null
     /**
-     * The data needed to create a Turfmate.
+     * The data needed to create a TurfmateRequests.
      */
-    data: XOR<TurfmateCreateInput, TurfmateUncheckedCreateInput>
+    data: XOR<TurfmateRequestsCreateInput, TurfmateRequestsUncheckedCreateInput>
   }
 
   /**
-   * Turfmate createMany
+   * TurfmateRequests createMany
    */
-  export type TurfmateCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurfmateRequestsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many Turfmates.
+     * The data used to create many TurfmateRequests.
      */
-    data: TurfmateCreateManyInput | TurfmateCreateManyInput[]
+    data: TurfmateRequestsCreateManyInput | TurfmateRequestsCreateManyInput[]
   }
 
   /**
-   * Turfmate update
+   * TurfmateRequests update
    */
-  export type TurfmateUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurfmateRequestsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Turfmate
+     * Select specific fields to fetch from the TurfmateRequests
      */
-    select?: TurfmateSelect<ExtArgs> | null
+    select?: TurfmateRequestsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Turfmate
+     * Omit specific fields from the TurfmateRequests
      */
-    omit?: TurfmateOmit<ExtArgs> | null
+    omit?: TurfmateRequestsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TurfmateInclude<ExtArgs> | null
+    include?: TurfmateRequestsInclude<ExtArgs> | null
     /**
-     * The data needed to update a Turfmate.
+     * The data needed to update a TurfmateRequests.
      */
-    data: XOR<TurfmateUpdateInput, TurfmateUncheckedUpdateInput>
+    data: XOR<TurfmateRequestsUpdateInput, TurfmateRequestsUncheckedUpdateInput>
     /**
-     * Choose, which Turfmate to update.
+     * Choose, which TurfmateRequests to update.
      */
-    where: TurfmateWhereUniqueInput
+    where: TurfmateRequestsWhereUniqueInput
   }
 
   /**
-   * Turfmate updateMany
+   * TurfmateRequests updateMany
    */
-  export type TurfmateUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurfmateRequestsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update Turfmates.
+     * The data used to update TurfmateRequests.
      */
-    data: XOR<TurfmateUpdateManyMutationInput, TurfmateUncheckedUpdateManyInput>
+    data: XOR<TurfmateRequestsUpdateManyMutationInput, TurfmateRequestsUncheckedUpdateManyInput>
     /**
-     * Filter which Turfmates to update
+     * Filter which TurfmateRequests to update
      */
-    where?: TurfmateWhereInput
+    where?: TurfmateRequestsWhereInput
     /**
-     * Limit how many Turfmates to update.
+     * Limit how many TurfmateRequests to update.
      */
     limit?: number
   }
 
   /**
-   * Turfmate upsert
+   * TurfmateRequests upsert
    */
-  export type TurfmateUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurfmateRequestsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Turfmate
+     * Select specific fields to fetch from the TurfmateRequests
      */
-    select?: TurfmateSelect<ExtArgs> | null
+    select?: TurfmateRequestsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Turfmate
+     * Omit specific fields from the TurfmateRequests
      */
-    omit?: TurfmateOmit<ExtArgs> | null
+    omit?: TurfmateRequestsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TurfmateInclude<ExtArgs> | null
+    include?: TurfmateRequestsInclude<ExtArgs> | null
     /**
-     * The filter to search for the Turfmate to update in case it exists.
+     * The filter to search for the TurfmateRequests to update in case it exists.
      */
-    where: TurfmateWhereUniqueInput
+    where: TurfmateRequestsWhereUniqueInput
     /**
-     * In case the Turfmate found by the `where` argument doesn't exist, create a new Turfmate with this data.
+     * In case the TurfmateRequests found by the `where` argument doesn't exist, create a new TurfmateRequests with this data.
      */
-    create: XOR<TurfmateCreateInput, TurfmateUncheckedCreateInput>
+    create: XOR<TurfmateRequestsCreateInput, TurfmateRequestsUncheckedCreateInput>
     /**
-     * In case the Turfmate was found with the provided `where` argument, update it with this data.
+     * In case the TurfmateRequests was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<TurfmateUpdateInput, TurfmateUncheckedUpdateInput>
+    update: XOR<TurfmateRequestsUpdateInput, TurfmateRequestsUncheckedUpdateInput>
   }
 
   /**
-   * Turfmate delete
+   * TurfmateRequests delete
    */
-  export type TurfmateDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurfmateRequestsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Turfmate
+     * Select specific fields to fetch from the TurfmateRequests
      */
-    select?: TurfmateSelect<ExtArgs> | null
+    select?: TurfmateRequestsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Turfmate
+     * Omit specific fields from the TurfmateRequests
      */
-    omit?: TurfmateOmit<ExtArgs> | null
+    omit?: TurfmateRequestsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TurfmateInclude<ExtArgs> | null
+    include?: TurfmateRequestsInclude<ExtArgs> | null
     /**
-     * Filter which Turfmate to delete.
+     * Filter which TurfmateRequests to delete.
      */
-    where: TurfmateWhereUniqueInput
+    where: TurfmateRequestsWhereUniqueInput
   }
 
   /**
-   * Turfmate deleteMany
+   * TurfmateRequests deleteMany
    */
-  export type TurfmateDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurfmateRequestsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Turfmates to delete
+     * Filter which TurfmateRequests to delete
      */
-    where?: TurfmateWhereInput
+    where?: TurfmateRequestsWhereInput
     /**
-     * Limit how many Turfmates to delete.
+     * Limit how many TurfmateRequests to delete.
      */
     limit?: number
   }
 
   /**
-   * Turfmate findRaw
+   * TurfmateRequests findRaw
    */
-  export type TurfmateFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurfmateRequestsFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
      */
@@ -3541,9 +3706,9 @@ export namespace Prisma {
   }
 
   /**
-   * Turfmate aggregateRaw
+   * TurfmateRequests aggregateRaw
    */
-  export type TurfmateAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurfmateRequestsAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
      */
@@ -3555,21 +3720,993 @@ export namespace Prisma {
   }
 
   /**
-   * Turfmate without action
+   * TurfmateRequests without action
    */
-  export type TurfmateDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TurfmateRequestsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Turfmate
+     * Select specific fields to fetch from the TurfmateRequests
      */
-    select?: TurfmateSelect<ExtArgs> | null
+    select?: TurfmateRequestsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Turfmate
+     * Omit specific fields from the TurfmateRequests
      */
-    omit?: TurfmateOmit<ExtArgs> | null
+    omit?: TurfmateRequestsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TurfmateInclude<ExtArgs> | null
+    include?: TurfmateRequestsInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Turfmates
+   */
+
+  export type AggregateTurfmates = {
+    _count: TurfmatesCountAggregateOutputType | null
+    _min: TurfmatesMinAggregateOutputType | null
+    _max: TurfmatesMaxAggregateOutputType | null
+  }
+
+  export type TurfmatesMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    turfmateId: string | null
+    createdAt: Date | null
+  }
+
+  export type TurfmatesMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    turfmateId: string | null
+    createdAt: Date | null
+  }
+
+  export type TurfmatesCountAggregateOutputType = {
+    id: number
+    userId: number
+    turfmateId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type TurfmatesMinAggregateInputType = {
+    id?: true
+    userId?: true
+    turfmateId?: true
+    createdAt?: true
+  }
+
+  export type TurfmatesMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    turfmateId?: true
+    createdAt?: true
+  }
+
+  export type TurfmatesCountAggregateInputType = {
+    id?: true
+    userId?: true
+    turfmateId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type TurfmatesAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Turfmates to aggregate.
+     */
+    where?: TurfmatesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Turfmates to fetch.
+     */
+    orderBy?: TurfmatesOrderByWithRelationInput | TurfmatesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TurfmatesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Turfmates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Turfmates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Turfmates
+    **/
+    _count?: true | TurfmatesCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TurfmatesMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TurfmatesMaxAggregateInputType
+  }
+
+  export type GetTurfmatesAggregateType<T extends TurfmatesAggregateArgs> = {
+        [P in keyof T & keyof AggregateTurfmates]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTurfmates[P]>
+      : GetScalarType<T[P], AggregateTurfmates[P]>
+  }
+
+
+
+
+  export type TurfmatesGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TurfmatesWhereInput
+    orderBy?: TurfmatesOrderByWithAggregationInput | TurfmatesOrderByWithAggregationInput[]
+    by: TurfmatesScalarFieldEnum[] | TurfmatesScalarFieldEnum
+    having?: TurfmatesScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TurfmatesCountAggregateInputType | true
+    _min?: TurfmatesMinAggregateInputType
+    _max?: TurfmatesMaxAggregateInputType
+  }
+
+  export type TurfmatesGroupByOutputType = {
+    id: string
+    userId: string
+    turfmateId: string
+    createdAt: Date
+    _count: TurfmatesCountAggregateOutputType | null
+    _min: TurfmatesMinAggregateOutputType | null
+    _max: TurfmatesMaxAggregateOutputType | null
+  }
+
+  type GetTurfmatesGroupByPayload<T extends TurfmatesGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TurfmatesGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TurfmatesGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TurfmatesGroupByOutputType[P]>
+            : GetScalarType<T[P], TurfmatesGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TurfmatesSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    turfmateId?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    turfmate?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["turfmates"]>
+
+
+
+  export type TurfmatesSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    turfmateId?: boolean
+    createdAt?: boolean
+  }
+
+  export type TurfmatesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "turfmateId" | "createdAt", ExtArgs["result"]["turfmates"]>
+  export type TurfmatesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    turfmate?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $TurfmatesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Turfmates"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      turfmate: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      turfmateId: string
+      createdAt: Date
+    }, ExtArgs["result"]["turfmates"]>
+    composites: {}
+  }
+
+  type TurfmatesGetPayload<S extends boolean | null | undefined | TurfmatesDefaultArgs> = $Result.GetResult<Prisma.$TurfmatesPayload, S>
+
+  type TurfmatesCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TurfmatesFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TurfmatesCountAggregateInputType | true
+    }
+
+  export interface TurfmatesDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Turfmates'], meta: { name: 'Turfmates' } }
+    /**
+     * Find zero or one Turfmates that matches the filter.
+     * @param {TurfmatesFindUniqueArgs} args - Arguments to find a Turfmates
+     * @example
+     * // Get one Turfmates
+     * const turfmates = await prisma.turfmates.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TurfmatesFindUniqueArgs>(args: SelectSubset<T, TurfmatesFindUniqueArgs<ExtArgs>>): Prisma__TurfmatesClient<$Result.GetResult<Prisma.$TurfmatesPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Turfmates that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TurfmatesFindUniqueOrThrowArgs} args - Arguments to find a Turfmates
+     * @example
+     * // Get one Turfmates
+     * const turfmates = await prisma.turfmates.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TurfmatesFindUniqueOrThrowArgs>(args: SelectSubset<T, TurfmatesFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TurfmatesClient<$Result.GetResult<Prisma.$TurfmatesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Turfmates that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TurfmatesFindFirstArgs} args - Arguments to find a Turfmates
+     * @example
+     * // Get one Turfmates
+     * const turfmates = await prisma.turfmates.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TurfmatesFindFirstArgs>(args?: SelectSubset<T, TurfmatesFindFirstArgs<ExtArgs>>): Prisma__TurfmatesClient<$Result.GetResult<Prisma.$TurfmatesPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Turfmates that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TurfmatesFindFirstOrThrowArgs} args - Arguments to find a Turfmates
+     * @example
+     * // Get one Turfmates
+     * const turfmates = await prisma.turfmates.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TurfmatesFindFirstOrThrowArgs>(args?: SelectSubset<T, TurfmatesFindFirstOrThrowArgs<ExtArgs>>): Prisma__TurfmatesClient<$Result.GetResult<Prisma.$TurfmatesPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Turfmates that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TurfmatesFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Turfmates
+     * const turfmates = await prisma.turfmates.findMany()
+     * 
+     * // Get first 10 Turfmates
+     * const turfmates = await prisma.turfmates.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const turfmatesWithIdOnly = await prisma.turfmates.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TurfmatesFindManyArgs>(args?: SelectSubset<T, TurfmatesFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TurfmatesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Turfmates.
+     * @param {TurfmatesCreateArgs} args - Arguments to create a Turfmates.
+     * @example
+     * // Create one Turfmates
+     * const Turfmates = await prisma.turfmates.create({
+     *   data: {
+     *     // ... data to create a Turfmates
+     *   }
+     * })
+     * 
+     */
+    create<T extends TurfmatesCreateArgs>(args: SelectSubset<T, TurfmatesCreateArgs<ExtArgs>>): Prisma__TurfmatesClient<$Result.GetResult<Prisma.$TurfmatesPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Turfmates.
+     * @param {TurfmatesCreateManyArgs} args - Arguments to create many Turfmates.
+     * @example
+     * // Create many Turfmates
+     * const turfmates = await prisma.turfmates.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TurfmatesCreateManyArgs>(args?: SelectSubset<T, TurfmatesCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Turfmates.
+     * @param {TurfmatesDeleteArgs} args - Arguments to delete one Turfmates.
+     * @example
+     * // Delete one Turfmates
+     * const Turfmates = await prisma.turfmates.delete({
+     *   where: {
+     *     // ... filter to delete one Turfmates
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TurfmatesDeleteArgs>(args: SelectSubset<T, TurfmatesDeleteArgs<ExtArgs>>): Prisma__TurfmatesClient<$Result.GetResult<Prisma.$TurfmatesPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Turfmates.
+     * @param {TurfmatesUpdateArgs} args - Arguments to update one Turfmates.
+     * @example
+     * // Update one Turfmates
+     * const turfmates = await prisma.turfmates.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TurfmatesUpdateArgs>(args: SelectSubset<T, TurfmatesUpdateArgs<ExtArgs>>): Prisma__TurfmatesClient<$Result.GetResult<Prisma.$TurfmatesPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Turfmates.
+     * @param {TurfmatesDeleteManyArgs} args - Arguments to filter Turfmates to delete.
+     * @example
+     * // Delete a few Turfmates
+     * const { count } = await prisma.turfmates.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TurfmatesDeleteManyArgs>(args?: SelectSubset<T, TurfmatesDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Turfmates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TurfmatesUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Turfmates
+     * const turfmates = await prisma.turfmates.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TurfmatesUpdateManyArgs>(args: SelectSubset<T, TurfmatesUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Turfmates.
+     * @param {TurfmatesUpsertArgs} args - Arguments to update or create a Turfmates.
+     * @example
+     * // Update or create a Turfmates
+     * const turfmates = await prisma.turfmates.upsert({
+     *   create: {
+     *     // ... data to create a Turfmates
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Turfmates we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TurfmatesUpsertArgs>(args: SelectSubset<T, TurfmatesUpsertArgs<ExtArgs>>): Prisma__TurfmatesClient<$Result.GetResult<Prisma.$TurfmatesPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Turfmates that matches the filter.
+     * @param {TurfmatesFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const turfmates = await prisma.turfmates.findRaw({
+     *   filter: { age: { $gt: 25 } }
+     * })
+     */
+    findRaw(args?: TurfmatesFindRawArgs): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a Turfmates.
+     * @param {TurfmatesAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const turfmates = await prisma.turfmates.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+     */
+    aggregateRaw(args?: TurfmatesAggregateRawArgs): Prisma.PrismaPromise<JsonObject>
+
+
+    /**
+     * Count the number of Turfmates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TurfmatesCountArgs} args - Arguments to filter Turfmates to count.
+     * @example
+     * // Count the number of Turfmates
+     * const count = await prisma.turfmates.count({
+     *   where: {
+     *     // ... the filter for the Turfmates we want to count
+     *   }
+     * })
+    **/
+    count<T extends TurfmatesCountArgs>(
+      args?: Subset<T, TurfmatesCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TurfmatesCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Turfmates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TurfmatesAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TurfmatesAggregateArgs>(args: Subset<T, TurfmatesAggregateArgs>): Prisma.PrismaPromise<GetTurfmatesAggregateType<T>>
+
+    /**
+     * Group by Turfmates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TurfmatesGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TurfmatesGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TurfmatesGroupByArgs['orderBy'] }
+        : { orderBy?: TurfmatesGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TurfmatesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTurfmatesGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Turfmates model
+   */
+  readonly fields: TurfmatesFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Turfmates.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TurfmatesClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    turfmate<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Turfmates model
+   */
+  interface TurfmatesFieldRefs {
+    readonly id: FieldRef<"Turfmates", 'String'>
+    readonly userId: FieldRef<"Turfmates", 'String'>
+    readonly turfmateId: FieldRef<"Turfmates", 'String'>
+    readonly createdAt: FieldRef<"Turfmates", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Turfmates findUnique
+   */
+  export type TurfmatesFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Turfmates
+     */
+    select?: TurfmatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Turfmates
+     */
+    omit?: TurfmatesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TurfmatesInclude<ExtArgs> | null
+    /**
+     * Filter, which Turfmates to fetch.
+     */
+    where: TurfmatesWhereUniqueInput
+  }
+
+  /**
+   * Turfmates findUniqueOrThrow
+   */
+  export type TurfmatesFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Turfmates
+     */
+    select?: TurfmatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Turfmates
+     */
+    omit?: TurfmatesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TurfmatesInclude<ExtArgs> | null
+    /**
+     * Filter, which Turfmates to fetch.
+     */
+    where: TurfmatesWhereUniqueInput
+  }
+
+  /**
+   * Turfmates findFirst
+   */
+  export type TurfmatesFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Turfmates
+     */
+    select?: TurfmatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Turfmates
+     */
+    omit?: TurfmatesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TurfmatesInclude<ExtArgs> | null
+    /**
+     * Filter, which Turfmates to fetch.
+     */
+    where?: TurfmatesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Turfmates to fetch.
+     */
+    orderBy?: TurfmatesOrderByWithRelationInput | TurfmatesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Turfmates.
+     */
+    cursor?: TurfmatesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Turfmates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Turfmates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Turfmates.
+     */
+    distinct?: TurfmatesScalarFieldEnum | TurfmatesScalarFieldEnum[]
+  }
+
+  /**
+   * Turfmates findFirstOrThrow
+   */
+  export type TurfmatesFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Turfmates
+     */
+    select?: TurfmatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Turfmates
+     */
+    omit?: TurfmatesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TurfmatesInclude<ExtArgs> | null
+    /**
+     * Filter, which Turfmates to fetch.
+     */
+    where?: TurfmatesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Turfmates to fetch.
+     */
+    orderBy?: TurfmatesOrderByWithRelationInput | TurfmatesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Turfmates.
+     */
+    cursor?: TurfmatesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Turfmates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Turfmates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Turfmates.
+     */
+    distinct?: TurfmatesScalarFieldEnum | TurfmatesScalarFieldEnum[]
+  }
+
+  /**
+   * Turfmates findMany
+   */
+  export type TurfmatesFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Turfmates
+     */
+    select?: TurfmatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Turfmates
+     */
+    omit?: TurfmatesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TurfmatesInclude<ExtArgs> | null
+    /**
+     * Filter, which Turfmates to fetch.
+     */
+    where?: TurfmatesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Turfmates to fetch.
+     */
+    orderBy?: TurfmatesOrderByWithRelationInput | TurfmatesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Turfmates.
+     */
+    cursor?: TurfmatesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Turfmates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Turfmates.
+     */
+    skip?: number
+    distinct?: TurfmatesScalarFieldEnum | TurfmatesScalarFieldEnum[]
+  }
+
+  /**
+   * Turfmates create
+   */
+  export type TurfmatesCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Turfmates
+     */
+    select?: TurfmatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Turfmates
+     */
+    omit?: TurfmatesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TurfmatesInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Turfmates.
+     */
+    data: XOR<TurfmatesCreateInput, TurfmatesUncheckedCreateInput>
+  }
+
+  /**
+   * Turfmates createMany
+   */
+  export type TurfmatesCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Turfmates.
+     */
+    data: TurfmatesCreateManyInput | TurfmatesCreateManyInput[]
+  }
+
+  /**
+   * Turfmates update
+   */
+  export type TurfmatesUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Turfmates
+     */
+    select?: TurfmatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Turfmates
+     */
+    omit?: TurfmatesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TurfmatesInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Turfmates.
+     */
+    data: XOR<TurfmatesUpdateInput, TurfmatesUncheckedUpdateInput>
+    /**
+     * Choose, which Turfmates to update.
+     */
+    where: TurfmatesWhereUniqueInput
+  }
+
+  /**
+   * Turfmates updateMany
+   */
+  export type TurfmatesUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Turfmates.
+     */
+    data: XOR<TurfmatesUpdateManyMutationInput, TurfmatesUncheckedUpdateManyInput>
+    /**
+     * Filter which Turfmates to update
+     */
+    where?: TurfmatesWhereInput
+    /**
+     * Limit how many Turfmates to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Turfmates upsert
+   */
+  export type TurfmatesUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Turfmates
+     */
+    select?: TurfmatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Turfmates
+     */
+    omit?: TurfmatesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TurfmatesInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Turfmates to update in case it exists.
+     */
+    where: TurfmatesWhereUniqueInput
+    /**
+     * In case the Turfmates found by the `where` argument doesn't exist, create a new Turfmates with this data.
+     */
+    create: XOR<TurfmatesCreateInput, TurfmatesUncheckedCreateInput>
+    /**
+     * In case the Turfmates was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TurfmatesUpdateInput, TurfmatesUncheckedUpdateInput>
+  }
+
+  /**
+   * Turfmates delete
+   */
+  export type TurfmatesDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Turfmates
+     */
+    select?: TurfmatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Turfmates
+     */
+    omit?: TurfmatesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TurfmatesInclude<ExtArgs> | null
+    /**
+     * Filter which Turfmates to delete.
+     */
+    where: TurfmatesWhereUniqueInput
+  }
+
+  /**
+   * Turfmates deleteMany
+   */
+  export type TurfmatesDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Turfmates to delete
+     */
+    where?: TurfmatesWhereInput
+    /**
+     * Limit how many Turfmates to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Turfmates findRaw
+   */
+  export type TurfmatesFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     */
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * Turfmates aggregateRaw
+   */
+  export type TurfmatesAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     */
+    pipeline?: InputJsonValue[]
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * Turfmates without action
+   */
+  export type TurfmatesDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Turfmates
+     */
+    select?: TurfmatesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Turfmates
+     */
+    omit?: TurfmatesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TurfmatesInclude<ExtArgs> | null
   }
 
 
@@ -6844,15 +7981,25 @@ export namespace Prisma {
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-  export const TurfmateScalarFieldEnum: {
+  export const TurfmateRequestsScalarFieldEnum: {
     id: 'id',
-    uid1: 'uid1',
-    uid2: 'uid2',
+    sender: 'sender',
+    receiver: 'receiver',
     status: 'status',
     createdAt: 'createdAt'
   };
 
-  export type TurfmateScalarFieldEnum = (typeof TurfmateScalarFieldEnum)[keyof typeof TurfmateScalarFieldEnum]
+  export type TurfmateRequestsScalarFieldEnum = (typeof TurfmateRequestsScalarFieldEnum)[keyof typeof TurfmateRequestsScalarFieldEnum]
+
+
+  export const TurfmatesScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    turfmateId: 'turfmateId',
+    createdAt: 'createdAt'
+  };
+
+  export type TurfmatesScalarFieldEnum = (typeof TurfmatesScalarFieldEnum)[keyof typeof TurfmatesScalarFieldEnum]
 
 
   export const EventScalarFieldEnum: {
@@ -7068,10 +8215,12 @@ export namespace Prisma {
     role?: EnumRoleFilter<"User"> | $Enums.Role
     rating?: FloatFilter<"User"> | number
     refreshToken?: StringNullableFilter<"User"> | string | null
-    sentRequests?: TurfmateListRelationFilter
-    receivedRequests?: TurfmateListRelationFilter
+    sentRequests?: TurfmateRequestsListRelationFilter
+    receivedRequests?: TurfmateRequestsListRelationFilter
     eventsOrganized?: EventListRelationFilter
     bookings?: BookingListRelationFilter
+    turfmates?: TurfmatesListRelationFilter
+    turfmateOf?: TurfmatesListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -7088,10 +8237,12 @@ export namespace Prisma {
     role?: SortOrder
     rating?: SortOrder
     refreshToken?: SortOrder
-    sentRequests?: TurfmateOrderByRelationAggregateInput
-    receivedRequests?: TurfmateOrderByRelationAggregateInput
+    sentRequests?: TurfmateRequestsOrderByRelationAggregateInput
+    receivedRequests?: TurfmateRequestsOrderByRelationAggregateInput
     eventsOrganized?: EventOrderByRelationAggregateInput
     bookings?: BookingOrderByRelationAggregateInput
+    turfmates?: TurfmatesOrderByRelationAggregateInput
+    turfmateOf?: TurfmatesOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -7111,10 +8262,12 @@ export namespace Prisma {
     role?: EnumRoleFilter<"User"> | $Enums.Role
     rating?: FloatFilter<"User"> | number
     refreshToken?: StringNullableFilter<"User"> | string | null
-    sentRequests?: TurfmateListRelationFilter
-    receivedRequests?: TurfmateListRelationFilter
+    sentRequests?: TurfmateRequestsListRelationFilter
+    receivedRequests?: TurfmateRequestsListRelationFilter
     eventsOrganized?: EventListRelationFilter
     bookings?: BookingListRelationFilter
+    turfmates?: TurfmatesListRelationFilter
+    turfmateOf?: TurfmatesListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -7157,63 +8310,117 @@ export namespace Prisma {
     refreshToken?: StringNullableWithAggregatesFilter<"User"> | string | null
   }
 
-  export type TurfmateWhereInput = {
-    AND?: TurfmateWhereInput | TurfmateWhereInput[]
-    OR?: TurfmateWhereInput[]
-    NOT?: TurfmateWhereInput | TurfmateWhereInput[]
-    id?: StringFilter<"Turfmate"> | string
-    uid1?: StringFilter<"Turfmate"> | string
-    uid2?: StringFilter<"Turfmate"> | string
-    status?: EnumFriendStatusFilter<"Turfmate"> | $Enums.FriendStatus
-    createdAt?: DateTimeFilter<"Turfmate"> | Date | string
+  export type TurfmateRequestsWhereInput = {
+    AND?: TurfmateRequestsWhereInput | TurfmateRequestsWhereInput[]
+    OR?: TurfmateRequestsWhereInput[]
+    NOT?: TurfmateRequestsWhereInput | TurfmateRequestsWhereInput[]
+    id?: StringFilter<"TurfmateRequests"> | string
+    sender?: StringFilter<"TurfmateRequests"> | string
+    receiver?: StringFilter<"TurfmateRequests"> | string
+    status?: EnumFriendStatusFilter<"TurfmateRequests"> | $Enums.FriendStatus
+    createdAt?: DateTimeFilter<"TurfmateRequests"> | Date | string
     player1?: XOR<UserScalarRelationFilter, UserWhereInput>
     player2?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
-  export type TurfmateOrderByWithRelationInput = {
+  export type TurfmateRequestsOrderByWithRelationInput = {
     id?: SortOrder
-    uid1?: SortOrder
-    uid2?: SortOrder
+    sender?: SortOrder
+    receiver?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     player1?: UserOrderByWithRelationInput
     player2?: UserOrderByWithRelationInput
   }
 
-  export type TurfmateWhereUniqueInput = Prisma.AtLeast<{
+  export type TurfmateRequestsWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    uid1_uid2?: TurfmateUid1Uid2CompoundUniqueInput
-    AND?: TurfmateWhereInput | TurfmateWhereInput[]
-    OR?: TurfmateWhereInput[]
-    NOT?: TurfmateWhereInput | TurfmateWhereInput[]
-    uid1?: StringFilter<"Turfmate"> | string
-    uid2?: StringFilter<"Turfmate"> | string
-    status?: EnumFriendStatusFilter<"Turfmate"> | $Enums.FriendStatus
-    createdAt?: DateTimeFilter<"Turfmate"> | Date | string
+    sender_receiver?: TurfmateRequestsSenderReceiverCompoundUniqueInput
+    AND?: TurfmateRequestsWhereInput | TurfmateRequestsWhereInput[]
+    OR?: TurfmateRequestsWhereInput[]
+    NOT?: TurfmateRequestsWhereInput | TurfmateRequestsWhereInput[]
+    sender?: StringFilter<"TurfmateRequests"> | string
+    receiver?: StringFilter<"TurfmateRequests"> | string
+    status?: EnumFriendStatusFilter<"TurfmateRequests"> | $Enums.FriendStatus
+    createdAt?: DateTimeFilter<"TurfmateRequests"> | Date | string
     player1?: XOR<UserScalarRelationFilter, UserWhereInput>
     player2?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id" | "uid1_uid2">
+  }, "id" | "sender_receiver">
 
-  export type TurfmateOrderByWithAggregationInput = {
+  export type TurfmateRequestsOrderByWithAggregationInput = {
     id?: SortOrder
-    uid1?: SortOrder
-    uid2?: SortOrder
+    sender?: SortOrder
+    receiver?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
-    _count?: TurfmateCountOrderByAggregateInput
-    _max?: TurfmateMaxOrderByAggregateInput
-    _min?: TurfmateMinOrderByAggregateInput
+    _count?: TurfmateRequestsCountOrderByAggregateInput
+    _max?: TurfmateRequestsMaxOrderByAggregateInput
+    _min?: TurfmateRequestsMinOrderByAggregateInput
   }
 
-  export type TurfmateScalarWhereWithAggregatesInput = {
-    AND?: TurfmateScalarWhereWithAggregatesInput | TurfmateScalarWhereWithAggregatesInput[]
-    OR?: TurfmateScalarWhereWithAggregatesInput[]
-    NOT?: TurfmateScalarWhereWithAggregatesInput | TurfmateScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"Turfmate"> | string
-    uid1?: StringWithAggregatesFilter<"Turfmate"> | string
-    uid2?: StringWithAggregatesFilter<"Turfmate"> | string
-    status?: EnumFriendStatusWithAggregatesFilter<"Turfmate"> | $Enums.FriendStatus
-    createdAt?: DateTimeWithAggregatesFilter<"Turfmate"> | Date | string
+  export type TurfmateRequestsScalarWhereWithAggregatesInput = {
+    AND?: TurfmateRequestsScalarWhereWithAggregatesInput | TurfmateRequestsScalarWhereWithAggregatesInput[]
+    OR?: TurfmateRequestsScalarWhereWithAggregatesInput[]
+    NOT?: TurfmateRequestsScalarWhereWithAggregatesInput | TurfmateRequestsScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TurfmateRequests"> | string
+    sender?: StringWithAggregatesFilter<"TurfmateRequests"> | string
+    receiver?: StringWithAggregatesFilter<"TurfmateRequests"> | string
+    status?: EnumFriendStatusWithAggregatesFilter<"TurfmateRequests"> | $Enums.FriendStatus
+    createdAt?: DateTimeWithAggregatesFilter<"TurfmateRequests"> | Date | string
+  }
+
+  export type TurfmatesWhereInput = {
+    AND?: TurfmatesWhereInput | TurfmatesWhereInput[]
+    OR?: TurfmatesWhereInput[]
+    NOT?: TurfmatesWhereInput | TurfmatesWhereInput[]
+    id?: StringFilter<"Turfmates"> | string
+    userId?: StringFilter<"Turfmates"> | string
+    turfmateId?: StringFilter<"Turfmates"> | string
+    createdAt?: DateTimeFilter<"Turfmates"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    turfmate?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type TurfmatesOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    turfmateId?: SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    turfmate?: UserOrderByWithRelationInput
+  }
+
+  export type TurfmatesWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId_turfmateId?: TurfmatesUserIdTurfmateIdCompoundUniqueInput
+    AND?: TurfmatesWhereInput | TurfmatesWhereInput[]
+    OR?: TurfmatesWhereInput[]
+    NOT?: TurfmatesWhereInput | TurfmatesWhereInput[]
+    userId?: StringFilter<"Turfmates"> | string
+    turfmateId?: StringFilter<"Turfmates"> | string
+    createdAt?: DateTimeFilter<"Turfmates"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    turfmate?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "userId_turfmateId">
+
+  export type TurfmatesOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    turfmateId?: SortOrder
+    createdAt?: SortOrder
+    _count?: TurfmatesCountOrderByAggregateInput
+    _max?: TurfmatesMaxOrderByAggregateInput
+    _min?: TurfmatesMinOrderByAggregateInput
+  }
+
+  export type TurfmatesScalarWhereWithAggregatesInput = {
+    AND?: TurfmatesScalarWhereWithAggregatesInput | TurfmatesScalarWhereWithAggregatesInput[]
+    OR?: TurfmatesScalarWhereWithAggregatesInput[]
+    NOT?: TurfmatesScalarWhereWithAggregatesInput | TurfmatesScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Turfmates"> | string
+    userId?: StringWithAggregatesFilter<"Turfmates"> | string
+    turfmateId?: StringWithAggregatesFilter<"Turfmates"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Turfmates"> | Date | string
   }
 
   export type EventWhereInput = {
@@ -7479,10 +8686,12 @@ export namespace Prisma {
     role?: $Enums.Role
     rating?: number
     refreshToken?: string | null
-    sentRequests?: TurfmateCreateNestedManyWithoutPlayer1Input
-    receivedRequests?: TurfmateCreateNestedManyWithoutPlayer2Input
+    sentRequests?: TurfmateRequestsCreateNestedManyWithoutPlayer1Input
+    receivedRequests?: TurfmateRequestsCreateNestedManyWithoutPlayer2Input
     eventsOrganized?: EventCreateNestedManyWithoutOrganizerInput
     bookings?: BookingCreateNestedManyWithoutUserInput
+    turfmates?: TurfmatesCreateNestedManyWithoutUserInput
+    turfmateOf?: TurfmatesCreateNestedManyWithoutTurfmateInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -7499,10 +8708,12 @@ export namespace Prisma {
     role?: $Enums.Role
     rating?: number
     refreshToken?: string | null
-    sentRequests?: TurfmateUncheckedCreateNestedManyWithoutPlayer1Input
-    receivedRequests?: TurfmateUncheckedCreateNestedManyWithoutPlayer2Input
+    sentRequests?: TurfmateRequestsUncheckedCreateNestedManyWithoutPlayer1Input
+    receivedRequests?: TurfmateRequestsUncheckedCreateNestedManyWithoutPlayer2Input
     eventsOrganized?: EventUncheckedCreateNestedManyWithoutOrganizerInput
     bookings?: BookingUncheckedCreateNestedManyWithoutUserInput
+    turfmates?: TurfmatesUncheckedCreateNestedManyWithoutUserInput
+    turfmateOf?: TurfmatesUncheckedCreateNestedManyWithoutTurfmateInput
   }
 
   export type UserUpdateInput = {
@@ -7518,10 +8729,12 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     rating?: FloatFieldUpdateOperationsInput | number
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sentRequests?: TurfmateUpdateManyWithoutPlayer1NestedInput
-    receivedRequests?: TurfmateUpdateManyWithoutPlayer2NestedInput
+    sentRequests?: TurfmateRequestsUpdateManyWithoutPlayer1NestedInput
+    receivedRequests?: TurfmateRequestsUpdateManyWithoutPlayer2NestedInput
     eventsOrganized?: EventUpdateManyWithoutOrganizerNestedInput
     bookings?: BookingUpdateManyWithoutUserNestedInput
+    turfmates?: TurfmatesUpdateManyWithoutUserNestedInput
+    turfmateOf?: TurfmatesUpdateManyWithoutTurfmateNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -7537,10 +8750,12 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     rating?: FloatFieldUpdateOperationsInput | number
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sentRequests?: TurfmateUncheckedUpdateManyWithoutPlayer1NestedInput
-    receivedRequests?: TurfmateUncheckedUpdateManyWithoutPlayer2NestedInput
+    sentRequests?: TurfmateRequestsUncheckedUpdateManyWithoutPlayer1NestedInput
+    receivedRequests?: TurfmateRequestsUncheckedUpdateManyWithoutPlayer2NestedInput
     eventsOrganized?: EventUncheckedUpdateManyWithoutOrganizerNestedInput
     bookings?: BookingUncheckedUpdateManyWithoutUserNestedInput
+    turfmates?: TurfmatesUncheckedUpdateManyWithoutUserNestedInput
+    turfmateOf?: TurfmatesUncheckedUpdateManyWithoutTurfmateNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -7589,7 +8804,7 @@ export namespace Prisma {
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type TurfmateCreateInput = {
+  export type TurfmateRequestsCreateInput = {
     id?: string
     status: $Enums.FriendStatus
     createdAt?: Date | string
@@ -7597,45 +8812,88 @@ export namespace Prisma {
     player2: UserCreateNestedOneWithoutReceivedRequestsInput
   }
 
-  export type TurfmateUncheckedCreateInput = {
+  export type TurfmateRequestsUncheckedCreateInput = {
     id?: string
-    uid1: string
-    uid2: string
+    sender: string
+    receiver: string
     status: $Enums.FriendStatus
     createdAt?: Date | string
   }
 
-  export type TurfmateUpdateInput = {
+  export type TurfmateRequestsUpdateInput = {
     status?: EnumFriendStatusFieldUpdateOperationsInput | $Enums.FriendStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     player1?: UserUpdateOneRequiredWithoutSentRequestsNestedInput
     player2?: UserUpdateOneRequiredWithoutReceivedRequestsNestedInput
   }
 
-  export type TurfmateUncheckedUpdateInput = {
-    uid1?: StringFieldUpdateOperationsInput | string
-    uid2?: StringFieldUpdateOperationsInput | string
+  export type TurfmateRequestsUncheckedUpdateInput = {
+    sender?: StringFieldUpdateOperationsInput | string
+    receiver?: StringFieldUpdateOperationsInput | string
     status?: EnumFriendStatusFieldUpdateOperationsInput | $Enums.FriendStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type TurfmateCreateManyInput = {
+  export type TurfmateRequestsCreateManyInput = {
     id?: string
-    uid1: string
-    uid2: string
+    sender: string
+    receiver: string
     status: $Enums.FriendStatus
     createdAt?: Date | string
   }
 
-  export type TurfmateUpdateManyMutationInput = {
+  export type TurfmateRequestsUpdateManyMutationInput = {
     status?: EnumFriendStatusFieldUpdateOperationsInput | $Enums.FriendStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type TurfmateUncheckedUpdateManyInput = {
-    uid1?: StringFieldUpdateOperationsInput | string
-    uid2?: StringFieldUpdateOperationsInput | string
+  export type TurfmateRequestsUncheckedUpdateManyInput = {
+    sender?: StringFieldUpdateOperationsInput | string
+    receiver?: StringFieldUpdateOperationsInput | string
     status?: EnumFriendStatusFieldUpdateOperationsInput | $Enums.FriendStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TurfmatesCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutTurfmatesInput
+    turfmate: UserCreateNestedOneWithoutTurfmateOfInput
+  }
+
+  export type TurfmatesUncheckedCreateInput = {
+    id?: string
+    userId: string
+    turfmateId: string
+    createdAt?: Date | string
+  }
+
+  export type TurfmatesUpdateInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutTurfmatesNestedInput
+    turfmate?: UserUpdateOneRequiredWithoutTurfmateOfNestedInput
+  }
+
+  export type TurfmatesUncheckedUpdateInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    turfmateId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TurfmatesCreateManyInput = {
+    id?: string
+    userId: string
+    turfmateId: string
+    createdAt?: Date | string
+  }
+
+  export type TurfmatesUpdateManyMutationInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TurfmatesUncheckedUpdateManyInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    turfmateId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -7958,10 +9216,10 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
-  export type TurfmateListRelationFilter = {
-    every?: TurfmateWhereInput
-    some?: TurfmateWhereInput
-    none?: TurfmateWhereInput
+  export type TurfmateRequestsListRelationFilter = {
+    every?: TurfmateRequestsWhereInput
+    some?: TurfmateRequestsWhereInput
+    none?: TurfmateRequestsWhereInput
   }
 
   export type EventListRelationFilter = {
@@ -7976,7 +9234,13 @@ export namespace Prisma {
     none?: BookingWhereInput
   }
 
-  export type TurfmateOrderByRelationAggregateInput = {
+  export type TurfmatesListRelationFilter = {
+    every?: TurfmatesWhereInput
+    some?: TurfmatesWhereInput
+    none?: TurfmatesWhereInput
+  }
+
+  export type TurfmateRequestsOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -7985,6 +9249,10 @@ export namespace Prisma {
   }
 
   export type BookingOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TurfmatesOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -8139,31 +9407,31 @@ export namespace Prisma {
     isNot?: UserWhereInput
   }
 
-  export type TurfmateUid1Uid2CompoundUniqueInput = {
-    uid1: string
-    uid2: string
+  export type TurfmateRequestsSenderReceiverCompoundUniqueInput = {
+    sender: string
+    receiver: string
   }
 
-  export type TurfmateCountOrderByAggregateInput = {
+  export type TurfmateRequestsCountOrderByAggregateInput = {
     id?: SortOrder
-    uid1?: SortOrder
-    uid2?: SortOrder
+    sender?: SortOrder
+    receiver?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
   }
 
-  export type TurfmateMaxOrderByAggregateInput = {
+  export type TurfmateRequestsMaxOrderByAggregateInput = {
     id?: SortOrder
-    uid1?: SortOrder
-    uid2?: SortOrder
+    sender?: SortOrder
+    receiver?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
   }
 
-  export type TurfmateMinOrderByAggregateInput = {
+  export type TurfmateRequestsMinOrderByAggregateInput = {
     id?: SortOrder
-    uid1?: SortOrder
-    uid2?: SortOrder
+    sender?: SortOrder
+    receiver?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
   }
@@ -8190,6 +9458,32 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type TurfmatesUserIdTurfmateIdCompoundUniqueInput = {
+    userId: string
+    turfmateId: string
+  }
+
+  export type TurfmatesCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    turfmateId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type TurfmatesMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    turfmateId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type TurfmatesMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    turfmateId?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type EnumSportsFilter<$PrismaModel = never> = {
@@ -8442,18 +9736,18 @@ export namespace Prisma {
     set: string[]
   }
 
-  export type TurfmateCreateNestedManyWithoutPlayer1Input = {
-    create?: XOR<TurfmateCreateWithoutPlayer1Input, TurfmateUncheckedCreateWithoutPlayer1Input> | TurfmateCreateWithoutPlayer1Input[] | TurfmateUncheckedCreateWithoutPlayer1Input[]
-    connectOrCreate?: TurfmateCreateOrConnectWithoutPlayer1Input | TurfmateCreateOrConnectWithoutPlayer1Input[]
-    createMany?: TurfmateCreateManyPlayer1InputEnvelope
-    connect?: TurfmateWhereUniqueInput | TurfmateWhereUniqueInput[]
+  export type TurfmateRequestsCreateNestedManyWithoutPlayer1Input = {
+    create?: XOR<TurfmateRequestsCreateWithoutPlayer1Input, TurfmateRequestsUncheckedCreateWithoutPlayer1Input> | TurfmateRequestsCreateWithoutPlayer1Input[] | TurfmateRequestsUncheckedCreateWithoutPlayer1Input[]
+    connectOrCreate?: TurfmateRequestsCreateOrConnectWithoutPlayer1Input | TurfmateRequestsCreateOrConnectWithoutPlayer1Input[]
+    createMany?: TurfmateRequestsCreateManyPlayer1InputEnvelope
+    connect?: TurfmateRequestsWhereUniqueInput | TurfmateRequestsWhereUniqueInput[]
   }
 
-  export type TurfmateCreateNestedManyWithoutPlayer2Input = {
-    create?: XOR<TurfmateCreateWithoutPlayer2Input, TurfmateUncheckedCreateWithoutPlayer2Input> | TurfmateCreateWithoutPlayer2Input[] | TurfmateUncheckedCreateWithoutPlayer2Input[]
-    connectOrCreate?: TurfmateCreateOrConnectWithoutPlayer2Input | TurfmateCreateOrConnectWithoutPlayer2Input[]
-    createMany?: TurfmateCreateManyPlayer2InputEnvelope
-    connect?: TurfmateWhereUniqueInput | TurfmateWhereUniqueInput[]
+  export type TurfmateRequestsCreateNestedManyWithoutPlayer2Input = {
+    create?: XOR<TurfmateRequestsCreateWithoutPlayer2Input, TurfmateRequestsUncheckedCreateWithoutPlayer2Input> | TurfmateRequestsCreateWithoutPlayer2Input[] | TurfmateRequestsUncheckedCreateWithoutPlayer2Input[]
+    connectOrCreate?: TurfmateRequestsCreateOrConnectWithoutPlayer2Input | TurfmateRequestsCreateOrConnectWithoutPlayer2Input[]
+    createMany?: TurfmateRequestsCreateManyPlayer2InputEnvelope
+    connect?: TurfmateRequestsWhereUniqueInput | TurfmateRequestsWhereUniqueInput[]
   }
 
   export type EventCreateNestedManyWithoutOrganizerInput = {
@@ -8470,18 +9764,32 @@ export namespace Prisma {
     connect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
   }
 
-  export type TurfmateUncheckedCreateNestedManyWithoutPlayer1Input = {
-    create?: XOR<TurfmateCreateWithoutPlayer1Input, TurfmateUncheckedCreateWithoutPlayer1Input> | TurfmateCreateWithoutPlayer1Input[] | TurfmateUncheckedCreateWithoutPlayer1Input[]
-    connectOrCreate?: TurfmateCreateOrConnectWithoutPlayer1Input | TurfmateCreateOrConnectWithoutPlayer1Input[]
-    createMany?: TurfmateCreateManyPlayer1InputEnvelope
-    connect?: TurfmateWhereUniqueInput | TurfmateWhereUniqueInput[]
+  export type TurfmatesCreateNestedManyWithoutUserInput = {
+    create?: XOR<TurfmatesCreateWithoutUserInput, TurfmatesUncheckedCreateWithoutUserInput> | TurfmatesCreateWithoutUserInput[] | TurfmatesUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TurfmatesCreateOrConnectWithoutUserInput | TurfmatesCreateOrConnectWithoutUserInput[]
+    createMany?: TurfmatesCreateManyUserInputEnvelope
+    connect?: TurfmatesWhereUniqueInput | TurfmatesWhereUniqueInput[]
   }
 
-  export type TurfmateUncheckedCreateNestedManyWithoutPlayer2Input = {
-    create?: XOR<TurfmateCreateWithoutPlayer2Input, TurfmateUncheckedCreateWithoutPlayer2Input> | TurfmateCreateWithoutPlayer2Input[] | TurfmateUncheckedCreateWithoutPlayer2Input[]
-    connectOrCreate?: TurfmateCreateOrConnectWithoutPlayer2Input | TurfmateCreateOrConnectWithoutPlayer2Input[]
-    createMany?: TurfmateCreateManyPlayer2InputEnvelope
-    connect?: TurfmateWhereUniqueInput | TurfmateWhereUniqueInput[]
+  export type TurfmatesCreateNestedManyWithoutTurfmateInput = {
+    create?: XOR<TurfmatesCreateWithoutTurfmateInput, TurfmatesUncheckedCreateWithoutTurfmateInput> | TurfmatesCreateWithoutTurfmateInput[] | TurfmatesUncheckedCreateWithoutTurfmateInput[]
+    connectOrCreate?: TurfmatesCreateOrConnectWithoutTurfmateInput | TurfmatesCreateOrConnectWithoutTurfmateInput[]
+    createMany?: TurfmatesCreateManyTurfmateInputEnvelope
+    connect?: TurfmatesWhereUniqueInput | TurfmatesWhereUniqueInput[]
+  }
+
+  export type TurfmateRequestsUncheckedCreateNestedManyWithoutPlayer1Input = {
+    create?: XOR<TurfmateRequestsCreateWithoutPlayer1Input, TurfmateRequestsUncheckedCreateWithoutPlayer1Input> | TurfmateRequestsCreateWithoutPlayer1Input[] | TurfmateRequestsUncheckedCreateWithoutPlayer1Input[]
+    connectOrCreate?: TurfmateRequestsCreateOrConnectWithoutPlayer1Input | TurfmateRequestsCreateOrConnectWithoutPlayer1Input[]
+    createMany?: TurfmateRequestsCreateManyPlayer1InputEnvelope
+    connect?: TurfmateRequestsWhereUniqueInput | TurfmateRequestsWhereUniqueInput[]
+  }
+
+  export type TurfmateRequestsUncheckedCreateNestedManyWithoutPlayer2Input = {
+    create?: XOR<TurfmateRequestsCreateWithoutPlayer2Input, TurfmateRequestsUncheckedCreateWithoutPlayer2Input> | TurfmateRequestsCreateWithoutPlayer2Input[] | TurfmateRequestsUncheckedCreateWithoutPlayer2Input[]
+    connectOrCreate?: TurfmateRequestsCreateOrConnectWithoutPlayer2Input | TurfmateRequestsCreateOrConnectWithoutPlayer2Input[]
+    createMany?: TurfmateRequestsCreateManyPlayer2InputEnvelope
+    connect?: TurfmateRequestsWhereUniqueInput | TurfmateRequestsWhereUniqueInput[]
   }
 
   export type EventUncheckedCreateNestedManyWithoutOrganizerInput = {
@@ -8496,6 +9804,20 @@ export namespace Prisma {
     connectOrCreate?: BookingCreateOrConnectWithoutUserInput | BookingCreateOrConnectWithoutUserInput[]
     createMany?: BookingCreateManyUserInputEnvelope
     connect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
+  }
+
+  export type TurfmatesUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<TurfmatesCreateWithoutUserInput, TurfmatesUncheckedCreateWithoutUserInput> | TurfmatesCreateWithoutUserInput[] | TurfmatesUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TurfmatesCreateOrConnectWithoutUserInput | TurfmatesCreateOrConnectWithoutUserInput[]
+    createMany?: TurfmatesCreateManyUserInputEnvelope
+    connect?: TurfmatesWhereUniqueInput | TurfmatesWhereUniqueInput[]
+  }
+
+  export type TurfmatesUncheckedCreateNestedManyWithoutTurfmateInput = {
+    create?: XOR<TurfmatesCreateWithoutTurfmateInput, TurfmatesUncheckedCreateWithoutTurfmateInput> | TurfmatesCreateWithoutTurfmateInput[] | TurfmatesUncheckedCreateWithoutTurfmateInput[]
+    connectOrCreate?: TurfmatesCreateOrConnectWithoutTurfmateInput | TurfmatesCreateOrConnectWithoutTurfmateInput[]
+    createMany?: TurfmatesCreateManyTurfmateInputEnvelope
+    connect?: TurfmatesWhereUniqueInput | TurfmatesWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -8529,32 +9851,32 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type TurfmateUpdateManyWithoutPlayer1NestedInput = {
-    create?: XOR<TurfmateCreateWithoutPlayer1Input, TurfmateUncheckedCreateWithoutPlayer1Input> | TurfmateCreateWithoutPlayer1Input[] | TurfmateUncheckedCreateWithoutPlayer1Input[]
-    connectOrCreate?: TurfmateCreateOrConnectWithoutPlayer1Input | TurfmateCreateOrConnectWithoutPlayer1Input[]
-    upsert?: TurfmateUpsertWithWhereUniqueWithoutPlayer1Input | TurfmateUpsertWithWhereUniqueWithoutPlayer1Input[]
-    createMany?: TurfmateCreateManyPlayer1InputEnvelope
-    set?: TurfmateWhereUniqueInput | TurfmateWhereUniqueInput[]
-    disconnect?: TurfmateWhereUniqueInput | TurfmateWhereUniqueInput[]
-    delete?: TurfmateWhereUniqueInput | TurfmateWhereUniqueInput[]
-    connect?: TurfmateWhereUniqueInput | TurfmateWhereUniqueInput[]
-    update?: TurfmateUpdateWithWhereUniqueWithoutPlayer1Input | TurfmateUpdateWithWhereUniqueWithoutPlayer1Input[]
-    updateMany?: TurfmateUpdateManyWithWhereWithoutPlayer1Input | TurfmateUpdateManyWithWhereWithoutPlayer1Input[]
-    deleteMany?: TurfmateScalarWhereInput | TurfmateScalarWhereInput[]
+  export type TurfmateRequestsUpdateManyWithoutPlayer1NestedInput = {
+    create?: XOR<TurfmateRequestsCreateWithoutPlayer1Input, TurfmateRequestsUncheckedCreateWithoutPlayer1Input> | TurfmateRequestsCreateWithoutPlayer1Input[] | TurfmateRequestsUncheckedCreateWithoutPlayer1Input[]
+    connectOrCreate?: TurfmateRequestsCreateOrConnectWithoutPlayer1Input | TurfmateRequestsCreateOrConnectWithoutPlayer1Input[]
+    upsert?: TurfmateRequestsUpsertWithWhereUniqueWithoutPlayer1Input | TurfmateRequestsUpsertWithWhereUniqueWithoutPlayer1Input[]
+    createMany?: TurfmateRequestsCreateManyPlayer1InputEnvelope
+    set?: TurfmateRequestsWhereUniqueInput | TurfmateRequestsWhereUniqueInput[]
+    disconnect?: TurfmateRequestsWhereUniqueInput | TurfmateRequestsWhereUniqueInput[]
+    delete?: TurfmateRequestsWhereUniqueInput | TurfmateRequestsWhereUniqueInput[]
+    connect?: TurfmateRequestsWhereUniqueInput | TurfmateRequestsWhereUniqueInput[]
+    update?: TurfmateRequestsUpdateWithWhereUniqueWithoutPlayer1Input | TurfmateRequestsUpdateWithWhereUniqueWithoutPlayer1Input[]
+    updateMany?: TurfmateRequestsUpdateManyWithWhereWithoutPlayer1Input | TurfmateRequestsUpdateManyWithWhereWithoutPlayer1Input[]
+    deleteMany?: TurfmateRequestsScalarWhereInput | TurfmateRequestsScalarWhereInput[]
   }
 
-  export type TurfmateUpdateManyWithoutPlayer2NestedInput = {
-    create?: XOR<TurfmateCreateWithoutPlayer2Input, TurfmateUncheckedCreateWithoutPlayer2Input> | TurfmateCreateWithoutPlayer2Input[] | TurfmateUncheckedCreateWithoutPlayer2Input[]
-    connectOrCreate?: TurfmateCreateOrConnectWithoutPlayer2Input | TurfmateCreateOrConnectWithoutPlayer2Input[]
-    upsert?: TurfmateUpsertWithWhereUniqueWithoutPlayer2Input | TurfmateUpsertWithWhereUniqueWithoutPlayer2Input[]
-    createMany?: TurfmateCreateManyPlayer2InputEnvelope
-    set?: TurfmateWhereUniqueInput | TurfmateWhereUniqueInput[]
-    disconnect?: TurfmateWhereUniqueInput | TurfmateWhereUniqueInput[]
-    delete?: TurfmateWhereUniqueInput | TurfmateWhereUniqueInput[]
-    connect?: TurfmateWhereUniqueInput | TurfmateWhereUniqueInput[]
-    update?: TurfmateUpdateWithWhereUniqueWithoutPlayer2Input | TurfmateUpdateWithWhereUniqueWithoutPlayer2Input[]
-    updateMany?: TurfmateUpdateManyWithWhereWithoutPlayer2Input | TurfmateUpdateManyWithWhereWithoutPlayer2Input[]
-    deleteMany?: TurfmateScalarWhereInput | TurfmateScalarWhereInput[]
+  export type TurfmateRequestsUpdateManyWithoutPlayer2NestedInput = {
+    create?: XOR<TurfmateRequestsCreateWithoutPlayer2Input, TurfmateRequestsUncheckedCreateWithoutPlayer2Input> | TurfmateRequestsCreateWithoutPlayer2Input[] | TurfmateRequestsUncheckedCreateWithoutPlayer2Input[]
+    connectOrCreate?: TurfmateRequestsCreateOrConnectWithoutPlayer2Input | TurfmateRequestsCreateOrConnectWithoutPlayer2Input[]
+    upsert?: TurfmateRequestsUpsertWithWhereUniqueWithoutPlayer2Input | TurfmateRequestsUpsertWithWhereUniqueWithoutPlayer2Input[]
+    createMany?: TurfmateRequestsCreateManyPlayer2InputEnvelope
+    set?: TurfmateRequestsWhereUniqueInput | TurfmateRequestsWhereUniqueInput[]
+    disconnect?: TurfmateRequestsWhereUniqueInput | TurfmateRequestsWhereUniqueInput[]
+    delete?: TurfmateRequestsWhereUniqueInput | TurfmateRequestsWhereUniqueInput[]
+    connect?: TurfmateRequestsWhereUniqueInput | TurfmateRequestsWhereUniqueInput[]
+    update?: TurfmateRequestsUpdateWithWhereUniqueWithoutPlayer2Input | TurfmateRequestsUpdateWithWhereUniqueWithoutPlayer2Input[]
+    updateMany?: TurfmateRequestsUpdateManyWithWhereWithoutPlayer2Input | TurfmateRequestsUpdateManyWithWhereWithoutPlayer2Input[]
+    deleteMany?: TurfmateRequestsScalarWhereInput | TurfmateRequestsScalarWhereInput[]
   }
 
   export type EventUpdateManyWithoutOrganizerNestedInput = {
@@ -8585,32 +9907,60 @@ export namespace Prisma {
     deleteMany?: BookingScalarWhereInput | BookingScalarWhereInput[]
   }
 
-  export type TurfmateUncheckedUpdateManyWithoutPlayer1NestedInput = {
-    create?: XOR<TurfmateCreateWithoutPlayer1Input, TurfmateUncheckedCreateWithoutPlayer1Input> | TurfmateCreateWithoutPlayer1Input[] | TurfmateUncheckedCreateWithoutPlayer1Input[]
-    connectOrCreate?: TurfmateCreateOrConnectWithoutPlayer1Input | TurfmateCreateOrConnectWithoutPlayer1Input[]
-    upsert?: TurfmateUpsertWithWhereUniqueWithoutPlayer1Input | TurfmateUpsertWithWhereUniqueWithoutPlayer1Input[]
-    createMany?: TurfmateCreateManyPlayer1InputEnvelope
-    set?: TurfmateWhereUniqueInput | TurfmateWhereUniqueInput[]
-    disconnect?: TurfmateWhereUniqueInput | TurfmateWhereUniqueInput[]
-    delete?: TurfmateWhereUniqueInput | TurfmateWhereUniqueInput[]
-    connect?: TurfmateWhereUniqueInput | TurfmateWhereUniqueInput[]
-    update?: TurfmateUpdateWithWhereUniqueWithoutPlayer1Input | TurfmateUpdateWithWhereUniqueWithoutPlayer1Input[]
-    updateMany?: TurfmateUpdateManyWithWhereWithoutPlayer1Input | TurfmateUpdateManyWithWhereWithoutPlayer1Input[]
-    deleteMany?: TurfmateScalarWhereInput | TurfmateScalarWhereInput[]
+  export type TurfmatesUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TurfmatesCreateWithoutUserInput, TurfmatesUncheckedCreateWithoutUserInput> | TurfmatesCreateWithoutUserInput[] | TurfmatesUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TurfmatesCreateOrConnectWithoutUserInput | TurfmatesCreateOrConnectWithoutUserInput[]
+    upsert?: TurfmatesUpsertWithWhereUniqueWithoutUserInput | TurfmatesUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TurfmatesCreateManyUserInputEnvelope
+    set?: TurfmatesWhereUniqueInput | TurfmatesWhereUniqueInput[]
+    disconnect?: TurfmatesWhereUniqueInput | TurfmatesWhereUniqueInput[]
+    delete?: TurfmatesWhereUniqueInput | TurfmatesWhereUniqueInput[]
+    connect?: TurfmatesWhereUniqueInput | TurfmatesWhereUniqueInput[]
+    update?: TurfmatesUpdateWithWhereUniqueWithoutUserInput | TurfmatesUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TurfmatesUpdateManyWithWhereWithoutUserInput | TurfmatesUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TurfmatesScalarWhereInput | TurfmatesScalarWhereInput[]
   }
 
-  export type TurfmateUncheckedUpdateManyWithoutPlayer2NestedInput = {
-    create?: XOR<TurfmateCreateWithoutPlayer2Input, TurfmateUncheckedCreateWithoutPlayer2Input> | TurfmateCreateWithoutPlayer2Input[] | TurfmateUncheckedCreateWithoutPlayer2Input[]
-    connectOrCreate?: TurfmateCreateOrConnectWithoutPlayer2Input | TurfmateCreateOrConnectWithoutPlayer2Input[]
-    upsert?: TurfmateUpsertWithWhereUniqueWithoutPlayer2Input | TurfmateUpsertWithWhereUniqueWithoutPlayer2Input[]
-    createMany?: TurfmateCreateManyPlayer2InputEnvelope
-    set?: TurfmateWhereUniqueInput | TurfmateWhereUniqueInput[]
-    disconnect?: TurfmateWhereUniqueInput | TurfmateWhereUniqueInput[]
-    delete?: TurfmateWhereUniqueInput | TurfmateWhereUniqueInput[]
-    connect?: TurfmateWhereUniqueInput | TurfmateWhereUniqueInput[]
-    update?: TurfmateUpdateWithWhereUniqueWithoutPlayer2Input | TurfmateUpdateWithWhereUniqueWithoutPlayer2Input[]
-    updateMany?: TurfmateUpdateManyWithWhereWithoutPlayer2Input | TurfmateUpdateManyWithWhereWithoutPlayer2Input[]
-    deleteMany?: TurfmateScalarWhereInput | TurfmateScalarWhereInput[]
+  export type TurfmatesUpdateManyWithoutTurfmateNestedInput = {
+    create?: XOR<TurfmatesCreateWithoutTurfmateInput, TurfmatesUncheckedCreateWithoutTurfmateInput> | TurfmatesCreateWithoutTurfmateInput[] | TurfmatesUncheckedCreateWithoutTurfmateInput[]
+    connectOrCreate?: TurfmatesCreateOrConnectWithoutTurfmateInput | TurfmatesCreateOrConnectWithoutTurfmateInput[]
+    upsert?: TurfmatesUpsertWithWhereUniqueWithoutTurfmateInput | TurfmatesUpsertWithWhereUniqueWithoutTurfmateInput[]
+    createMany?: TurfmatesCreateManyTurfmateInputEnvelope
+    set?: TurfmatesWhereUniqueInput | TurfmatesWhereUniqueInput[]
+    disconnect?: TurfmatesWhereUniqueInput | TurfmatesWhereUniqueInput[]
+    delete?: TurfmatesWhereUniqueInput | TurfmatesWhereUniqueInput[]
+    connect?: TurfmatesWhereUniqueInput | TurfmatesWhereUniqueInput[]
+    update?: TurfmatesUpdateWithWhereUniqueWithoutTurfmateInput | TurfmatesUpdateWithWhereUniqueWithoutTurfmateInput[]
+    updateMany?: TurfmatesUpdateManyWithWhereWithoutTurfmateInput | TurfmatesUpdateManyWithWhereWithoutTurfmateInput[]
+    deleteMany?: TurfmatesScalarWhereInput | TurfmatesScalarWhereInput[]
+  }
+
+  export type TurfmateRequestsUncheckedUpdateManyWithoutPlayer1NestedInput = {
+    create?: XOR<TurfmateRequestsCreateWithoutPlayer1Input, TurfmateRequestsUncheckedCreateWithoutPlayer1Input> | TurfmateRequestsCreateWithoutPlayer1Input[] | TurfmateRequestsUncheckedCreateWithoutPlayer1Input[]
+    connectOrCreate?: TurfmateRequestsCreateOrConnectWithoutPlayer1Input | TurfmateRequestsCreateOrConnectWithoutPlayer1Input[]
+    upsert?: TurfmateRequestsUpsertWithWhereUniqueWithoutPlayer1Input | TurfmateRequestsUpsertWithWhereUniqueWithoutPlayer1Input[]
+    createMany?: TurfmateRequestsCreateManyPlayer1InputEnvelope
+    set?: TurfmateRequestsWhereUniqueInput | TurfmateRequestsWhereUniqueInput[]
+    disconnect?: TurfmateRequestsWhereUniqueInput | TurfmateRequestsWhereUniqueInput[]
+    delete?: TurfmateRequestsWhereUniqueInput | TurfmateRequestsWhereUniqueInput[]
+    connect?: TurfmateRequestsWhereUniqueInput | TurfmateRequestsWhereUniqueInput[]
+    update?: TurfmateRequestsUpdateWithWhereUniqueWithoutPlayer1Input | TurfmateRequestsUpdateWithWhereUniqueWithoutPlayer1Input[]
+    updateMany?: TurfmateRequestsUpdateManyWithWhereWithoutPlayer1Input | TurfmateRequestsUpdateManyWithWhereWithoutPlayer1Input[]
+    deleteMany?: TurfmateRequestsScalarWhereInput | TurfmateRequestsScalarWhereInput[]
+  }
+
+  export type TurfmateRequestsUncheckedUpdateManyWithoutPlayer2NestedInput = {
+    create?: XOR<TurfmateRequestsCreateWithoutPlayer2Input, TurfmateRequestsUncheckedCreateWithoutPlayer2Input> | TurfmateRequestsCreateWithoutPlayer2Input[] | TurfmateRequestsUncheckedCreateWithoutPlayer2Input[]
+    connectOrCreate?: TurfmateRequestsCreateOrConnectWithoutPlayer2Input | TurfmateRequestsCreateOrConnectWithoutPlayer2Input[]
+    upsert?: TurfmateRequestsUpsertWithWhereUniqueWithoutPlayer2Input | TurfmateRequestsUpsertWithWhereUniqueWithoutPlayer2Input[]
+    createMany?: TurfmateRequestsCreateManyPlayer2InputEnvelope
+    set?: TurfmateRequestsWhereUniqueInput | TurfmateRequestsWhereUniqueInput[]
+    disconnect?: TurfmateRequestsWhereUniqueInput | TurfmateRequestsWhereUniqueInput[]
+    delete?: TurfmateRequestsWhereUniqueInput | TurfmateRequestsWhereUniqueInput[]
+    connect?: TurfmateRequestsWhereUniqueInput | TurfmateRequestsWhereUniqueInput[]
+    update?: TurfmateRequestsUpdateWithWhereUniqueWithoutPlayer2Input | TurfmateRequestsUpdateWithWhereUniqueWithoutPlayer2Input[]
+    updateMany?: TurfmateRequestsUpdateManyWithWhereWithoutPlayer2Input | TurfmateRequestsUpdateManyWithWhereWithoutPlayer2Input[]
+    deleteMany?: TurfmateRequestsScalarWhereInput | TurfmateRequestsScalarWhereInput[]
   }
 
   export type EventUncheckedUpdateManyWithoutOrganizerNestedInput = {
@@ -8639,6 +9989,34 @@ export namespace Prisma {
     update?: BookingUpdateWithWhereUniqueWithoutUserInput | BookingUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: BookingUpdateManyWithWhereWithoutUserInput | BookingUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: BookingScalarWhereInput | BookingScalarWhereInput[]
+  }
+
+  export type TurfmatesUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TurfmatesCreateWithoutUserInput, TurfmatesUncheckedCreateWithoutUserInput> | TurfmatesCreateWithoutUserInput[] | TurfmatesUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TurfmatesCreateOrConnectWithoutUserInput | TurfmatesCreateOrConnectWithoutUserInput[]
+    upsert?: TurfmatesUpsertWithWhereUniqueWithoutUserInput | TurfmatesUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TurfmatesCreateManyUserInputEnvelope
+    set?: TurfmatesWhereUniqueInput | TurfmatesWhereUniqueInput[]
+    disconnect?: TurfmatesWhereUniqueInput | TurfmatesWhereUniqueInput[]
+    delete?: TurfmatesWhereUniqueInput | TurfmatesWhereUniqueInput[]
+    connect?: TurfmatesWhereUniqueInput | TurfmatesWhereUniqueInput[]
+    update?: TurfmatesUpdateWithWhereUniqueWithoutUserInput | TurfmatesUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TurfmatesUpdateManyWithWhereWithoutUserInput | TurfmatesUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TurfmatesScalarWhereInput | TurfmatesScalarWhereInput[]
+  }
+
+  export type TurfmatesUncheckedUpdateManyWithoutTurfmateNestedInput = {
+    create?: XOR<TurfmatesCreateWithoutTurfmateInput, TurfmatesUncheckedCreateWithoutTurfmateInput> | TurfmatesCreateWithoutTurfmateInput[] | TurfmatesUncheckedCreateWithoutTurfmateInput[]
+    connectOrCreate?: TurfmatesCreateOrConnectWithoutTurfmateInput | TurfmatesCreateOrConnectWithoutTurfmateInput[]
+    upsert?: TurfmatesUpsertWithWhereUniqueWithoutTurfmateInput | TurfmatesUpsertWithWhereUniqueWithoutTurfmateInput[]
+    createMany?: TurfmatesCreateManyTurfmateInputEnvelope
+    set?: TurfmatesWhereUniqueInput | TurfmatesWhereUniqueInput[]
+    disconnect?: TurfmatesWhereUniqueInput | TurfmatesWhereUniqueInput[]
+    delete?: TurfmatesWhereUniqueInput | TurfmatesWhereUniqueInput[]
+    connect?: TurfmatesWhereUniqueInput | TurfmatesWhereUniqueInput[]
+    update?: TurfmatesUpdateWithWhereUniqueWithoutTurfmateInput | TurfmatesUpdateWithWhereUniqueWithoutTurfmateInput[]
+    updateMany?: TurfmatesUpdateManyWithWhereWithoutTurfmateInput | TurfmatesUpdateManyWithWhereWithoutTurfmateInput[]
+    deleteMany?: TurfmatesScalarWhereInput | TurfmatesScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutSentRequestsInput = {
@@ -8675,6 +10053,34 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutReceivedRequestsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReceivedRequestsInput, UserUpdateWithoutReceivedRequestsInput>, UserUncheckedUpdateWithoutReceivedRequestsInput>
+  }
+
+  export type UserCreateNestedOneWithoutTurfmatesInput = {
+    create?: XOR<UserCreateWithoutTurfmatesInput, UserUncheckedCreateWithoutTurfmatesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTurfmatesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutTurfmateOfInput = {
+    create?: XOR<UserCreateWithoutTurfmateOfInput, UserUncheckedCreateWithoutTurfmateOfInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTurfmateOfInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutTurfmatesNestedInput = {
+    create?: XOR<UserCreateWithoutTurfmatesInput, UserUncheckedCreateWithoutTurfmatesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTurfmatesInput
+    upsert?: UserUpsertWithoutTurfmatesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTurfmatesInput, UserUpdateWithoutTurfmatesInput>, UserUncheckedUpdateWithoutTurfmatesInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutTurfmateOfNestedInput = {
+    create?: XOR<UserCreateWithoutTurfmateOfInput, UserUncheckedCreateWithoutTurfmateOfInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTurfmateOfInput
+    upsert?: UserUpsertWithoutTurfmateOfInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTurfmateOfInput, UserUpdateWithoutTurfmateOfInput>, UserUncheckedUpdateWithoutTurfmateOfInput>
   }
 
   export type UserCreateNestedOneWithoutEventsOrganizedInput = {
@@ -9199,50 +10605,50 @@ export namespace Prisma {
     _max?: NestedEnumPaymentStatusFilter<$PrismaModel>
   }
 
-  export type TurfmateCreateWithoutPlayer1Input = {
+  export type TurfmateRequestsCreateWithoutPlayer1Input = {
     id?: string
     status: $Enums.FriendStatus
     createdAt?: Date | string
     player2: UserCreateNestedOneWithoutReceivedRequestsInput
   }
 
-  export type TurfmateUncheckedCreateWithoutPlayer1Input = {
+  export type TurfmateRequestsUncheckedCreateWithoutPlayer1Input = {
     id?: string
-    uid2: string
+    receiver: string
     status: $Enums.FriendStatus
     createdAt?: Date | string
   }
 
-  export type TurfmateCreateOrConnectWithoutPlayer1Input = {
-    where: TurfmateWhereUniqueInput
-    create: XOR<TurfmateCreateWithoutPlayer1Input, TurfmateUncheckedCreateWithoutPlayer1Input>
+  export type TurfmateRequestsCreateOrConnectWithoutPlayer1Input = {
+    where: TurfmateRequestsWhereUniqueInput
+    create: XOR<TurfmateRequestsCreateWithoutPlayer1Input, TurfmateRequestsUncheckedCreateWithoutPlayer1Input>
   }
 
-  export type TurfmateCreateManyPlayer1InputEnvelope = {
-    data: TurfmateCreateManyPlayer1Input | TurfmateCreateManyPlayer1Input[]
+  export type TurfmateRequestsCreateManyPlayer1InputEnvelope = {
+    data: TurfmateRequestsCreateManyPlayer1Input | TurfmateRequestsCreateManyPlayer1Input[]
   }
 
-  export type TurfmateCreateWithoutPlayer2Input = {
+  export type TurfmateRequestsCreateWithoutPlayer2Input = {
     id?: string
     status: $Enums.FriendStatus
     createdAt?: Date | string
     player1: UserCreateNestedOneWithoutSentRequestsInput
   }
 
-  export type TurfmateUncheckedCreateWithoutPlayer2Input = {
+  export type TurfmateRequestsUncheckedCreateWithoutPlayer2Input = {
     id?: string
-    uid1: string
+    sender: string
     status: $Enums.FriendStatus
     createdAt?: Date | string
   }
 
-  export type TurfmateCreateOrConnectWithoutPlayer2Input = {
-    where: TurfmateWhereUniqueInput
-    create: XOR<TurfmateCreateWithoutPlayer2Input, TurfmateUncheckedCreateWithoutPlayer2Input>
+  export type TurfmateRequestsCreateOrConnectWithoutPlayer2Input = {
+    where: TurfmateRequestsWhereUniqueInput
+    create: XOR<TurfmateRequestsCreateWithoutPlayer2Input, TurfmateRequestsUncheckedCreateWithoutPlayer2Input>
   }
 
-  export type TurfmateCreateManyPlayer2InputEnvelope = {
-    data: TurfmateCreateManyPlayer2Input | TurfmateCreateManyPlayer2Input[]
+  export type TurfmateRequestsCreateManyPlayer2InputEnvelope = {
+    data: TurfmateRequestsCreateManyPlayer2Input | TurfmateRequestsCreateManyPlayer2Input[]
   }
 
   export type EventCreateWithoutOrganizerInput = {
@@ -9305,47 +10711,89 @@ export namespace Prisma {
     data: BookingCreateManyUserInput | BookingCreateManyUserInput[]
   }
 
-  export type TurfmateUpsertWithWhereUniqueWithoutPlayer1Input = {
-    where: TurfmateWhereUniqueInput
-    update: XOR<TurfmateUpdateWithoutPlayer1Input, TurfmateUncheckedUpdateWithoutPlayer1Input>
-    create: XOR<TurfmateCreateWithoutPlayer1Input, TurfmateUncheckedCreateWithoutPlayer1Input>
+  export type TurfmatesCreateWithoutUserInput = {
+    id?: string
+    createdAt?: Date | string
+    turfmate: UserCreateNestedOneWithoutTurfmateOfInput
   }
 
-  export type TurfmateUpdateWithWhereUniqueWithoutPlayer1Input = {
-    where: TurfmateWhereUniqueInput
-    data: XOR<TurfmateUpdateWithoutPlayer1Input, TurfmateUncheckedUpdateWithoutPlayer1Input>
+  export type TurfmatesUncheckedCreateWithoutUserInput = {
+    id?: string
+    turfmateId: string
+    createdAt?: Date | string
   }
 
-  export type TurfmateUpdateManyWithWhereWithoutPlayer1Input = {
-    where: TurfmateScalarWhereInput
-    data: XOR<TurfmateUpdateManyMutationInput, TurfmateUncheckedUpdateManyWithoutPlayer1Input>
+  export type TurfmatesCreateOrConnectWithoutUserInput = {
+    where: TurfmatesWhereUniqueInput
+    create: XOR<TurfmatesCreateWithoutUserInput, TurfmatesUncheckedCreateWithoutUserInput>
   }
 
-  export type TurfmateScalarWhereInput = {
-    AND?: TurfmateScalarWhereInput | TurfmateScalarWhereInput[]
-    OR?: TurfmateScalarWhereInput[]
-    NOT?: TurfmateScalarWhereInput | TurfmateScalarWhereInput[]
-    id?: StringFilter<"Turfmate"> | string
-    uid1?: StringFilter<"Turfmate"> | string
-    uid2?: StringFilter<"Turfmate"> | string
-    status?: EnumFriendStatusFilter<"Turfmate"> | $Enums.FriendStatus
-    createdAt?: DateTimeFilter<"Turfmate"> | Date | string
+  export type TurfmatesCreateManyUserInputEnvelope = {
+    data: TurfmatesCreateManyUserInput | TurfmatesCreateManyUserInput[]
   }
 
-  export type TurfmateUpsertWithWhereUniqueWithoutPlayer2Input = {
-    where: TurfmateWhereUniqueInput
-    update: XOR<TurfmateUpdateWithoutPlayer2Input, TurfmateUncheckedUpdateWithoutPlayer2Input>
-    create: XOR<TurfmateCreateWithoutPlayer2Input, TurfmateUncheckedCreateWithoutPlayer2Input>
+  export type TurfmatesCreateWithoutTurfmateInput = {
+    id?: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutTurfmatesInput
   }
 
-  export type TurfmateUpdateWithWhereUniqueWithoutPlayer2Input = {
-    where: TurfmateWhereUniqueInput
-    data: XOR<TurfmateUpdateWithoutPlayer2Input, TurfmateUncheckedUpdateWithoutPlayer2Input>
+  export type TurfmatesUncheckedCreateWithoutTurfmateInput = {
+    id?: string
+    userId: string
+    createdAt?: Date | string
   }
 
-  export type TurfmateUpdateManyWithWhereWithoutPlayer2Input = {
-    where: TurfmateScalarWhereInput
-    data: XOR<TurfmateUpdateManyMutationInput, TurfmateUncheckedUpdateManyWithoutPlayer2Input>
+  export type TurfmatesCreateOrConnectWithoutTurfmateInput = {
+    where: TurfmatesWhereUniqueInput
+    create: XOR<TurfmatesCreateWithoutTurfmateInput, TurfmatesUncheckedCreateWithoutTurfmateInput>
+  }
+
+  export type TurfmatesCreateManyTurfmateInputEnvelope = {
+    data: TurfmatesCreateManyTurfmateInput | TurfmatesCreateManyTurfmateInput[]
+  }
+
+  export type TurfmateRequestsUpsertWithWhereUniqueWithoutPlayer1Input = {
+    where: TurfmateRequestsWhereUniqueInput
+    update: XOR<TurfmateRequestsUpdateWithoutPlayer1Input, TurfmateRequestsUncheckedUpdateWithoutPlayer1Input>
+    create: XOR<TurfmateRequestsCreateWithoutPlayer1Input, TurfmateRequestsUncheckedCreateWithoutPlayer1Input>
+  }
+
+  export type TurfmateRequestsUpdateWithWhereUniqueWithoutPlayer1Input = {
+    where: TurfmateRequestsWhereUniqueInput
+    data: XOR<TurfmateRequestsUpdateWithoutPlayer1Input, TurfmateRequestsUncheckedUpdateWithoutPlayer1Input>
+  }
+
+  export type TurfmateRequestsUpdateManyWithWhereWithoutPlayer1Input = {
+    where: TurfmateRequestsScalarWhereInput
+    data: XOR<TurfmateRequestsUpdateManyMutationInput, TurfmateRequestsUncheckedUpdateManyWithoutPlayer1Input>
+  }
+
+  export type TurfmateRequestsScalarWhereInput = {
+    AND?: TurfmateRequestsScalarWhereInput | TurfmateRequestsScalarWhereInput[]
+    OR?: TurfmateRequestsScalarWhereInput[]
+    NOT?: TurfmateRequestsScalarWhereInput | TurfmateRequestsScalarWhereInput[]
+    id?: StringFilter<"TurfmateRequests"> | string
+    sender?: StringFilter<"TurfmateRequests"> | string
+    receiver?: StringFilter<"TurfmateRequests"> | string
+    status?: EnumFriendStatusFilter<"TurfmateRequests"> | $Enums.FriendStatus
+    createdAt?: DateTimeFilter<"TurfmateRequests"> | Date | string
+  }
+
+  export type TurfmateRequestsUpsertWithWhereUniqueWithoutPlayer2Input = {
+    where: TurfmateRequestsWhereUniqueInput
+    update: XOR<TurfmateRequestsUpdateWithoutPlayer2Input, TurfmateRequestsUncheckedUpdateWithoutPlayer2Input>
+    create: XOR<TurfmateRequestsCreateWithoutPlayer2Input, TurfmateRequestsUncheckedCreateWithoutPlayer2Input>
+  }
+
+  export type TurfmateRequestsUpdateWithWhereUniqueWithoutPlayer2Input = {
+    where: TurfmateRequestsWhereUniqueInput
+    data: XOR<TurfmateRequestsUpdateWithoutPlayer2Input, TurfmateRequestsUncheckedUpdateWithoutPlayer2Input>
+  }
+
+  export type TurfmateRequestsUpdateManyWithWhereWithoutPlayer2Input = {
+    where: TurfmateRequestsScalarWhereInput
+    data: XOR<TurfmateRequestsUpdateManyMutationInput, TurfmateRequestsUncheckedUpdateManyWithoutPlayer2Input>
   }
 
   export type EventUpsertWithWhereUniqueWithoutOrganizerInput = {
@@ -9408,6 +10856,48 @@ export namespace Prisma {
     status?: EnumPaymentStatusFilter<"Booking"> | $Enums.PaymentStatus
   }
 
+  export type TurfmatesUpsertWithWhereUniqueWithoutUserInput = {
+    where: TurfmatesWhereUniqueInput
+    update: XOR<TurfmatesUpdateWithoutUserInput, TurfmatesUncheckedUpdateWithoutUserInput>
+    create: XOR<TurfmatesCreateWithoutUserInput, TurfmatesUncheckedCreateWithoutUserInput>
+  }
+
+  export type TurfmatesUpdateWithWhereUniqueWithoutUserInput = {
+    where: TurfmatesWhereUniqueInput
+    data: XOR<TurfmatesUpdateWithoutUserInput, TurfmatesUncheckedUpdateWithoutUserInput>
+  }
+
+  export type TurfmatesUpdateManyWithWhereWithoutUserInput = {
+    where: TurfmatesScalarWhereInput
+    data: XOR<TurfmatesUpdateManyMutationInput, TurfmatesUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type TurfmatesScalarWhereInput = {
+    AND?: TurfmatesScalarWhereInput | TurfmatesScalarWhereInput[]
+    OR?: TurfmatesScalarWhereInput[]
+    NOT?: TurfmatesScalarWhereInput | TurfmatesScalarWhereInput[]
+    id?: StringFilter<"Turfmates"> | string
+    userId?: StringFilter<"Turfmates"> | string
+    turfmateId?: StringFilter<"Turfmates"> | string
+    createdAt?: DateTimeFilter<"Turfmates"> | Date | string
+  }
+
+  export type TurfmatesUpsertWithWhereUniqueWithoutTurfmateInput = {
+    where: TurfmatesWhereUniqueInput
+    update: XOR<TurfmatesUpdateWithoutTurfmateInput, TurfmatesUncheckedUpdateWithoutTurfmateInput>
+    create: XOR<TurfmatesCreateWithoutTurfmateInput, TurfmatesUncheckedCreateWithoutTurfmateInput>
+  }
+
+  export type TurfmatesUpdateWithWhereUniqueWithoutTurfmateInput = {
+    where: TurfmatesWhereUniqueInput
+    data: XOR<TurfmatesUpdateWithoutTurfmateInput, TurfmatesUncheckedUpdateWithoutTurfmateInput>
+  }
+
+  export type TurfmatesUpdateManyWithWhereWithoutTurfmateInput = {
+    where: TurfmatesScalarWhereInput
+    data: XOR<TurfmatesUpdateManyMutationInput, TurfmatesUncheckedUpdateManyWithoutTurfmateInput>
+  }
+
   export type UserCreateWithoutSentRequestsInput = {
     id?: string
     email: string
@@ -9422,9 +10912,11 @@ export namespace Prisma {
     role?: $Enums.Role
     rating?: number
     refreshToken?: string | null
-    receivedRequests?: TurfmateCreateNestedManyWithoutPlayer2Input
+    receivedRequests?: TurfmateRequestsCreateNestedManyWithoutPlayer2Input
     eventsOrganized?: EventCreateNestedManyWithoutOrganizerInput
     bookings?: BookingCreateNestedManyWithoutUserInput
+    turfmates?: TurfmatesCreateNestedManyWithoutUserInput
+    turfmateOf?: TurfmatesCreateNestedManyWithoutTurfmateInput
   }
 
   export type UserUncheckedCreateWithoutSentRequestsInput = {
@@ -9441,9 +10933,11 @@ export namespace Prisma {
     role?: $Enums.Role
     rating?: number
     refreshToken?: string | null
-    receivedRequests?: TurfmateUncheckedCreateNestedManyWithoutPlayer2Input
+    receivedRequests?: TurfmateRequestsUncheckedCreateNestedManyWithoutPlayer2Input
     eventsOrganized?: EventUncheckedCreateNestedManyWithoutOrganizerInput
     bookings?: BookingUncheckedCreateNestedManyWithoutUserInput
+    turfmates?: TurfmatesUncheckedCreateNestedManyWithoutUserInput
+    turfmateOf?: TurfmatesUncheckedCreateNestedManyWithoutTurfmateInput
   }
 
   export type UserCreateOrConnectWithoutSentRequestsInput = {
@@ -9465,9 +10959,11 @@ export namespace Prisma {
     role?: $Enums.Role
     rating?: number
     refreshToken?: string | null
-    sentRequests?: TurfmateCreateNestedManyWithoutPlayer1Input
+    sentRequests?: TurfmateRequestsCreateNestedManyWithoutPlayer1Input
     eventsOrganized?: EventCreateNestedManyWithoutOrganizerInput
     bookings?: BookingCreateNestedManyWithoutUserInput
+    turfmates?: TurfmatesCreateNestedManyWithoutUserInput
+    turfmateOf?: TurfmatesCreateNestedManyWithoutTurfmateInput
   }
 
   export type UserUncheckedCreateWithoutReceivedRequestsInput = {
@@ -9484,9 +10980,11 @@ export namespace Prisma {
     role?: $Enums.Role
     rating?: number
     refreshToken?: string | null
-    sentRequests?: TurfmateUncheckedCreateNestedManyWithoutPlayer1Input
+    sentRequests?: TurfmateRequestsUncheckedCreateNestedManyWithoutPlayer1Input
     eventsOrganized?: EventUncheckedCreateNestedManyWithoutOrganizerInput
     bookings?: BookingUncheckedCreateNestedManyWithoutUserInput
+    turfmates?: TurfmatesUncheckedCreateNestedManyWithoutUserInput
+    turfmateOf?: TurfmatesUncheckedCreateNestedManyWithoutTurfmateInput
   }
 
   export type UserCreateOrConnectWithoutReceivedRequestsInput = {
@@ -9518,9 +11016,11 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     rating?: FloatFieldUpdateOperationsInput | number
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    receivedRequests?: TurfmateUpdateManyWithoutPlayer2NestedInput
+    receivedRequests?: TurfmateRequestsUpdateManyWithoutPlayer2NestedInput
     eventsOrganized?: EventUpdateManyWithoutOrganizerNestedInput
     bookings?: BookingUpdateManyWithoutUserNestedInput
+    turfmates?: TurfmatesUpdateManyWithoutUserNestedInput
+    turfmateOf?: TurfmatesUpdateManyWithoutTurfmateNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentRequestsInput = {
@@ -9536,9 +11036,11 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     rating?: FloatFieldUpdateOperationsInput | number
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    receivedRequests?: TurfmateUncheckedUpdateManyWithoutPlayer2NestedInput
+    receivedRequests?: TurfmateRequestsUncheckedUpdateManyWithoutPlayer2NestedInput
     eventsOrganized?: EventUncheckedUpdateManyWithoutOrganizerNestedInput
     bookings?: BookingUncheckedUpdateManyWithoutUserNestedInput
+    turfmates?: TurfmatesUncheckedUpdateManyWithoutUserNestedInput
+    turfmateOf?: TurfmatesUncheckedUpdateManyWithoutTurfmateNestedInput
   }
 
   export type UserUpsertWithoutReceivedRequestsInput = {
@@ -9565,9 +11067,11 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     rating?: FloatFieldUpdateOperationsInput | number
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sentRequests?: TurfmateUpdateManyWithoutPlayer1NestedInput
+    sentRequests?: TurfmateRequestsUpdateManyWithoutPlayer1NestedInput
     eventsOrganized?: EventUpdateManyWithoutOrganizerNestedInput
     bookings?: BookingUpdateManyWithoutUserNestedInput
+    turfmates?: TurfmatesUpdateManyWithoutUserNestedInput
+    turfmateOf?: TurfmatesUpdateManyWithoutTurfmateNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivedRequestsInput = {
@@ -9583,9 +11087,207 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     rating?: FloatFieldUpdateOperationsInput | number
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sentRequests?: TurfmateUncheckedUpdateManyWithoutPlayer1NestedInput
+    sentRequests?: TurfmateRequestsUncheckedUpdateManyWithoutPlayer1NestedInput
     eventsOrganized?: EventUncheckedUpdateManyWithoutOrganizerNestedInput
     bookings?: BookingUncheckedUpdateManyWithoutUserNestedInput
+    turfmates?: TurfmatesUncheckedUpdateManyWithoutUserNestedInput
+    turfmateOf?: TurfmatesUncheckedUpdateManyWithoutTurfmateNestedInput
+  }
+
+  export type UserCreateWithoutTurfmatesInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    address?: string | null
+    bio?: string | null
+    phone: string
+    profilePicture?: string | null
+    sportsPreferences?: $Enums.Sports | null
+    eventsJoined?: UserCreateeventsJoinedInput | string[]
+    role?: $Enums.Role
+    rating?: number
+    refreshToken?: string | null
+    sentRequests?: TurfmateRequestsCreateNestedManyWithoutPlayer1Input
+    receivedRequests?: TurfmateRequestsCreateNestedManyWithoutPlayer2Input
+    eventsOrganized?: EventCreateNestedManyWithoutOrganizerInput
+    bookings?: BookingCreateNestedManyWithoutUserInput
+    turfmateOf?: TurfmatesCreateNestedManyWithoutTurfmateInput
+  }
+
+  export type UserUncheckedCreateWithoutTurfmatesInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    address?: string | null
+    bio?: string | null
+    phone: string
+    profilePicture?: string | null
+    sportsPreferences?: $Enums.Sports | null
+    eventsJoined?: UserCreateeventsJoinedInput | string[]
+    role?: $Enums.Role
+    rating?: number
+    refreshToken?: string | null
+    sentRequests?: TurfmateRequestsUncheckedCreateNestedManyWithoutPlayer1Input
+    receivedRequests?: TurfmateRequestsUncheckedCreateNestedManyWithoutPlayer2Input
+    eventsOrganized?: EventUncheckedCreateNestedManyWithoutOrganizerInput
+    bookings?: BookingUncheckedCreateNestedManyWithoutUserInput
+    turfmateOf?: TurfmatesUncheckedCreateNestedManyWithoutTurfmateInput
+  }
+
+  export type UserCreateOrConnectWithoutTurfmatesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTurfmatesInput, UserUncheckedCreateWithoutTurfmatesInput>
+  }
+
+  export type UserCreateWithoutTurfmateOfInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    address?: string | null
+    bio?: string | null
+    phone: string
+    profilePicture?: string | null
+    sportsPreferences?: $Enums.Sports | null
+    eventsJoined?: UserCreateeventsJoinedInput | string[]
+    role?: $Enums.Role
+    rating?: number
+    refreshToken?: string | null
+    sentRequests?: TurfmateRequestsCreateNestedManyWithoutPlayer1Input
+    receivedRequests?: TurfmateRequestsCreateNestedManyWithoutPlayer2Input
+    eventsOrganized?: EventCreateNestedManyWithoutOrganizerInput
+    bookings?: BookingCreateNestedManyWithoutUserInput
+    turfmates?: TurfmatesCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutTurfmateOfInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    address?: string | null
+    bio?: string | null
+    phone: string
+    profilePicture?: string | null
+    sportsPreferences?: $Enums.Sports | null
+    eventsJoined?: UserCreateeventsJoinedInput | string[]
+    role?: $Enums.Role
+    rating?: number
+    refreshToken?: string | null
+    sentRequests?: TurfmateRequestsUncheckedCreateNestedManyWithoutPlayer1Input
+    receivedRequests?: TurfmateRequestsUncheckedCreateNestedManyWithoutPlayer2Input
+    eventsOrganized?: EventUncheckedCreateNestedManyWithoutOrganizerInput
+    bookings?: BookingUncheckedCreateNestedManyWithoutUserInput
+    turfmates?: TurfmatesUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutTurfmateOfInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTurfmateOfInput, UserUncheckedCreateWithoutTurfmateOfInput>
+  }
+
+  export type UserUpsertWithoutTurfmatesInput = {
+    update: XOR<UserUpdateWithoutTurfmatesInput, UserUncheckedUpdateWithoutTurfmatesInput>
+    create: XOR<UserCreateWithoutTurfmatesInput, UserUncheckedCreateWithoutTurfmatesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTurfmatesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTurfmatesInput, UserUncheckedUpdateWithoutTurfmatesInput>
+  }
+
+  export type UserUpdateWithoutTurfmatesInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: StringFieldUpdateOperationsInput | string
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    sportsPreferences?: NullableEnumSportsFieldUpdateOperationsInput | $Enums.Sports | null
+    eventsJoined?: UserUpdateeventsJoinedInput | string[]
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    rating?: FloatFieldUpdateOperationsInput | number
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    sentRequests?: TurfmateRequestsUpdateManyWithoutPlayer1NestedInput
+    receivedRequests?: TurfmateRequestsUpdateManyWithoutPlayer2NestedInput
+    eventsOrganized?: EventUpdateManyWithoutOrganizerNestedInput
+    bookings?: BookingUpdateManyWithoutUserNestedInput
+    turfmateOf?: TurfmatesUpdateManyWithoutTurfmateNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTurfmatesInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: StringFieldUpdateOperationsInput | string
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    sportsPreferences?: NullableEnumSportsFieldUpdateOperationsInput | $Enums.Sports | null
+    eventsJoined?: UserUpdateeventsJoinedInput | string[]
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    rating?: FloatFieldUpdateOperationsInput | number
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    sentRequests?: TurfmateRequestsUncheckedUpdateManyWithoutPlayer1NestedInput
+    receivedRequests?: TurfmateRequestsUncheckedUpdateManyWithoutPlayer2NestedInput
+    eventsOrganized?: EventUncheckedUpdateManyWithoutOrganizerNestedInput
+    bookings?: BookingUncheckedUpdateManyWithoutUserNestedInput
+    turfmateOf?: TurfmatesUncheckedUpdateManyWithoutTurfmateNestedInput
+  }
+
+  export type UserUpsertWithoutTurfmateOfInput = {
+    update: XOR<UserUpdateWithoutTurfmateOfInput, UserUncheckedUpdateWithoutTurfmateOfInput>
+    create: XOR<UserCreateWithoutTurfmateOfInput, UserUncheckedCreateWithoutTurfmateOfInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTurfmateOfInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTurfmateOfInput, UserUncheckedUpdateWithoutTurfmateOfInput>
+  }
+
+  export type UserUpdateWithoutTurfmateOfInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: StringFieldUpdateOperationsInput | string
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    sportsPreferences?: NullableEnumSportsFieldUpdateOperationsInput | $Enums.Sports | null
+    eventsJoined?: UserUpdateeventsJoinedInput | string[]
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    rating?: FloatFieldUpdateOperationsInput | number
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    sentRequests?: TurfmateRequestsUpdateManyWithoutPlayer1NestedInput
+    receivedRequests?: TurfmateRequestsUpdateManyWithoutPlayer2NestedInput
+    eventsOrganized?: EventUpdateManyWithoutOrganizerNestedInput
+    bookings?: BookingUpdateManyWithoutUserNestedInput
+    turfmates?: TurfmatesUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTurfmateOfInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: StringFieldUpdateOperationsInput | string
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    sportsPreferences?: NullableEnumSportsFieldUpdateOperationsInput | $Enums.Sports | null
+    eventsJoined?: UserUpdateeventsJoinedInput | string[]
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    rating?: FloatFieldUpdateOperationsInput | number
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    sentRequests?: TurfmateRequestsUncheckedUpdateManyWithoutPlayer1NestedInput
+    receivedRequests?: TurfmateRequestsUncheckedUpdateManyWithoutPlayer2NestedInput
+    eventsOrganized?: EventUncheckedUpdateManyWithoutOrganizerNestedInput
+    bookings?: BookingUncheckedUpdateManyWithoutUserNestedInput
+    turfmates?: TurfmatesUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutEventsOrganizedInput = {
@@ -9602,9 +11304,11 @@ export namespace Prisma {
     role?: $Enums.Role
     rating?: number
     refreshToken?: string | null
-    sentRequests?: TurfmateCreateNestedManyWithoutPlayer1Input
-    receivedRequests?: TurfmateCreateNestedManyWithoutPlayer2Input
+    sentRequests?: TurfmateRequestsCreateNestedManyWithoutPlayer1Input
+    receivedRequests?: TurfmateRequestsCreateNestedManyWithoutPlayer2Input
     bookings?: BookingCreateNestedManyWithoutUserInput
+    turfmates?: TurfmatesCreateNestedManyWithoutUserInput
+    turfmateOf?: TurfmatesCreateNestedManyWithoutTurfmateInput
   }
 
   export type UserUncheckedCreateWithoutEventsOrganizedInput = {
@@ -9621,9 +11325,11 @@ export namespace Prisma {
     role?: $Enums.Role
     rating?: number
     refreshToken?: string | null
-    sentRequests?: TurfmateUncheckedCreateNestedManyWithoutPlayer1Input
-    receivedRequests?: TurfmateUncheckedCreateNestedManyWithoutPlayer2Input
+    sentRequests?: TurfmateRequestsUncheckedCreateNestedManyWithoutPlayer1Input
+    receivedRequests?: TurfmateRequestsUncheckedCreateNestedManyWithoutPlayer2Input
     bookings?: BookingUncheckedCreateNestedManyWithoutUserInput
+    turfmates?: TurfmatesUncheckedCreateNestedManyWithoutUserInput
+    turfmateOf?: TurfmatesUncheckedCreateNestedManyWithoutTurfmateInput
   }
 
   export type UserCreateOrConnectWithoutEventsOrganizedInput = {
@@ -9717,9 +11423,11 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     rating?: FloatFieldUpdateOperationsInput | number
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sentRequests?: TurfmateUpdateManyWithoutPlayer1NestedInput
-    receivedRequests?: TurfmateUpdateManyWithoutPlayer2NestedInput
+    sentRequests?: TurfmateRequestsUpdateManyWithoutPlayer1NestedInput
+    receivedRequests?: TurfmateRequestsUpdateManyWithoutPlayer2NestedInput
     bookings?: BookingUpdateManyWithoutUserNestedInput
+    turfmates?: TurfmatesUpdateManyWithoutUserNestedInput
+    turfmateOf?: TurfmatesUpdateManyWithoutTurfmateNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEventsOrganizedInput = {
@@ -9735,9 +11443,11 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     rating?: FloatFieldUpdateOperationsInput | number
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sentRequests?: TurfmateUncheckedUpdateManyWithoutPlayer1NestedInput
-    receivedRequests?: TurfmateUncheckedUpdateManyWithoutPlayer2NestedInput
+    sentRequests?: TurfmateRequestsUncheckedUpdateManyWithoutPlayer1NestedInput
+    receivedRequests?: TurfmateRequestsUncheckedUpdateManyWithoutPlayer2NestedInput
     bookings?: BookingUncheckedUpdateManyWithoutUserNestedInput
+    turfmates?: TurfmatesUncheckedUpdateManyWithoutUserNestedInput
+    turfmateOf?: TurfmatesUncheckedUpdateManyWithoutTurfmateNestedInput
   }
 
   export type VenueUpsertWithoutEventsOrganizedInput = {
@@ -9903,9 +11613,11 @@ export namespace Prisma {
     role?: $Enums.Role
     rating?: number
     refreshToken?: string | null
-    sentRequests?: TurfmateCreateNestedManyWithoutPlayer1Input
-    receivedRequests?: TurfmateCreateNestedManyWithoutPlayer2Input
+    sentRequests?: TurfmateRequestsCreateNestedManyWithoutPlayer1Input
+    receivedRequests?: TurfmateRequestsCreateNestedManyWithoutPlayer2Input
     eventsOrganized?: EventCreateNestedManyWithoutOrganizerInput
+    turfmates?: TurfmatesCreateNestedManyWithoutUserInput
+    turfmateOf?: TurfmatesCreateNestedManyWithoutTurfmateInput
   }
 
   export type UserUncheckedCreateWithoutBookingsInput = {
@@ -9922,9 +11634,11 @@ export namespace Prisma {
     role?: $Enums.Role
     rating?: number
     refreshToken?: string | null
-    sentRequests?: TurfmateUncheckedCreateNestedManyWithoutPlayer1Input
-    receivedRequests?: TurfmateUncheckedCreateNestedManyWithoutPlayer2Input
+    sentRequests?: TurfmateRequestsUncheckedCreateNestedManyWithoutPlayer1Input
+    receivedRequests?: TurfmateRequestsUncheckedCreateNestedManyWithoutPlayer2Input
     eventsOrganized?: EventUncheckedCreateNestedManyWithoutOrganizerInput
+    turfmates?: TurfmatesUncheckedCreateNestedManyWithoutUserInput
+    turfmateOf?: TurfmatesUncheckedCreateNestedManyWithoutTurfmateInput
   }
 
   export type UserCreateOrConnectWithoutBookingsInput = {
@@ -10024,9 +11738,11 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     rating?: FloatFieldUpdateOperationsInput | number
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sentRequests?: TurfmateUpdateManyWithoutPlayer1NestedInput
-    receivedRequests?: TurfmateUpdateManyWithoutPlayer2NestedInput
+    sentRequests?: TurfmateRequestsUpdateManyWithoutPlayer1NestedInput
+    receivedRequests?: TurfmateRequestsUpdateManyWithoutPlayer2NestedInput
     eventsOrganized?: EventUpdateManyWithoutOrganizerNestedInput
+    turfmates?: TurfmatesUpdateManyWithoutUserNestedInput
+    turfmateOf?: TurfmatesUpdateManyWithoutTurfmateNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBookingsInput = {
@@ -10042,9 +11758,11 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     rating?: FloatFieldUpdateOperationsInput | number
     refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    sentRequests?: TurfmateUncheckedUpdateManyWithoutPlayer1NestedInput
-    receivedRequests?: TurfmateUncheckedUpdateManyWithoutPlayer2NestedInput
+    sentRequests?: TurfmateRequestsUncheckedUpdateManyWithoutPlayer1NestedInput
+    receivedRequests?: TurfmateRequestsUncheckedUpdateManyWithoutPlayer2NestedInput
     eventsOrganized?: EventUncheckedUpdateManyWithoutOrganizerNestedInput
+    turfmates?: TurfmatesUncheckedUpdateManyWithoutUserNestedInput
+    turfmateOf?: TurfmatesUncheckedUpdateManyWithoutTurfmateNestedInput
   }
 
   export type EventUpsertWithoutBookingsInput = {
@@ -10123,16 +11841,16 @@ export namespace Prisma {
     eventsOrganized?: EventUncheckedUpdateManyWithoutVenueNestedInput
   }
 
-  export type TurfmateCreateManyPlayer1Input = {
+  export type TurfmateRequestsCreateManyPlayer1Input = {
     id?: string
-    uid2: string
+    receiver: string
     status: $Enums.FriendStatus
     createdAt?: Date | string
   }
 
-  export type TurfmateCreateManyPlayer2Input = {
+  export type TurfmateRequestsCreateManyPlayer2Input = {
     id?: string
-    uid1: string
+    sender: string
     status: $Enums.FriendStatus
     createdAt?: Date | string
   }
@@ -10157,38 +11875,50 @@ export namespace Prisma {
     status: $Enums.PaymentStatus
   }
 
-  export type TurfmateUpdateWithoutPlayer1Input = {
+  export type TurfmatesCreateManyUserInput = {
+    id?: string
+    turfmateId: string
+    createdAt?: Date | string
+  }
+
+  export type TurfmatesCreateManyTurfmateInput = {
+    id?: string
+    userId: string
+    createdAt?: Date | string
+  }
+
+  export type TurfmateRequestsUpdateWithoutPlayer1Input = {
     status?: EnumFriendStatusFieldUpdateOperationsInput | $Enums.FriendStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     player2?: UserUpdateOneRequiredWithoutReceivedRequestsNestedInput
   }
 
-  export type TurfmateUncheckedUpdateWithoutPlayer1Input = {
-    uid2?: StringFieldUpdateOperationsInput | string
+  export type TurfmateRequestsUncheckedUpdateWithoutPlayer1Input = {
+    receiver?: StringFieldUpdateOperationsInput | string
     status?: EnumFriendStatusFieldUpdateOperationsInput | $Enums.FriendStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type TurfmateUncheckedUpdateManyWithoutPlayer1Input = {
-    uid2?: StringFieldUpdateOperationsInput | string
+  export type TurfmateRequestsUncheckedUpdateManyWithoutPlayer1Input = {
+    receiver?: StringFieldUpdateOperationsInput | string
     status?: EnumFriendStatusFieldUpdateOperationsInput | $Enums.FriendStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type TurfmateUpdateWithoutPlayer2Input = {
+  export type TurfmateRequestsUpdateWithoutPlayer2Input = {
     status?: EnumFriendStatusFieldUpdateOperationsInput | $Enums.FriendStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     player1?: UserUpdateOneRequiredWithoutSentRequestsNestedInput
   }
 
-  export type TurfmateUncheckedUpdateWithoutPlayer2Input = {
-    uid1?: StringFieldUpdateOperationsInput | string
+  export type TurfmateRequestsUncheckedUpdateWithoutPlayer2Input = {
+    sender?: StringFieldUpdateOperationsInput | string
     status?: EnumFriendStatusFieldUpdateOperationsInput | $Enums.FriendStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type TurfmateUncheckedUpdateManyWithoutPlayer2Input = {
-    uid1?: StringFieldUpdateOperationsInput | string
+  export type TurfmateRequestsUncheckedUpdateManyWithoutPlayer2Input = {
+    sender?: StringFieldUpdateOperationsInput | string
     status?: EnumFriendStatusFieldUpdateOperationsInput | $Enums.FriendStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10247,6 +11977,36 @@ export namespace Prisma {
     venueId?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  }
+
+  export type TurfmatesUpdateWithoutUserInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    turfmate?: UserUpdateOneRequiredWithoutTurfmateOfNestedInput
+  }
+
+  export type TurfmatesUncheckedUpdateWithoutUserInput = {
+    turfmateId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TurfmatesUncheckedUpdateManyWithoutUserInput = {
+    turfmateId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TurfmatesUpdateWithoutTurfmateInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutTurfmatesNestedInput
+  }
+
+  export type TurfmatesUncheckedUpdateWithoutTurfmateInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TurfmatesUncheckedUpdateManyWithoutTurfmateInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type BookingCreateManyEventInput = {

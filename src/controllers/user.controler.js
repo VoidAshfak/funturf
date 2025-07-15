@@ -5,7 +5,7 @@ import { uploadMedia } from "../utils/mediaUpload.js"
 import jwt from "jsonwebtoken"
 import prisma from "../prisma.js"
 import bcrypt from "bcrypt"
-
+import userCache from "../utils/cache.js";
 
 
 const generateAccessToken = (user) => {
@@ -89,7 +89,7 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new ApiError(400, "All fields are required");
     }
 
-    console.log("Request Body: " ,req.body);
+    console.log("Request Body: ", req.body);
 
 
 
@@ -210,10 +210,10 @@ const loginUser = asyncHandler(async (req, res) => {
         .json(
             new ApiResponse(
                 200,
+                "User Logged In Successfully.",
                 {
                     user: loggedInUser,
                 },
-                "User Logged In Successfully."
             )
         )
 })
@@ -305,9 +305,72 @@ const tokenRefresh = asyncHandler(async (req, res) => {
 
 })
 
+
+// Using node-cache | (Us redis in future)
+const varifyLogin = asyncHandler(async (req, res) => {
+    console.log("Login varification executed");
+    
+    const accessToken = req.cookies.accessToken || req.body.accessToken    
+    if (!accessToken) {
+        return res.status(401).json(new ApiResponse(401, "Unauthorized request"))
+    }
+
+    try {
+        const decodedToken = jwt.verify(
+            accessToken,
+            process.env.ACCESS_TOKEN_SECRET
+        )
+        const userId = decodedToken.id
+
+        // Check Cache first
+        let cachedUser = userCache.get(userId)
+
+        if (!cachedUser) {
+            console.log("Cache miss");
+            
+            const user = await prisma.user.findUnique({
+                where: {
+                    id: decodedToken.id
+                },
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    phone: true,
+                    address: true,
+                    bio: true,
+                    sportsPreferences: true,
+                    eventsJoined: true,
+                    role: true,
+                    rating: true,
+                    profilePicture: true
+                }
+            })
+
+            if (!user) {
+                return res.status(401).json(new ApiError(401, "Invalid access token"))
+            }
+            // cache the result
+            userCache.set(userId, user)
+            cachedUser = user
+        }
+
+        console.log("Cache hit");
+        
+        return res.
+            status(200)
+            .json(new ApiResponse(200, "User logged in successfully", { user:cachedUser }))
+
+
+    } catch (error) {
+        throw new ApiError(401, "Access token is expired or invalid")
+    }
+})
+
 export {
     registerUser,
     loginUser,
     logoutUser,
-    tokenRefresh
+    tokenRefresh,
+    varifyLogin
 }

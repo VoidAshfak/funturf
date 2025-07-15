@@ -20,9 +20,9 @@ enum Sports {
 }
 
 enum FriendStatus {
-    REQ_UID1
-    REQ_UID2
-    FRIEND
+    PENDING
+    ACCEPTED
+    REJECTED
 }
 
 enum EventStatus {
@@ -52,25 +52,41 @@ model User {
     refreshToken      String?
 
     // relations
-    sentRequests     Turfmate[] @relation("Sender")
-    receivedRequests Turfmate[] @relation("Receiver")
-    eventsOrganized  Event[]    @relation("UserToEvents")
-    bookings         Booking[]  @relation("userBooked")
+    sentRequests     TurfmateRequests[] @relation("Sender")
+    receivedRequests TurfmateRequests[] @relation("Receiver")
+    eventsOrganized  Event[]            @relation("UserToEvents")
+    bookings         Booking[]          @relation("userBooked")
+    turfmates        Turfmates[]        @relation("UserTurfmates")
+    turfmateOf       Turfmates[]        @relation("UserTurfmateOf")
 }
 
-model Turfmate {
+model TurfmateRequests {
     id String @id @default(auto()) @map("_id") @db.ObjectId
 
-    uid1      String       @db.ObjectId // Requester
-    uid2      String       @db.ObjectId // Target
+    sender    String       @db.ObjectId // Requester
+    receiver  String       @db.ObjectId // Target
     status    FriendStatus
     createdAt DateTime     @default(now())
 
     // relations
-    player1 User @relation("Sender", fields: [uid1], references: [id])
-    player2 User @relation("Receiver", fields: [uid2], references: [id])
+    player1 User @relation("Sender", fields: [sender], references: [id])
+    player2 User @relation("Receiver", fields: [receiver], references: [id])
 
-    @@unique([uid1, uid2])
+    @@unique([sender, receiver])
+    @@index([receiver])
+}
+
+model Turfmates {
+    id         String   @id @default(auto()) @map("_id") @db.ObjectId
+    userId     String   @db.ObjectId
+    turfmateId String   @db.ObjectId
+    createdAt  DateTime @default(now())
+
+    // Relations
+    user     User @relation("UserTurfmates", fields: [userId], references: [id])
+    turfmate User @relation("UserTurfmateOf", fields: [turfmateId], references: [id])
+
+    @@unique([userId, turfmateId])
 }
 
 model Event {
