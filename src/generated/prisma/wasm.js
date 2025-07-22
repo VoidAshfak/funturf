@@ -154,7 +154,8 @@ exports.Prisma.EventScalarFieldEnum = {
   playersRequired: 'playersRequired',
   playersJoined: 'playersJoined',
   status: 'status',
-  venueId: 'venueId'
+  venueId: 'venueId',
+  rules: 'rules'
 };
 
 exports.Prisma.VenueScalarFieldEnum = {

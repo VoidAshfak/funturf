@@ -4724,12 +4724,10 @@ export namespace Prisma {
 
   export type EventAvgAggregateOutputType = {
     playersRequired: number | null
-    playersJoined: number | null
   }
 
   export type EventSumAggregateOutputType = {
     playersRequired: number | null
-    playersJoined: number | null
   }
 
   export type EventMinAggregateOutputType = {
@@ -4740,9 +4738,9 @@ export namespace Prisma {
     sport: $Enums.Sports | null
     date: Date | null
     playersRequired: number | null
-    playersJoined: number | null
     status: $Enums.EventStatus | null
     venueId: string | null
+    rules: string | null
   }
 
   export type EventMaxAggregateOutputType = {
@@ -4753,9 +4751,9 @@ export namespace Prisma {
     sport: $Enums.Sports | null
     date: Date | null
     playersRequired: number | null
-    playersJoined: number | null
     status: $Enums.EventStatus | null
     venueId: string | null
+    rules: string | null
   }
 
   export type EventCountAggregateOutputType = {
@@ -4769,18 +4767,17 @@ export namespace Prisma {
     playersJoined: number
     status: number
     venueId: number
+    rules: number
     _all: number
   }
 
 
   export type EventAvgAggregateInputType = {
     playersRequired?: true
-    playersJoined?: true
   }
 
   export type EventSumAggregateInputType = {
     playersRequired?: true
-    playersJoined?: true
   }
 
   export type EventMinAggregateInputType = {
@@ -4791,9 +4788,9 @@ export namespace Prisma {
     sport?: true
     date?: true
     playersRequired?: true
-    playersJoined?: true
     status?: true
     venueId?: true
+    rules?: true
   }
 
   export type EventMaxAggregateInputType = {
@@ -4804,9 +4801,9 @@ export namespace Prisma {
     sport?: true
     date?: true
     playersRequired?: true
-    playersJoined?: true
     status?: true
     venueId?: true
+    rules?: true
   }
 
   export type EventCountAggregateInputType = {
@@ -4820,6 +4817,7 @@ export namespace Prisma {
     playersJoined?: true
     status?: true
     venueId?: true
+    rules?: true
     _all?: true
   }
 
@@ -4917,9 +4915,10 @@ export namespace Prisma {
     sport: $Enums.Sports
     date: Date
     playersRequired: number
-    playersJoined: number
+    playersJoined: string[]
     status: $Enums.EventStatus
     venueId: string
+    rules: string | null
     _count: EventCountAggregateOutputType | null
     _avg: EventAvgAggregateOutputType | null
     _sum: EventSumAggregateOutputType | null
@@ -4952,6 +4951,7 @@ export namespace Prisma {
     playersJoined?: boolean
     status?: boolean
     venueId?: boolean
+    rules?: boolean
     organizer?: boolean | UserDefaultArgs<ExtArgs>
     venue?: boolean | VenueDefaultArgs<ExtArgs>
     bookings?: boolean | Event$bookingsArgs<ExtArgs>
@@ -4971,9 +4971,10 @@ export namespace Prisma {
     playersJoined?: boolean
     status?: boolean
     venueId?: boolean
+    rules?: boolean
   }
 
-  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "organizerId" | "sport" | "date" | "playersRequired" | "playersJoined" | "status" | "venueId", ExtArgs["result"]["event"]>
+  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "organizerId" | "sport" | "date" | "playersRequired" | "playersJoined" | "status" | "venueId" | "rules", ExtArgs["result"]["event"]>
   export type EventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organizer?: boolean | UserDefaultArgs<ExtArgs>
     venue?: boolean | VenueDefaultArgs<ExtArgs>
@@ -4996,9 +4997,10 @@ export namespace Prisma {
       sport: $Enums.Sports
       date: Date
       playersRequired: number
-      playersJoined: number
+      playersJoined: string[]
       status: $Enums.EventStatus
       venueId: string
+      rules: string | null
     }, ExtArgs["result"]["event"]>
     composites: {}
   }
@@ -5401,9 +5403,10 @@ export namespace Prisma {
     readonly sport: FieldRef<"Event", 'Sports'>
     readonly date: FieldRef<"Event", 'DateTime'>
     readonly playersRequired: FieldRef<"Event", 'Int'>
-    readonly playersJoined: FieldRef<"Event", 'Int'>
+    readonly playersJoined: FieldRef<"Event", 'String[]'>
     readonly status: FieldRef<"Event", 'EventStatus'>
     readonly venueId: FieldRef<"Event", 'String'>
+    readonly rules: FieldRef<"Event", 'String'>
   }
     
 
@@ -8012,7 +8015,8 @@ export namespace Prisma {
     playersRequired: 'playersRequired',
     playersJoined: 'playersJoined',
     status: 'status',
-    venueId: 'venueId'
+    venueId: 'venueId',
+    rules: 'rules'
   };
 
   export type EventScalarFieldEnum = (typeof EventScalarFieldEnum)[keyof typeof EventScalarFieldEnum]
@@ -8434,9 +8438,10 @@ export namespace Prisma {
     sport?: EnumSportsFilter<"Event"> | $Enums.Sports
     date?: DateTimeFilter<"Event"> | Date | string
     playersRequired?: IntFilter<"Event"> | number
-    playersJoined?: IntFilter<"Event"> | number
+    playersJoined?: StringNullableListFilter<"Event">
     status?: EnumEventStatusFilter<"Event"> | $Enums.EventStatus
     venueId?: StringFilter<"Event"> | string
+    rules?: StringNullableFilter<"Event"> | string | null
     organizer?: XOR<UserScalarRelationFilter, UserWhereInput>
     venue?: XOR<VenueScalarRelationFilter, VenueWhereInput>
     bookings?: BookingListRelationFilter
@@ -8453,6 +8458,7 @@ export namespace Prisma {
     playersJoined?: SortOrder
     status?: SortOrder
     venueId?: SortOrder
+    rules?: SortOrder
     organizer?: UserOrderByWithRelationInput
     venue?: VenueOrderByWithRelationInput
     bookings?: BookingOrderByRelationAggregateInput
@@ -8469,9 +8475,10 @@ export namespace Prisma {
     sport?: EnumSportsFilter<"Event"> | $Enums.Sports
     date?: DateTimeFilter<"Event"> | Date | string
     playersRequired?: IntFilter<"Event"> | number
-    playersJoined?: IntFilter<"Event"> | number
+    playersJoined?: StringNullableListFilter<"Event">
     status?: EnumEventStatusFilter<"Event"> | $Enums.EventStatus
     venueId?: StringFilter<"Event"> | string
+    rules?: StringNullableFilter<"Event"> | string | null
     organizer?: XOR<UserScalarRelationFilter, UserWhereInput>
     venue?: XOR<VenueScalarRelationFilter, VenueWhereInput>
     bookings?: BookingListRelationFilter
@@ -8488,6 +8495,7 @@ export namespace Prisma {
     playersJoined?: SortOrder
     status?: SortOrder
     venueId?: SortOrder
+    rules?: SortOrder
     _count?: EventCountOrderByAggregateInput
     _avg?: EventAvgOrderByAggregateInput
     _max?: EventMaxOrderByAggregateInput
@@ -8506,9 +8514,10 @@ export namespace Prisma {
     sport?: EnumSportsWithAggregatesFilter<"Event"> | $Enums.Sports
     date?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     playersRequired?: IntWithAggregatesFilter<"Event"> | number
-    playersJoined?: IntWithAggregatesFilter<"Event"> | number
+    playersJoined?: StringNullableListFilter<"Event">
     status?: EnumEventStatusWithAggregatesFilter<"Event"> | $Enums.EventStatus
     venueId?: StringWithAggregatesFilter<"Event"> | string
+    rules?: StringNullableWithAggregatesFilter<"Event"> | string | null
   }
 
   export type VenueWhereInput = {
@@ -8904,8 +8913,9 @@ export namespace Prisma {
     sport: $Enums.Sports
     date: Date | string
     playersRequired: number
-    playersJoined?: number
-    status: $Enums.EventStatus
+    playersJoined?: EventCreateplayersJoinedInput | string[]
+    status?: $Enums.EventStatus
+    rules?: string | null
     organizer: UserCreateNestedOneWithoutEventsOrganizedInput
     venue: VenueCreateNestedOneWithoutEventsOrganizedInput
     bookings?: BookingCreateNestedManyWithoutEventInput
@@ -8919,9 +8929,10 @@ export namespace Prisma {
     sport: $Enums.Sports
     date: Date | string
     playersRequired: number
-    playersJoined?: number
-    status: $Enums.EventStatus
+    playersJoined?: EventCreateplayersJoinedInput | string[]
+    status?: $Enums.EventStatus
     venueId: string
+    rules?: string | null
     bookings?: BookingUncheckedCreateNestedManyWithoutEventInput
   }
 
@@ -8931,8 +8942,9 @@ export namespace Prisma {
     sport?: EnumSportsFieldUpdateOperationsInput | $Enums.Sports
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     playersRequired?: IntFieldUpdateOperationsInput | number
-    playersJoined?: IntFieldUpdateOperationsInput | number
+    playersJoined?: EventUpdateplayersJoinedInput | string[]
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    rules?: NullableStringFieldUpdateOperationsInput | string | null
     organizer?: UserUpdateOneRequiredWithoutEventsOrganizedNestedInput
     venue?: VenueUpdateOneRequiredWithoutEventsOrganizedNestedInput
     bookings?: BookingUpdateManyWithoutEventNestedInput
@@ -8945,9 +8957,10 @@ export namespace Prisma {
     sport?: EnumSportsFieldUpdateOperationsInput | $Enums.Sports
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     playersRequired?: IntFieldUpdateOperationsInput | number
-    playersJoined?: IntFieldUpdateOperationsInput | number
+    playersJoined?: EventUpdateplayersJoinedInput | string[]
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     venueId?: StringFieldUpdateOperationsInput | string
+    rules?: NullableStringFieldUpdateOperationsInput | string | null
     bookings?: BookingUncheckedUpdateManyWithoutEventNestedInput
   }
 
@@ -8959,9 +8972,10 @@ export namespace Prisma {
     sport: $Enums.Sports
     date: Date | string
     playersRequired: number
-    playersJoined?: number
-    status: $Enums.EventStatus
+    playersJoined?: EventCreateplayersJoinedInput | string[]
+    status?: $Enums.EventStatus
     venueId: string
+    rules?: string | null
   }
 
   export type EventUpdateManyMutationInput = {
@@ -8970,8 +8984,9 @@ export namespace Prisma {
     sport?: EnumSportsFieldUpdateOperationsInput | $Enums.Sports
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     playersRequired?: IntFieldUpdateOperationsInput | number
-    playersJoined?: IntFieldUpdateOperationsInput | number
+    playersJoined?: EventUpdateplayersJoinedInput | string[]
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    rules?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type EventUncheckedUpdateManyInput = {
@@ -8981,9 +8996,10 @@ export namespace Prisma {
     sport?: EnumSportsFieldUpdateOperationsInput | $Enums.Sports
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     playersRequired?: IntFieldUpdateOperationsInput | number
-    playersJoined?: IntFieldUpdateOperationsInput | number
+    playersJoined?: EventUpdateplayersJoinedInput | string[]
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     venueId?: StringFieldUpdateOperationsInput | string
+    rules?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type VenueCreateInput = {
@@ -9527,11 +9543,11 @@ export namespace Prisma {
     playersJoined?: SortOrder
     status?: SortOrder
     venueId?: SortOrder
+    rules?: SortOrder
   }
 
   export type EventAvgOrderByAggregateInput = {
     playersRequired?: SortOrder
-    playersJoined?: SortOrder
   }
 
   export type EventMaxOrderByAggregateInput = {
@@ -9542,9 +9558,9 @@ export namespace Prisma {
     sport?: SortOrder
     date?: SortOrder
     playersRequired?: SortOrder
-    playersJoined?: SortOrder
     status?: SortOrder
     venueId?: SortOrder
+    rules?: SortOrder
   }
 
   export type EventMinOrderByAggregateInput = {
@@ -9555,14 +9571,13 @@ export namespace Prisma {
     sport?: SortOrder
     date?: SortOrder
     playersRequired?: SortOrder
-    playersJoined?: SortOrder
     status?: SortOrder
     venueId?: SortOrder
+    rules?: SortOrder
   }
 
   export type EventSumOrderByAggregateInput = {
     playersRequired?: SortOrder
-    playersJoined?: SortOrder
   }
 
   export type EnumSportsWithAggregatesFilter<$PrismaModel = never> = {
@@ -10083,6 +10098,10 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTurfmateOfInput, UserUpdateWithoutTurfmateOfInput>, UserUncheckedUpdateWithoutTurfmateOfInput>
   }
 
+  export type EventCreateplayersJoinedInput = {
+    set: string[]
+  }
+
   export type UserCreateNestedOneWithoutEventsOrganizedInput = {
     create?: XOR<UserCreateWithoutEventsOrganizedInput, UserUncheckedCreateWithoutEventsOrganizedInput>
     connectOrCreate?: UserCreateOrConnectWithoutEventsOrganizedInput
@@ -10119,6 +10138,11 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type EventUpdateplayersJoinedInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type EnumEventStatusFieldUpdateOperationsInput = {
@@ -10658,8 +10682,9 @@ export namespace Prisma {
     sport: $Enums.Sports
     date: Date | string
     playersRequired: number
-    playersJoined?: number
-    status: $Enums.EventStatus
+    playersJoined?: EventCreateplayersJoinedInput | string[]
+    status?: $Enums.EventStatus
+    rules?: string | null
     venue: VenueCreateNestedOneWithoutEventsOrganizedInput
     bookings?: BookingCreateNestedManyWithoutEventInput
   }
@@ -10671,9 +10696,10 @@ export namespace Prisma {
     sport: $Enums.Sports
     date: Date | string
     playersRequired: number
-    playersJoined?: number
-    status: $Enums.EventStatus
+    playersJoined?: EventCreateplayersJoinedInput | string[]
+    status?: $Enums.EventStatus
     venueId: string
+    rules?: string | null
     bookings?: BookingUncheckedCreateNestedManyWithoutEventInput
   }
 
@@ -10823,9 +10849,10 @@ export namespace Prisma {
     sport?: EnumSportsFilter<"Event"> | $Enums.Sports
     date?: DateTimeFilter<"Event"> | Date | string
     playersRequired?: IntFilter<"Event"> | number
-    playersJoined?: IntFilter<"Event"> | number
+    playersJoined?: StringNullableListFilter<"Event">
     status?: EnumEventStatusFilter<"Event"> | $Enums.EventStatus
     venueId?: StringFilter<"Event"> | string
+    rules?: StringNullableFilter<"Event"> | string | null
   }
 
   export type BookingUpsertWithWhereUniqueWithoutUserInput = {
@@ -11514,8 +11541,9 @@ export namespace Prisma {
     sport: $Enums.Sports
     date: Date | string
     playersRequired: number
-    playersJoined?: number
-    status: $Enums.EventStatus
+    playersJoined?: EventCreateplayersJoinedInput | string[]
+    status?: $Enums.EventStatus
+    rules?: string | null
     organizer: UserCreateNestedOneWithoutEventsOrganizedInput
     bookings?: BookingCreateNestedManyWithoutEventInput
   }
@@ -11528,8 +11556,9 @@ export namespace Prisma {
     sport: $Enums.Sports
     date: Date | string
     playersRequired: number
-    playersJoined?: number
-    status: $Enums.EventStatus
+    playersJoined?: EventCreateplayersJoinedInput | string[]
+    status?: $Enums.EventStatus
+    rules?: string | null
     bookings?: BookingUncheckedCreateNestedManyWithoutEventInput
   }
 
@@ -11653,8 +11682,9 @@ export namespace Prisma {
     sport: $Enums.Sports
     date: Date | string
     playersRequired: number
-    playersJoined?: number
-    status: $Enums.EventStatus
+    playersJoined?: EventCreateplayersJoinedInput | string[]
+    status?: $Enums.EventStatus
+    rules?: string | null
     organizer: UserCreateNestedOneWithoutEventsOrganizedInput
     venue: VenueCreateNestedOneWithoutEventsOrganizedInput
   }
@@ -11667,9 +11697,10 @@ export namespace Prisma {
     sport: $Enums.Sports
     date: Date | string
     playersRequired: number
-    playersJoined?: number
-    status: $Enums.EventStatus
+    playersJoined?: EventCreateplayersJoinedInput | string[]
+    status?: $Enums.EventStatus
     venueId: string
+    rules?: string | null
   }
 
   export type EventCreateOrConnectWithoutBookingsInput = {
@@ -11782,8 +11813,9 @@ export namespace Prisma {
     sport?: EnumSportsFieldUpdateOperationsInput | $Enums.Sports
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     playersRequired?: IntFieldUpdateOperationsInput | number
-    playersJoined?: IntFieldUpdateOperationsInput | number
+    playersJoined?: EventUpdateplayersJoinedInput | string[]
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    rules?: NullableStringFieldUpdateOperationsInput | string | null
     organizer?: UserUpdateOneRequiredWithoutEventsOrganizedNestedInput
     venue?: VenueUpdateOneRequiredWithoutEventsOrganizedNestedInput
   }
@@ -11795,9 +11827,10 @@ export namespace Prisma {
     sport?: EnumSportsFieldUpdateOperationsInput | $Enums.Sports
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     playersRequired?: IntFieldUpdateOperationsInput | number
-    playersJoined?: IntFieldUpdateOperationsInput | number
+    playersJoined?: EventUpdateplayersJoinedInput | string[]
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     venueId?: StringFieldUpdateOperationsInput | string
+    rules?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type VenueUpsertWithoutBookingsInput = {
@@ -11862,9 +11895,10 @@ export namespace Prisma {
     sport: $Enums.Sports
     date: Date | string
     playersRequired: number
-    playersJoined?: number
-    status: $Enums.EventStatus
+    playersJoined?: EventCreateplayersJoinedInput | string[]
+    status?: $Enums.EventStatus
     venueId: string
+    rules?: string | null
   }
 
   export type BookingCreateManyUserInput = {
@@ -11929,8 +11963,9 @@ export namespace Prisma {
     sport?: EnumSportsFieldUpdateOperationsInput | $Enums.Sports
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     playersRequired?: IntFieldUpdateOperationsInput | number
-    playersJoined?: IntFieldUpdateOperationsInput | number
+    playersJoined?: EventUpdateplayersJoinedInput | string[]
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    rules?: NullableStringFieldUpdateOperationsInput | string | null
     venue?: VenueUpdateOneRequiredWithoutEventsOrganizedNestedInput
     bookings?: BookingUpdateManyWithoutEventNestedInput
   }
@@ -11941,9 +11976,10 @@ export namespace Prisma {
     sport?: EnumSportsFieldUpdateOperationsInput | $Enums.Sports
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     playersRequired?: IntFieldUpdateOperationsInput | number
-    playersJoined?: IntFieldUpdateOperationsInput | number
+    playersJoined?: EventUpdateplayersJoinedInput | string[]
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     venueId?: StringFieldUpdateOperationsInput | string
+    rules?: NullableStringFieldUpdateOperationsInput | string | null
     bookings?: BookingUncheckedUpdateManyWithoutEventNestedInput
   }
 
@@ -11953,9 +11989,10 @@ export namespace Prisma {
     sport?: EnumSportsFieldUpdateOperationsInput | $Enums.Sports
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     playersRequired?: IntFieldUpdateOperationsInput | number
-    playersJoined?: IntFieldUpdateOperationsInput | number
+    playersJoined?: EventUpdateplayersJoinedInput | string[]
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     venueId?: StringFieldUpdateOperationsInput | string
+    rules?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BookingUpdateWithoutUserInput = {
@@ -12046,8 +12083,9 @@ export namespace Prisma {
     sport: $Enums.Sports
     date: Date | string
     playersRequired: number
-    playersJoined?: number
-    status: $Enums.EventStatus
+    playersJoined?: EventCreateplayersJoinedInput | string[]
+    status?: $Enums.EventStatus
+    rules?: string | null
   }
 
   export type BookingCreateManyVenueInput = {
@@ -12064,8 +12102,9 @@ export namespace Prisma {
     sport?: EnumSportsFieldUpdateOperationsInput | $Enums.Sports
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     playersRequired?: IntFieldUpdateOperationsInput | number
-    playersJoined?: IntFieldUpdateOperationsInput | number
+    playersJoined?: EventUpdateplayersJoinedInput | string[]
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    rules?: NullableStringFieldUpdateOperationsInput | string | null
     organizer?: UserUpdateOneRequiredWithoutEventsOrganizedNestedInput
     bookings?: BookingUpdateManyWithoutEventNestedInput
   }
@@ -12077,8 +12116,9 @@ export namespace Prisma {
     sport?: EnumSportsFieldUpdateOperationsInput | $Enums.Sports
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     playersRequired?: IntFieldUpdateOperationsInput | number
-    playersJoined?: IntFieldUpdateOperationsInput | number
+    playersJoined?: EventUpdateplayersJoinedInput | string[]
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    rules?: NullableStringFieldUpdateOperationsInput | string | null
     bookings?: BookingUncheckedUpdateManyWithoutEventNestedInput
   }
 
@@ -12089,8 +12129,9 @@ export namespace Prisma {
     sport?: EnumSportsFieldUpdateOperationsInput | $Enums.Sports
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     playersRequired?: IntFieldUpdateOperationsInput | number
-    playersJoined?: IntFieldUpdateOperationsInput | number
+    playersJoined?: EventUpdateplayersJoinedInput | string[]
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    rules?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BookingUpdateWithoutVenueInput = {

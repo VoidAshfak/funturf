@@ -46,7 +46,7 @@ model User {
   phone             String
   profilePicture    String?
   sportsPreferences Sports?  @default(FOOTBALL)
-  eventsJoined      String[]
+  eventsJoined      String[] @db.ObjectId
   role              Role     @default(PLAYER)
   rating            Float    @default(0.0)
   refreshToken      String?
@@ -97,9 +97,10 @@ model Event {
   sport           Sports
   date            DateTime
   playersRequired Int
-  playersJoined   Int         @default(0)
-  status          EventStatus
+  playersJoined   String[]    @default([]) @db.ObjectId
+  status          EventStatus @default(PENDING)
   venueId         String      @db.ObjectId
+  rules           String?
 
   // relations
   organizer User      @relation(fields: [organizerId], references: [id], "UserToEvents")
