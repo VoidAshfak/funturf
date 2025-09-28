@@ -306,9 +306,9 @@ const tokenRefresh = asyncHandler(async (req, res) => {
 })
 
 
-// Using node-cache | (Us redis in future)
+// Using node-cache | (Use redis in future)
 const varifyLogin = asyncHandler(async (req, res) => {
-    console.log("Login varification executed");
+    console.log("Varifying Login...");
     
     const accessToken = req.cookies.accessToken || req.body.accessToken    
     if (!accessToken) {
