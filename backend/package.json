@@ -5,7 +5,12 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon  src/index.js"
+    "dev": "nodemon  src/index.js",
+    "prisma:generate:pg": "prisma generate --schema=prisma/postgresql/schema.prisma",
+    "prisma:generate:mongo": "prisma generate --schema=prisma/mongodb/schema.prisma",
+    "prisma:generate": "npm run prisma:generate:pg && npm run prisma:generate:mongo",
+    "prisma:migrate": "prisma migrate dev --schema=prisma/postgresql/schema.prisma",
+    "prisma:push:mongo": "prisma db push --schema=prisma/mongodb/schema.prisma"
   },
   "keywords": [
     "turf",
@@ -21,9 +26,6 @@
     "nodemon": "^3.1.9",
     "prettier": "^3.5.3",
     "prisma": "^6.7.0"
-  },
-  "prisma": {
-    "seed": "node prisma/seed.js"
   },
   "dependencies": {
     "@prisma/client": "^6.7.0",

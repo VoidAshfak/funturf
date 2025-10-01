@@ -8,7 +8,7 @@ RUN npm install && apk add --no-cache curl
 
 COPY . .
 
-RUN npx prisma generate
+RUN npm run prisma:generate
 
 EXPOSE 8080
 

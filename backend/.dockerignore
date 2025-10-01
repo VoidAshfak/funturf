@@ -9,6 +9,7 @@ yarn-error.log*
 coverage/
 dist/
 build/
+src/generated/
 .env
 .env.local
 .env.development.local
