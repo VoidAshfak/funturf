@@ -56,7 +56,7 @@ services:
         value: appuser
       - key: POSTGRES_PASSWORD
         value: apppass
-    disk:
-      name: pgdata
-      mountPath: /var/lib/postgresql/data
-      sizeGB: 10
+    # disk:
+    #   name: pgdata
+    #   mountPath: /var/lib/postgresql/data
+    #   sizeGB: 10
