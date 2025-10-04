@@ -1,7 +1,7 @@
 import { ApiError } from "../utils/apiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken"
-import prisma from "../prisma.js";
+import {mongoClient} from "../prisma.js";
 import bcrypt from "bcrypt";
 import userCache from "../utils/cache.js";
 
@@ -16,7 +16,7 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
     
         const decodedInfo = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
     
-        const user = await prisma.user.findUnique({
+        const user = await mongoClient.user.findUnique({
             where: {
                 id: decodedInfo.id
             },
@@ -74,6 +74,8 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
 // })
 
 export const encryptPassword = asyncHandler(async (req, _, next) => {
-    req.body.password = await bcrypt.hash(req.body.password, 10);
+    console.log(req.body.password_hash);
+    
+    req.body.password_hash = await bcrypt.hash(req.body.password_hash, 10);
     next()
 })

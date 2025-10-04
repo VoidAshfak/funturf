@@ -3,7 +3,7 @@ import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { uploadMedia } from "../utils/mediaUpload.js"
 import jwt from "jsonwebtoken"
-import prisma from "../prisma.js"
+import {mongoClient, pgClient} from "../prisma.js"
 import bcrypt from "bcrypt"
 import userCache from "../utils/cache.js";
 
@@ -13,7 +13,6 @@ const generateAccessToken = (user) => {
         {
             id: user.id,
             email: user.email,
-            name: user.name
         },
         process.env.ACCESS_TOKEN_SECRET,
         {
@@ -41,27 +40,25 @@ const isPasswordCorrect = async (password, hashedPassword) => {
 
 const generateAccessAndRefreshTokens = async (userId) => {
     try {
-        const user = await prisma.user.findUnique({
+        const user = await pgClient.users.findUnique({
             where: {
                 id: userId
             },
             select: {
                 id: true,
-                email: true,
-                name: true
-            }
+                email: true            }
         })
         const accessToken = generateAccessToken(user)
         const refreshToken = generateRefreshToken(user)
 
-        await prisma.user.update({
-            where: {
-                id: userId
-            },
-            data: {
-                refreshToken: refreshToken
-            }
-        })
+        // await pgClient.user.update({
+        //     where: {
+        //         id: userId
+        //     },
+        //     data: {
+        //         refreshToken: refreshToken
+        //     }
+        // })
 
         return { accessToken, refreshToken }
 
@@ -72,20 +69,25 @@ const generateAccessAndRefreshTokens = async (userId) => {
 
 const registerUser = asyncHandler(async (req, res) => {
     const {
-        name,
         email,
-        password,
         phone,
-        address,
+        password_hash,
+        first_name,
+        last_name,
+        date_of_birth,
+        gender,
+        profile_picture_url,
         bio,
-        sportsPreferences,
-        eventsJoined,
-        role,
-        rating,
+        user_type,
+        status,
+        email_verified,
+        phone_verified,
+        preferred_language,
+        timezone
     } = req.body;
 
 
-    if (!name || !email || !password || !phone) {
+    if (!first_name || !last_name || !email || !password_hash || !user_type ) {
         throw new ApiError(400, "All fields are required");
     }
 
@@ -93,9 +95,10 @@ const registerUser = asyncHandler(async (req, res) => {
 
 
 
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await pgClient.users.findUnique({
         where: {
-            email: email
+            email: email,
+            phone: phone
         }
     })
 
@@ -103,52 +106,64 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new ApiError(409, "User already exists");
     }
 
-    const profilePictureLocalPath = req.files?.profilePicture[0].path;
-    const profilePictureUrl = await uploadMedia(profilePictureLocalPath);
+    // const profilePictureLocalPath = req.files?.profilePicture[0].path;
+    // const profilePictureUrl = await uploadMedia(profilePictureLocalPath);
 
     // if (!profilePictureUrl) {
     //     throw new ApiError(400, "Profile picture upload failed");
     // }
 
-    const user = await prisma.user.create({
+    const user = await pgClient.users.create({
         data: {
-            name,
             email,
-            password,
             phone,
-            address,
+            password_hash,
+            first_name,
+            last_name,
+            date_of_birth,
+            gender,
+            profile_picture_url,
             bio,
-            sportsPreferences,
-            eventsJoined,
-            role,
-            rating,
+            user_type,
+            status,
+            email_verified,
+            phone_verified,
+            preferred_language,
+            timezone
         }
     })
 
-    const newlyCreatedUser = await prisma.user.findUnique({
+    const newlyCreatedUser = await pgClient.users.findUnique({
         where: {
             id: user.id
         },
-        select: {
-            id: true,
-            name: true,
-            email: true,
-            phone: true,
-            address: true,
-            bio: true,
-            sportsPreferences: true,
-            eventsJoined: true,
-            role: true,
-            rating: true,
-            profilePicture: true
-        }
+        // select: {
+        //     id: true,
+        //     name: true,
+        //     email: true,
+        //     phone: true,
+        //     address: true,
+        //     bio: true,
+        //     sportsPreferences: true,
+        //     eventsJoined: true,
+        //     role: true,
+        //     rating: true,
+        //     profilePicture: true
+        // }
     })
+
+    const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(newlyCreatedUser.id);
+
+    const serverResponse = {
+        ...newlyCreatedUser,
+        token: refreshToken
+    }
 
     if (!newlyCreatedUser) {
         throw new ApiError(400, "User creation failed");
     }
 
-    return res.status(200).json(new ApiResponse(200, "User created successfully", newlyCreatedUser));
+    return res.status(200).json(new ApiResponse(200, "User created successfully", serverResponse));
 
 })
 
@@ -161,7 +176,7 @@ const loginUser = asyncHandler(async (req, res) => {
         throw new ApiError(400, "All fields are required");
     }
 
-    const user = await prisma.user.findUnique({
+    const user = await mongoClient.user.findUnique({
         where: {
             email: email
         }
@@ -179,7 +194,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
     const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(user.id)
 
-    const loggedInUser = await prisma.user.findUnique({
+    const loggedInUser = await mongoClient.user.findUnique({
         where: {
             id: user.id
         },
@@ -220,7 +235,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
 const logoutUser = asyncHandler(async (req, res) => {
 
-    const modifyedUser = await prisma.user.update({
+    const modifyedUser = await mongoClient.user.update({
         where: {
             id: req.user.id
         },
@@ -263,7 +278,7 @@ const tokenRefresh = asyncHandler(async (req, res) => {
             process.env.REFRESH_TOKEN_SECRET
         )
 
-        const user = await prisma.user.findUnique({
+        const user = await mongoClient.user.findUnique({
             where: {
                 id: decodedToken.id
             },
@@ -328,7 +343,7 @@ const varifyLogin = asyncHandler(async (req, res) => {
         if (!cachedUser) {
             console.log("Cache miss");
             
-            const user = await prisma.user.findUnique({
+            const user = await mongoClient.user.findUnique({
                 where: {
                     id: decodedToken.id
                 },

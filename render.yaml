@@ -1,0 +1,74 @@
+services:
+  # Public entrypoint
+  - type: web
+    name: nginx
+    env: docker
+    plan: starter
+    rootDir: .
+    dockerfilePath: ./nginx/Dockerfile   # (OPTIONAL) If you prefer nginx:alpine, use image in Dockerfile
+    # If using a plain nginx:alpine image, create a tiny Dockerfile to copy nginx.conf into place.
+    disk:
+      # no disk for nginx
+    envVars:
+      - key: UPSTREAM1
+        value: app1:8080
+      - key: UPSTREAM2
+        value: app2:8080
+      - key: UPSTREAM3
+        value: app3:8080
+
+  # Private backend replicas
+  - type: private_service
+    name: app1
+    env: docker
+    rootDir: ./backend
+    dockerfilePath: ./backend/Dockerfile
+    envVars:
+      - key: DATABASE_URL
+        value: postgresql://appuser:apppass@db:5432/appdb
+    # attach a small disk only if you really need logs persisted across deploys
+    # disk:
+    #   name: app1-logs
+    #   mountPath: /usr/src/app/logs
+    #   sizeGB: 1
+
+  - type: private_service
+    name: app2
+    env: docker
+    rootDir: ./backend
+    dockerfilePath: ./backend/Dockerfile
+    envVars:
+      - key: DATABASE_URL
+        value: postgresql://appuser:apppass@db:5432/appdb
+
+  - type: private_service
+    name: app3
+    env: docker
+    rootDir: ./backend
+    dockerfilePath: ./backend/Dockerfile
+    envVars:
+      - key: DATABASE_URL
+        value: postgresql://appuser:apppass@db:5432/appdb
+
+  # Private Postgres with a persistent Disk
+  - type: private_service
+    name: db
+    env: docker
+    dockerCommand: >
+      docker run --rm -p 5432:5432
+      -e POSTGRES_DB=appdb -e POSTGRES_USER=appuser -e POSTGRES_PASSWORD=apppass
+      -v /var/lib/postgresql/data
+      postgres:16
+    # Prefer using an actual Dockerfile or image with "envVars" instead of dockerCommand
+    image: postgres:16
+    envVars:
+      - key: POSTGRES_DB
+        value: appdb
+      - key: POSTGRES_USER
+        value: appuser
+      - key: POSTGRES_PASSWORD
+        value: apppass
+    disk:
+      name: pgdata
+      mountPath: /var/lib/postgresql/data
+      sizeGB: 10

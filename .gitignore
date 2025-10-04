@@ -139,3 +139,6 @@ dist
 
 funturf-schema.md
 backend/src/generated/
+docker_commands.txt
+postgresql-turf-schema*
+request-handling*

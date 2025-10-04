@@ -1,8 +1,7 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
-import prisma from "../prisma.js"
-// import { Prisma } from "@prisma/client";
+import {mongoClient} from "../prisma.js"
 
 const sendTurfmateRequest = asyncHandler(async (req, res) => {
     const { receiverId } = req.body
@@ -15,7 +14,7 @@ const sendTurfmateRequest = asyncHandler(async (req, res) => {
     try {
         // Already checked sender exists through auth middleware
         // Check if receiver exists. If not, then the receiver might have been deleted.
-        const receiverExists = await prisma.user.findUnique({
+        const receiverExists = await mongoClient.user.findUnique({
             where: {
                 id: receiverId
             }
@@ -26,7 +25,7 @@ const sendTurfmateRequest = asyncHandler(async (req, res) => {
         }
 
         // Check if turfmate request already exists
-        const turfmateRequest = await prisma.turfmateRequests.findFirst({
+        const turfmateRequest = await mongoClient.turfmateRequests.findFirst({
             where: {
                 sender: req.user.id,
                 receiver: receiverId
@@ -49,7 +48,7 @@ const sendTurfmateRequest = asyncHandler(async (req, res) => {
         }
 
         // Check if the receiver has already sent a turfmate request
-        const turfmateReverseRequest = await prisma.turfmateRequests.findFirst({
+        const turfmateReverseRequest = await mongoClient.turfmateRequests.findFirst({
             where: {
                 sender: receiverId,
                 receiver: req.user.id
@@ -73,7 +72,7 @@ const sendTurfmateRequest = asyncHandler(async (req, res) => {
         }
 
 
-        const createdTurfmateRequest = await prisma.turfmateRequests.create({
+        const createdTurfmateRequest = await mongoClient.turfmateRequests.create({
             data: {
                 sender: req.user.id,
                 receiver: receiverId,
@@ -96,12 +95,12 @@ const sendTurfmateRequest = asyncHandler(async (req, res) => {
 //   if (senderId === receiverId) throw new ApiError(400, "Cannot send request to yourself");
 
 //   // Verify receiver exists
-//   const receiver = await prisma.user.findUnique({ where: { id: receiverId }, select: { id: true }});
+//   const receiver = await mongoClient.user.findUnique({ where: { id: receiverId }, select: { id: true }});
 //   if (!receiver) throw new ApiError(404, "Receiver not found");
 
 //   // Atomic block: handle duplicates & create request
 //   try {
-//     const result = await prisma.$transaction(async (tx) => {
+//     const result = await mongoClient.$transaction(async (tx) => {
 
 //       // Check reverse-pending
 //       const reverse = await tx.turfmateRequest.findFirst({
@@ -144,7 +143,7 @@ const sendTurfmateRequest = asyncHandler(async (req, res) => {
 //     return res.status(201).json({ message: "Request sent" });  // 201 Created
 
 //   } catch (err) {
-//     if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
+//     if (err instanceof mongoClient.mongoClientClientKnownRequestError && err.code === "P2002") {
 //       // unique(senderId,receiverId) violated
 //       throw new ApiError(409, "Request already exists");
 //     }
@@ -156,7 +155,7 @@ const sendTurfmateRequest = asyncHandler(async (req, res) => {
 const getPendingRequests = asyncHandler(async (req, res) => {
 
     try {
-        const pendingRequests = await prisma.turfmateRequests.findMany({
+        const pendingRequests = await mongoClient.turfmateRequests.findMany({
             where: {
                 receiver: req.user.id,
                 status: "PENDING"
@@ -173,7 +172,7 @@ const acceptTurfmateRequest = asyncHandler(async (req, res) => {
     const { requestId } = req.body;
     const receiver = req.user.id;
     try {
-        const state = await prisma.turfmateRequests.findFirst({
+        const state = await mongoClient.turfmateRequests.findFirst({
             where: {
                 id: requestId,
                 receiver: receiver
@@ -181,7 +180,7 @@ const acceptTurfmateRequest = asyncHandler(async (req, res) => {
         })
         
         if (state && state.status === 'PENDING') {
-            const acceptRequest = await prisma.turfmateRequests.update({
+            const acceptRequest = await mongoClient.turfmateRequests.update({
                 where: {
                     id: requestId,
                     receiver: receiver
@@ -191,7 +190,7 @@ const acceptTurfmateRequest = asyncHandler(async (req, res) => {
                 }
             })
             if (acceptRequest) {
-                await prisma.turfmates.create({
+                await mongoClient.turfmates.create({
                     data: {
                         userId: receiver,
                         turfmateId: acceptRequest.sender
@@ -217,7 +216,7 @@ const acceptTurfmateRequest = asyncHandler(async (req, res) => {
 
 const getTurfmates = asyncHandler(async (req, res) => {
     try {
-        const turfmates = await prisma.turfmates.findMany({
+        const turfmates = await mongoClient.turfmates.findMany({
             where: {
                 OR: [
                     { userId: req.user.id },
@@ -235,7 +234,7 @@ const getMutualTurfmates = asyncHandler(async (req, res) => {
 
     const { userTwo } = req.body
     try {
-        const userOneFriend = await prisma.turfmate.findMany({
+        const userOneFriend = await mongoClient.turfmate.findMany({
             where: {
                 status: "FRIEND",
                 OR: [
@@ -249,7 +248,7 @@ const getMutualTurfmates = asyncHandler(async (req, res) => {
             }
         })
 
-        const userTwoFriend = await prisma.turfmate.findMany({
+        const userTwoFriend = await mongoClient.turfmate.findMany({
             where: {
                 status: "FRIEND",
                 OR: [

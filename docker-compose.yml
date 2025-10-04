@@ -58,14 +58,23 @@ services:
   app1:
     <<: *backend-common
     container_name: backend-app-1
+    volumes:
+    - ./backend/prisma/postgresql:/funturf/app/prisma/postgresql
+    command: npm run dev
 
   app2:
     <<: *backend-common
     container_name: backend-app-2
+    volumes:
+    - ./backend/prisma/postgresql:/funturf/app/prisma/postgresql
+    command: npm run dev
 
   app3:
     <<: *backend-common
     container_name: backend-app-3
+    volumes:
+    - ./backend/prisma/postgresql:/funturf/app/prisma/postgresql
+    command: npm run dev
 
   nginx:
     image: nginx:alpine

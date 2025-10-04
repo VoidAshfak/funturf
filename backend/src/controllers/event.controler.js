@@ -1,7 +1,7 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
-import prisma from "../prisma.js";
+import {mongoClient} from "../prisma.js";
 
 
 const createEvent = asyncHandler(async (req, res) => {
@@ -21,7 +21,7 @@ const createEvent = asyncHandler(async (req, res) => {
         throw new ApiError(400, "A required field is missing");
     }
 
-    const createdEvent = await prisma.event.create({
+    const createdEvent = await mongoClient.event.create({
         data: {
             title,
             description,
@@ -53,7 +53,7 @@ const getEvents = asyncHandler(async (req, res) => {
     }
 
     try {
-        const events = await prisma.event.findMany({
+        const events = await mongoClient.event.findMany({
             where: {
                 OR: [
                     { organizerId: userId },
@@ -76,7 +76,7 @@ const deleteEvent = asyncHandler(async (req, res) => {
     const eventId = req.body.eventId;
     const userId =  req.user.id;
 
-    const eventExists = await prisma.event.findFirst({
+    const eventExists = await mongoClient.event.findFirst({
         where: {
             id: eventId,
             organizerId: userId
@@ -85,7 +85,7 @@ const deleteEvent = asyncHandler(async (req, res) => {
     if(eventExists) {
         throw new ApiError(400, "The event doesn't exiss.")
     }
-    const deletedEventResponse = await prisma.event.delete({
+    const deletedEventResponse = await mongoClient.event.delete({
         where: {
             id: eventId,
             organizerId: userId
