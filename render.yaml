@@ -16,7 +16,7 @@ services:
     # Nginx must listen on $PORT inside the container (handled in your templated conf)
 
   # --- Private backend replicas ---
-  - type: pserve   # alias: pserv
+  - type: pserv 
     name: app1
     env: docker
     rootDir: ./backend
@@ -25,7 +25,7 @@ services:
       - key: DATABASE_URL
         value: postgresql://appuser:apppass@db:5432/appdb
 
-  - type: pserve
+  - type: pserv
     name: app2
     env: docker
     rootDir: ./backend
@@ -34,7 +34,7 @@ services:
       - key: DATABASE_URL
         value: postgresql://appuser:apppass@db:5432/appdb
 
-  - type: pserve
+  - type: pserv
     name: app3
     env: docker
     rootDir: ./backend
@@ -44,7 +44,7 @@ services:
         value: postgresql://appuser:apppass@db:5432/appdb
 
   # --- Private Postgres with persistent Disk ---
-  - type: pserve
+  - type: pserv
     name: db
     env: docker
     image:
