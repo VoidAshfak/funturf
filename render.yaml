@@ -2,48 +2,55 @@ services:
   # --- Public entrypoint (Nginx) ---
   - type: web
     name: nginx
-    env: docker
+    runtime: docker
     rootDir: ./nginx
-    dockerfilePath: ./nginx/Dockerfile
+    dockerfilePath: ./Dockerfile
     plan: free
     envVars:
       - key: UPSTREAM1
-        value: app1:8080
+        value: http://app1:8080
       - key: UPSTREAM2
-        value: app2:8080
+        value: http://app2:8080
       - key: UPSTREAM3
-        value: app3:8080
-    # Nginx must listen on $PORT inside the container (handled in your templated conf)
+        value: http://app3:8080
 
   # --- Private backend replicas ---
   - type: pserv 
     name: app1
-    env: docker
+    runtime: docker
     rootDir: ./backend
-    dockerfilePath: ./backend/Dockerfile
-    
+    dockerfilePath: ./Dockerfile
+    plan: free
 
   - type: pserv
     name: app2
-    env: docker
+    runtime: docker
     rootDir: ./backend
-    dockerfilePath: ./backend/Dockerfile
-    
+    dockerfilePath: ./Dockerfile
+    plan: free
 
   - type: pserv
     name: app3
-    env: docker
+    runtime: docker
     rootDir: ./backend
-    dockerfilePath: ./backend/Dockerfile
-    
+    dockerfilePath: ./Dockerfile
+    plan: free
 
   # --- Private Postgres with persistent Disk ---
   - type: pserv
     name: db
-    env: docker
+    runtime: image
     image:
-      url: postgres:16-alpine   # <-- object with url (not a bare string)    
+      url: docker.io/postgres:16-alpine
+    plan: free
+    envVars:
+      - key: POSTGRES_PASSWORD
+        value: abcd1234
+      - key: POSTGRES_USER
+        value: myuser
+      - key: POSTGRES_DB
+        value: mydb
     disk:
       name: pgdata
       mountPath: /var/lib/postgresql/data
-      sizeGB: 10
+      sizeGB: 1
