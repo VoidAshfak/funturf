@@ -15,21 +15,21 @@ services:
         value: http://app3:8080
 
   # --- Private backend replicas ---
-  - type: pserv 
+  - type: web 
     name: app1
     runtime: docker
     rootDir: ./backend
     dockerfilePath: ./Dockerfile
     plan: free
 
-  - type: pserv
+  - type: web
     name: app2
     runtime: docker
     rootDir: ./backend
     dockerfilePath: ./Dockerfile
     plan: free
 
-  - type: pserv
+  - type: web
     name: app3
     runtime: docker
     rootDir: ./backend
