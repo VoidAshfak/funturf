@@ -18,7 +18,7 @@ services:
         value: app3:8080
 
   # Private backend replicas
-  - type: private_service
+  - type: pserv
     name: app1
     env: docker
     rootDir: ./backend
@@ -32,7 +32,7 @@ services:
     #   mountPath: /usr/src/app/logs
     #   sizeGB: 1
 
-  - type: private_service
+  - type: pserv
     name: app2
     env: docker
     rootDir: ./backend
@@ -41,7 +41,7 @@ services:
       - key: DATABASE_URL
         value: postgresql://appuser:apppass@db:5432/appdb
 
-  - type: private_service
+  - type: pserv
     name: app3
     env: docker
     rootDir: ./backend
@@ -51,7 +51,7 @@ services:
         value: postgresql://appuser:apppass@db:5432/appdb
 
   # Private Postgres with a persistent Disk
-  - type: private_service
+  - type: pserv
     name: db
     env: docker
     dockerCommand: >
