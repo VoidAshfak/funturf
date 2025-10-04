@@ -36,21 +36,3 @@ services:
     dockerfilePath: ./Dockerfile
     plan: free
 
-  # --- Private Postgres with persistent Disk ---
-  - type: pserv
-    name: db
-    runtime: image
-    image:
-      url: docker.io/postgres:16-alpine
-    plan: free
-    envVars:
-      - key: POSTGRES_PASSWORD
-        value: abcd1234
-      - key: POSTGRES_USER
-        value: myuser
-      - key: POSTGRES_DB
-        value: mydb
-    disk:
-      name: pgdata
-      mountPath: /var/lib/postgresql/data
-      sizeGB: 1
