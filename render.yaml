@@ -21,42 +21,29 @@ services:
     env: docker
     rootDir: ./backend
     dockerfilePath: ./backend/Dockerfile
-    envVars:
-      - key: DATABASE_URL
-        value: postgresql://appuser:apppass@db:5432/appdb
+    
 
   - type: pserv
     name: app2
     env: docker
     rootDir: ./backend
     dockerfilePath: ./backend/Dockerfile
-    envVars:
-      - key: DATABASE_URL
-        value: postgresql://appuser:apppass@db:5432/appdb
+    
 
   - type: pserv
     name: app3
     env: docker
     rootDir: ./backend
     dockerfilePath: ./backend/Dockerfile
-    envVars:
-      - key: DATABASE_URL
-        value: postgresql://appuser:apppass@db:5432/appdb
+    
 
   # --- Private Postgres with persistent Disk ---
   - type: pserv
     name: db
     env: docker
     image:
-      url: postgres:16-alpine   # <-- object with url (not a bare string)
-    envVars:
-      - key: POSTGRES_DB
-        value: appdb
-      - key: POSTGRES_USER
-        value: appuser
-      - key: POSTGRES_PASSWORD
-        value: apppass
-    # disk:
-    #   name: pgdata
-    #   mountPath: /var/lib/postgresql/data
-    #   sizeGB: 10
+      url: postgres:16-alpine   # <-- object with url (not a bare string)    
+    disk:
+      name: pgdata
+      mountPath: /var/lib/postgresql/data
+      sizeGB: 10
