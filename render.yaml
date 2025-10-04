@@ -1,14 +1,11 @@
 services:
-  # Public entrypoint
+  # --- Public entrypoint (Nginx) ---
   - type: web
     name: nginx
     env: docker
-    plan: starter
-    rootDir: .
-    dockerfilePath: ./nginx/Dockerfile   # (OPTIONAL) If you prefer nginx:alpine, use image in Dockerfile
-    # If using a plain nginx:alpine image, create a tiny Dockerfile to copy nginx.conf into place.
-    disk:
-      # no disk for nginx
+    rootDir: ./nginx
+    dockerfilePath: ./nginx/Dockerfile
+    plan: free
     envVars:
       - key: UPSTREAM1
         value: app1:8080
@@ -16,9 +13,10 @@ services:
         value: app2:8080
       - key: UPSTREAM3
         value: app3:8080
+    # Nginx must listen on $PORT inside the container (handled in your templated conf)
 
-  # Private backend replicas
-  - type: pserv
+  # --- Private backend replicas ---
+  - type: pserve   # alias: pserv
     name: app1
     env: docker
     rootDir: ./backend
@@ -26,13 +24,8 @@ services:
     envVars:
       - key: DATABASE_URL
         value: postgresql://appuser:apppass@db:5432/appdb
-    # attach a small disk only if you really need logs persisted across deploys
-    # disk:
-    #   name: app1-logs
-    #   mountPath: /usr/src/app/logs
-    #   sizeGB: 1
 
-  - type: pserv
+  - type: pserve
     name: app2
     env: docker
     rootDir: ./backend
@@ -41,7 +34,7 @@ services:
       - key: DATABASE_URL
         value: postgresql://appuser:apppass@db:5432/appdb
 
-  - type: pserv
+  - type: pserve
     name: app3
     env: docker
     rootDir: ./backend
@@ -50,17 +43,12 @@ services:
       - key: DATABASE_URL
         value: postgresql://appuser:apppass@db:5432/appdb
 
-  # Private Postgres with a persistent Disk
-  - type: pserv
+  # --- Private Postgres with persistent Disk ---
+  - type: pserve
     name: db
     env: docker
-    dockerCommand: >
-      docker run --rm -p 5432:5432
-      -e POSTGRES_DB=appdb -e POSTGRES_USER=appuser -e POSTGRES_PASSWORD=apppass
-      -v /var/lib/postgresql/data
-      postgres:16
-    # Prefer using an actual Dockerfile or image with "envVars" instead of dockerCommand
-    image: postgres:16
+    image:
+      url: postgres:16-alpine   # <-- object with url (not a bare string)
     envVars:
       - key: POSTGRES_DB
         value: appdb
