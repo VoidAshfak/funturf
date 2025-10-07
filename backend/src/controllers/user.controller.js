@@ -3,7 +3,7 @@ import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { uploadMedia } from "../utils/mediaUpload.js"
 import jwt from "jsonwebtoken"
-import {mongoClient, pgClient} from "../prisma.js"
+import { mongoClient, pgClient } from "../prisma.js"
 import bcrypt from "bcrypt"
 import userCache from "../utils/cache.js";
 
@@ -39,6 +39,7 @@ const isPasswordCorrect = async (password, hashedPassword) => {
 
 
 const generateAccessAndRefreshTokens = async (userId) => {
+
     try {
         const user = await pgClient.users.findUnique({
             where: {
@@ -46,24 +47,35 @@ const generateAccessAndRefreshTokens = async (userId) => {
             },
             select: {
                 id: true,
-                email: true            }
+                email: true
+            }
         })
-        const accessToken = generateAccessToken(user)
-        const refreshToken = generateRefreshToken(user)
 
-        // await pgClient.user.update({
-        //     where: {
-        //         id: userId
-        //     },
-        //     data: {
-        //         refreshToken: refreshToken
-        //     }
-        // })
+        if (!user) {
+            throw new ApiError(404, "User not found");
+        }
+
+        const accessToken = generateAccessToken(user);
+        const refreshToken = generateRefreshToken(user);
+
+
+        const refreshTokenUpdateResponse = await pgClient.users.update({
+            where: {
+                id: userId
+            },
+            data: {
+                refresh_token: refreshToken
+            }
+        })
+
+        if (!refreshTokenUpdateResponse) {
+            throw new ApiError(500, "Token update failed");
+        }
 
         return { accessToken, refreshToken }
 
     } catch (error) {
-        throw new ApiError(500, "Something went wrong while generating refresh and access token")
+        throw new ApiError(500, "Something went wrong while generating tokens", error);
     }
 }
 
@@ -87,7 +99,7 @@ const registerUser = asyncHandler(async (req, res) => {
     } = req.body;
 
 
-    if (!first_name || !last_name || !email || !password_hash || !user_type ) {
+    if (!first_name || !last_name || !email || !password_hash || !user_type) {
         throw new ApiError(400, "All fields are required");
     }
 
@@ -133,37 +145,38 @@ const registerUser = asyncHandler(async (req, res) => {
         }
     })
 
+    if (!user) {
+        throw new ApiError(500, "Failed to create user");
+    }
+
     const newlyCreatedUser = await pgClient.users.findUnique({
         where: {
             id: user.id
         },
-        // select: {
-        //     id: true,
-        //     name: true,
-        //     email: true,
-        //     phone: true,
-        //     address: true,
-        //     bio: true,
-        //     sportsPreferences: true,
-        //     eventsJoined: true,
-        //     role: true,
-        //     rating: true,
-        //     profilePicture: true
-        // }
+        select: {
+            id: true,
+            first_name: true,
+            last_name: true,
+            email: true,
+            phone: true,
+            status: true,
+            email_verified: true,
+            phone_verified: true
+        }
     })
 
     const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(newlyCreatedUser.id);
 
     const serverResponse = {
-        ...newlyCreatedUser,
-        token: refreshToken
+        user: newlyCreatedUser,
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+        tokenExpiresIn: process.env.ACCESS_TOKEN_EXPIRY
     }
 
-    if (!newlyCreatedUser) {
-        throw new ApiError(400, "User creation failed");
-    }
-
-    return res.status(200).json(new ApiResponse(200, "User created successfully", serverResponse));
+    return res
+        .status(200)
+        .json(new ApiResponse(200, "User created successfully", serverResponse));
 
 })
 
@@ -176,58 +189,42 @@ const loginUser = asyncHandler(async (req, res) => {
         throw new ApiError(400, "All fields are required");
     }
 
-    const user = await mongoClient.user.findUnique({
+    const user = await pgClient.users.findUnique({
         where: {
             email: email
         }
     })
 
     if (!user) {
-        throw new ApiError(404, "User doesn't exist")
+        throw new ApiError(404, "User not found");
     }
 
-    const isPassValid = await isPasswordCorrect(password, user.password)
+    const isPasswordValid = await isPasswordCorrect(password, user.password_hash);
 
-    if (!isPassValid) {
-        throw new ApiError(401, "Invalid user credentials")
+    if (!isPasswordValid) {
+        throw new ApiError(401, "Invalid user credentials");
     }
 
     const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(user.id)
 
-    const loggedInUser = await mongoClient.user.findUnique({
-        where: {
-            id: user.id
-        },
-        select: {
-            id: true,
-            name: true,
-            email: true,
-            phone: true,
-            address: true,
-            bio: true,
-            sportsPreferences: true,
-            eventsJoined: true,
-            role: true,
-            rating: true,
-            profilePicture: true
-        }
-    })
-
-    const options = {
-        httpOnly: true,
-        secure: true
-    }
+    // const options = {
+    //     httpOnly: true,
+    //     secure: true
+    // }
 
     return res
         .status(200)
-        .cookie("accessToken", accessToken, options)
-        .cookie("refreshToken", refreshToken, options)
+        // .cookie("accessToken", accessToken, options)
+        // .cookie("refreshToken", refreshToken, options)
         .json(
             new ApiResponse(
                 200,
                 "User Logged In Successfully.",
                 {
-                    user: loggedInUser,
+                    user: user,
+                    accessToken: accessToken,
+                    refreshToken: refreshToken,
+                    tokenExpiresIn: process.env.ACCESS_TOKEN_EXPIRY
                 },
             )
         )
@@ -235,7 +232,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
 const logoutUser = asyncHandler(async (req, res) => {
 
-    const modifyedUser = await mongoClient.user.update({
+    await pgClient.users.update({
         where: {
             id: req.user.id
         },
@@ -244,18 +241,16 @@ const logoutUser = asyncHandler(async (req, res) => {
         }
     })
 
-    console.log("MODIFYED USER: ", modifyedUser);
 
-
-    const options = {
-        httpOnly: true,
-        secure: true
-    }
+    // const options = {
+    //     httpOnly: true,
+    //     secure: true
+    // }
 
     return res
         .status(200)
-        .clearCookie("accessToken", options)
-        .clearCookie("refreshToken", options)
+        // .clearCookie("accessToken", options)
+        // .clearCookie("refreshToken", options)
         .json(
             new ApiResponse(
                 200,
@@ -266,7 +261,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 })
 
 const tokenRefresh = asyncHandler(async (req, res) => {
-    const browserRefreshToken = req.cookies.refreshToken || req.body.refreshToken
+    const browserRefreshToken = req.body.refresh_token;
 
     if (!browserRefreshToken) {
         throw new ApiError(401, "Unauthorized request")
@@ -278,13 +273,13 @@ const tokenRefresh = asyncHandler(async (req, res) => {
             process.env.REFRESH_TOKEN_SECRET
         )
 
-        const user = await mongoClient.user.findUnique({
+        const user = await pgClient.users.findUnique({
             where: {
                 id: decodedToken.id
             },
             select: {
                 id: true,
-                refreshToken: true
+                refresh_token: true
             }
         })
 
@@ -292,26 +287,29 @@ const tokenRefresh = asyncHandler(async (req, res) => {
             throw new ApiError(401, "Invalid refresh token")
         }
 
-        if (browserRefreshToken !== user.refreshToken) {
+        if (browserRefreshToken !== user.refresh_token) {
             throw new ApiError(401, "Refresh token is expired or invalid")
         }
 
-        const { newAccessToken, newRefreshToken } = await generateAccessAndRefreshTokens(user.id)
-
-        const options = {
-            httpOnly: true,
-            secure: true
-        }
+        const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(user.id)
+        // const options = {
+        //     httpOnly: true,
+        //     secure: true
+        // }
 
         return res
             .status(200)
-            .cookie("accessToken", newAccessToken, options)
-            .cookie("refreshToken", newRefreshToken, options)
+            // .cookie("accessToken", newAccessToken, options)
+            // .cookie("refreshToken", newRefreshToken, options)
             .json(
                 new ApiResponse(
                     200,
-                    {},
-                    "Token Refreshed Successfully."
+                    "Token Refreshed Successfully.",
+                    {
+                        accessToken: accessToken,
+                        refreshToken: refreshToken,
+                        tokenExpiresIn: process.env.ACCESS_TOKEN_EXPIRY
+                    }
                 )
             )
     } catch (error) {
@@ -320,12 +318,55 @@ const tokenRefresh = asyncHandler(async (req, res) => {
 
 })
 
+const getUserById = asyncHandler(async (req, res) => {
+    const { user_id } = req.params;
+
+    try {
+        const user = await pgClient.users.findUnique({
+            where: { id: user_id },
+            select: {
+                email: true,
+                phone: true,
+                first_name: true,
+                last_name: true,
+                date_of_birth: true,
+                gender: true,
+                profile_picture_url: true,
+                bio: true,
+                user_type: true,
+                status: true,
+                email_verified: true,
+                phone_verified: true,
+                preferred_language: true,
+                last_login_at: true,
+                created_at: true,
+                updated_at: true                
+            }
+        });
+
+        if(!user) {
+            res.status(404).json({ error: "User not found" });
+        }
+
+        return res
+            .status(200)
+            .json(new ApiResponse(
+                200,
+                "User found",
+                user
+            ));
+
+    } catch (error) {
+        throw new ApiError(500, "Error getting the user");
+    }
+})
+
 
 // Using node-cache | (Use redis in future)
 const varifyLogin = asyncHandler(async (req, res) => {
     console.log("Varifying Login...");
-    
-    const accessToken = req.cookies.accessToken || req.body.accessToken    
+
+    const accessToken = req.cookies.accessToken || req.body.accessToken
     if (!accessToken) {
         return res.status(401).json(new ApiResponse(401, "Unauthorized request"))
     }
@@ -342,7 +383,7 @@ const varifyLogin = asyncHandler(async (req, res) => {
 
         if (!cachedUser) {
             console.log("Cache miss");
-            
+
             const user = await mongoClient.user.findUnique({
                 where: {
                     id: decodedToken.id
@@ -371,10 +412,10 @@ const varifyLogin = asyncHandler(async (req, res) => {
         }
 
         console.log("Cache hit");
-        
+
         return res.
             status(200)
-            .json(new ApiResponse(200, "User logged in successfully", { user:cachedUser }))
+            .json(new ApiResponse(200, "User logged in successfully", { user: cachedUser }))
 
 
     } catch (error) {
@@ -387,5 +428,6 @@ export {
     loginUser,
     logoutUser,
     tokenRefresh,
-    varifyLogin
+    varifyLogin,
+    getUserById
 }
