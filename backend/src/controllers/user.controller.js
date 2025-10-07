@@ -13,6 +13,7 @@ const generateAccessToken = (user) => {
         {
             id: user.id,
             email: user.email,
+            user_type: user.user_type
         },
         process.env.ACCESS_TOKEN_SECRET,
         {
@@ -47,7 +48,8 @@ const generateAccessAndRefreshTokens = async (userId) => {
             },
             select: {
                 id: true,
-                email: true
+                email: true,
+                user_type: true
             }
         })
 
