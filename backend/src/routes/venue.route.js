@@ -1,11 +1,15 @@
 import { Router } from "express";
-// import {} from "../controllers";
-// import {} from "../middlewares";
+import { 
+    getVenues,
+    getVenueById 
+} from "../controllers/venue.controller.js";
+import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 
 const router = Router();
 
-// router.route("/venues").get();
+router.route("/all").get(getVenues);
+router.route('/:venue_id').get(getVenueById);
 
 
 export default router;

@@ -1,49 +1,40 @@
 import { ApiError } from "../utils/apiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken"
-import {mongoClient} from "../prisma.js";
+import { mongoClient, pgClient } from "../prisma.js";
 import bcrypt from "bcrypt";
 import userCache from "../utils/cache.js";
 
 
 export const verifyJWT = asyncHandler(async (req, _, next) => {
     try {
-        const token = req.cookies?.accessToken || req.header("Authorization").replace("Bearer ", "")
-    
-        if(!token) {
-            throw new ApiError(401, "Unauthorized request")
-        }
-    
+        const authHeader = req.headers.authorization || "";
+        const token = authHeader.replace("Bearer ", "");
+        
+        if (!token) throw new ApiError(401, "Missing token");
+
         const decodedInfo = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
-    
-        const user = await mongoClient.user.findUnique({
-            where: {
-                id: decodedInfo.id
-            },
-            select: {
-                id: true,
-                email: true,
-                name: true,
-                address: true,
-                bio: true,
-                role: true,
-                phone: true,
-                rating: true,
-                eventsJoined: true,
-                profilePicture: true,
-                sportsPreferences: true,
-                eventsOrganized: true
-            }
-        })
-    
-        if(!user) {
+
+        // const user = await pgClient.users.findUnique({
+        //     where: {
+        //         id: decodedInfo.id
+        //     },
+        //     select: {
+        //         id: true,
+        //         email: true,
+        //         first_name: true,
+        //         last_name: true
+        //     }
+        // })
+
+        if (!decodedInfo.id || !decodedInfo.email) {
             throw new ApiError(401, "Invalid access token")
         }
-    
-        req.user = user
+
+        req.user = decodedInfo
         next()
     } catch (error) {
-        throw new ApiError(401, "Unauthorized request")
+        throw new ApiError(401, "Unauthorized request. Token expired or invalid")
     }
 
 })
@@ -67,15 +58,15 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
 //         } else {
 
 //         }
-        
+
 //     } catch (error) {
-        
+
 //     }
 // })
 
 export const encryptPassword = asyncHandler(async (req, _, next) => {
     console.log(req.body.password_hash);
-    
+
     req.body.password_hash = await bcrypt.hash(req.body.password_hash, 10);
     next()
 })
