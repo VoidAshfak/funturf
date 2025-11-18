@@ -81,7 +81,7 @@ const generateAccessAndRefreshTokens = async (userId) => {
     }
 }
 
-const registerUser = asyncHandler(async (req, res) => {
+const registerUser = asyncHandler(async (req, res) => { 
     const {
         email,
         phone,
@@ -123,13 +123,13 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new ApiError(409, "User already exists");
     }
 
-    const profilePictureLocalPath = req.files?.profilePicture[0].path;
+    // const profilePictureLocalPath = req.files?.profilePicture[0].path;
 
-    const profilePictureUrl = await uploadMedia(profilePictureLocalPath);
+    // const profilePictureUrl = await uploadMedia(profilePictureLocalPath);
 
-    if (!profilePictureUrl) {
-        throw new ApiError(400, "Profile picture upload failed");
-    }
+    // if (!profilePictureUrl) {
+    //     throw new ApiError(400, "Profile picture upload failed");
+    // }
 
     const user = await pgClient.users.create({
         data: {
